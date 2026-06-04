@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Try Out Syari — SMASIT AL BINAA</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #0a1628;
+  --navy2:   #0f2040;
+  --navy3:   #162d52;
+  --gold:    #c9a84c;
+  --gold2:   #e8c96a;
+  --gold3:   #f5e0a0;
+  --emerald: #10b981;
+  --red:     #ef4444;
+  --orange:  #f97316;
+  --white:   #ffffff;
+  --text:    rgba(255,255,255,0.92);
+  --muted:   rgba(255,255,255,0.55);
+  --border:  rgba(201,168,76,0.18);
+  --glass:   rgba(255,255,255,0.05);
+  --glass2:  rgba(255,255,255,0.09);
+  --radius:  16px;
+  --shadow:  0 8px 32px rgba(0,0,0,0.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--navy);color:var(--text);overflow-x:hidden}
+body{background:radial-gradient(ellipse at 20% 0%,#1a3a6e 0%,var(--navy) 60%)}
+
+/* ── Noise texture overlay ── */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px}
+
+/* ── Typography ── */
+.ar{font-family:'Amiri',serif;direction:rtl;line-height:2.1;font-size:1.15rem}
+.ar-sm{font-family:'Amiri',serif;direction:rtl;line-height:1.9;font-size:1rem}
+
+/* ── Glass card ── */
+.card{background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;z-index:1}
+.card-sm{padding:16px}
+
+/* ── Page system ── */
+.page{min-height:100vh;width:100%;position:relative;z-index:1}
+.hidden{display:none!important}
+
+/* ═══════════════════════════════
+   LOGIN PAGE
+═══════════════════════════════ */
+#page-login{display:flex;align-items:center;justify-content:center;padding:24px}
+
+.login-wrap{width:100%;max-width:420px;animation:slideUp .5s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+.login-header{text-align:center;margin-bottom:32px}
+.logo-ring{width:80px;height:80px;margin:0 auto 16px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));padding:3px}
+.logo-ring img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.logo-placeholder{width:100%;height:100%;border-radius:50%;background:var(--navy2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--gold)}
+.login-title{font-size:1.25rem;font-weight:600;color:var(--white);line-height:1.3}
+.login-sub{font-size:.85rem;color:var(--gold2);margin-top:4px;font-weight:500}
+
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:7px;text-transform:uppercase;letter-spacing:.06em}
+.field select,.field input{width:100%;padding:13px 16px;background:rgba(255,255,255,0.07);border:1px solid var(--border);border-radius:10px;color:var(--white);font-size:.95rem;font-family:'Outfit',sans-serif;outline:none;transition:border-color .2s,background .2s}
+.field select:focus,.field input:focus{border-color:var(--gold);background:rgba(255,255,255,0.1)}
+.field select option{background:#0f2040;color:#fff}
+.field input::placeholder{color:var(--muted)}
+.nisn-err{color:#f87171;font-size:.75rem;margin-top:5px;display:none}
+
+.btn-primary{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),#b8902e);border:none;border-radius:10px;color:var(--navy);font-size:1rem;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(201,168,76,0.35)}
+.btn-primary:active{transform:translateY(0)}
+
+.btn-ghost{background:none;border:none;color:var(--muted);font-size:.8rem;font-family:'Outfit',sans-serif;cursor:pointer;padding:10px;width:100%;transition:color .2s}
+.btn-ghost:hover{color:var(--white)}
+
+/* ═══════════════════════════════
+   EXAM PAGE
+═══════════════════════════════ */
+#page-exam{padding:16px}
+.exam-inner{max-width:900px;margin:0 auto}
+
+/* Header bar */
+.exam-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.exam-user{font-size:.88rem;color:var(--muted)}
+.exam-user strong{color:var(--gold2);font-weight:600}
+
+.timer-box{display:flex;align-items:center;gap:8px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:10px 18px;font-family:'Outfit',sans-serif;font-weight:700;font-size:1.1rem;color:#fca5a5;transition:all .3s}
+.timer-box.warn{animation:pulse .8s infinite;border-color:rgba(239,68,68,.6);background:rgba(239,68,68,.2)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+.timer-icon{font-size:16px}
+
+/* Progress */
+.progress-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.progress-bar{flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:4px;transition:width .4s ease}
+.progress-text{font-size:.78rem;color:var(--muted);white-space:nowrap}
+
+/* Navigation grid */
+.nav-panel{padding:14px 16px;margin-bottom:14px}
+.nav-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+.nav-grid{display:flex;flex-wrap:wrap;gap:6px}
+.nav-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid rgba(255,255,255,.15);background:rgba(239,68,68,.15);color:#fca5a5;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif}
+.nav-btn:hover{transform:scale(1.12)}
+.nav-btn.done{background:rgba(16,185,129,.18);border-color:rgba(16,185,129,.4);color:#6ee7b7}
+.nav-btn.active{box-shadow:0 0 0 2.5px var(--gold);border-color:var(--gold)}
+
+/* Question card */
+.q-card{padding:28px;animation:fadeQ .25s ease}
+@keyframes fadeQ{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.q-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.q-num{font-size:.8rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.08em}
+.topic-badge{font-size:.7rem;padding:4px 12px;border-radius:99px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);color:var(--gold2);font-weight:500}
+
+.q-text{font-family:'Amiri',serif;direction:rtl;text-align:right;font-size:1.2rem;line-height:2.2;color:var(--white);margin-bottom:24px}
+
+.options{display:flex;flex-direction:column;gap:10px}
+.opt-btn{width:100%;text-align:right;padding:14px 18px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;color:var(--text);cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:14px;font-family:'Outfit',sans-serif}
+.opt-btn:hover{background:rgba(255,255,255,.1);border-color:var(--gold);transform:translateX(-3px)}
+.opt-btn.selected{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.5);color:#6ee7b7}
+.opt-btn.selected .opt-label{background:var(--emerald);color:#fff;border-color:var(--emerald)}
+.opt-label{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:var(--muted);flex-shrink:0;transition:all .18s}
+.opt-text{font-family:'Amiri',serif;direction:rtl;font-size:1.05rem;line-height:1.8;flex:1;text-align:right}
+
+/* Controls */
+.exam-controls{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:12px}
+.btn-nav{padding:12px 22px;background:var(--glass2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:.9rem;font-family:'Outfit',sans-serif;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:6px}
+.btn-nav:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}
+.btn-submit{padding:12px 28px;background:linear-gradient(135deg,#059669,#10b981);border:none;border-radius:10px;color:#fff;font-size:.95rem;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(16,185,129,.35)}
+
+/* ═══════════════════════════════
+   RESULT PAGE
+═══════════════════════════════ */
+#page-result{padding:24px}
+.result-inner{max-width:700px;margin:0 auto;animation:slideUp .4s ease}
+
+.score-hero{text-align:center;padding:32px 24px;margin-bottom:24px}
+.score-ring{width:120px;height:120px;margin:0 auto 16px;position:relative}
+.score-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.score-ring .bg{fill:none;stroke:rgba(255,255,255,.1);stroke-width:8}
+.score-ring .fg{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)}
+.score-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;color:var(--white)}
+.score-label{font-size:.85rem;color:var(--muted)}
+
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.stat-box{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.stat-num{font-size:1.6rem;font-weight:700}
+.stat-num.green{color:#34d399}
+.stat-num.red{color:#f87171}
+.stat-num.blue{color:#60a5fa}
+.stat-lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:24px}
+.info-item{background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:12px 16px}
+.info-key{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.info-val{font-size:.9rem;font-weight:500;margin-top:3px}
+
+.analysis-title{font-size:.85rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.analysis-list{display:flex;flex-direction:column;gap:8px;max-height:380px;overflow-y:auto;padding-right:4px}
+.ana-item{padding:12px 16px;border-radius:10px;border:1px solid}
+.ana-item.ok{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.2)}
+.ana-item.err{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.2)}
+.ana-row{display:flex;align-items:flex-start;gap:10px}
+.ana-icon{font-size:1rem;flex-shrink:0;margin-top:2px}
+.ana-q{font-family:'Amiri',serif;direction:rtl;text-align:right;font-size:.95rem;line-height:1.8;color:var(--text)}
+.ana-ans{font-size:.75rem;margin-top:4px;font-family:'Amiri',serif;direction:rtl;text-align:right}
+.ana-ans.ok{color:#6ee7b7}
+.ana-ans.err{color:#f87171}
+
+.btn-back{width:100%;padding:14px;background:linear-gradient(135deg,#1d4ed8,#2563eb);border:none;border-radius:10px;color:#fff;font-size:1rem;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;margin-top:20px;transition:all .2s}
+.btn-back:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(37,99,235,.35)}
+
+/* ═══════════════════════════════
+   ADMIN PAGE
+═══════════════════════════════ */
+#page-admin{padding:24px}
+.admin-inner{max-width:860px;margin:0 auto;animation:slideUp .4s ease}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.admin-title{font-size:1.3rem;font-weight:600;color:var(--white)}
+.tabs{display:flex;gap:8px;margin-bottom:20px}
+.tab-btn{padding:9px 20px;border-radius:9px;border:1px solid var(--border);background:var(--glass);color:var(--muted);font-size:.85rem;font-family:'Outfit',sans-serif;cursor:pointer;transition:all .18s}
+.tab-btn.active{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold2);font-weight:600}
+
+.q-preview{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
+.q-p-num{font-size:.75rem;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.q-p-text{font-family:'Amiri',serif;direction:rtl;text-align:right;font-size:1rem;line-height:1.9;margin-bottom:10px}
+.q-p-opts{display:flex;flex-direction:column;gap:5px}
+.q-p-opt{font-family:'Amiri',serif;direction:rtl;font-size:.9rem;padding:6px 12px;border-radius:7px}
+.q-p-opt.correct{background:rgba(16,185,129,.12);color:#6ee7b7}
+.q-p-opt.wrong{color:var(--muted)}
+
+.results-sum{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
+.res-big{font-size:2.4rem;font-weight:700;color:var(--gold2)}
+.res-sub{font-size:.8rem;color:var(--muted)}
+.res-item{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--glass);border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
+.res-name{font-size:.9rem;font-weight:500}
+.res-meta{font-size:.75rem;color:var(--muted);margin-top:2px}
+.res-score{font-size:1.3rem;font-weight:700}
+.res-score.pass{color:#34d399}
+.res-score.fail{color:#f87171}
+
+/* ═══════════════════════════════
+   MODALS
+═══════════════════════════════ */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:24px;z-index:100}
+.modal{background:#0f2040;border:1px solid var(--border);border-radius:var(--radius);padding:28px;width:100%;max-width:360px;animation:slideUp .25s ease}
+.modal-title{font-size:1.1rem;font-weight:600;margin-bottom:16px}
+.modal-sub{font-size:.9rem;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.modal-actions{display:flex;gap:10px}
+.btn-cancel{flex:1;padding:12px;background:var(--glass2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Outfit',sans-serif;cursor:pointer;transition:all .18s}
+.btn-cancel:hover{background:rgba(255,255,255,.12)}
+.btn-confirm{flex:1;padding:12px;background:linear-gradient(135deg,#059669,#10b981);border:none;border-radius:9px;color:#fff;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;transition:all .18s}
+.btn-confirm:hover{transform:translateY(-1px)}
+.modal-err{color:#f87171;font-size:.8rem;margin-bottom:12px;display:none}
+
+/* ═══════════════════════════════
+   TOAST
+═══════════════════════════════ */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:#1e293b;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:12px 24px;color:var(--white);font-size:.9rem;font-weight:500;z-index:200;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media(max-width:540px){
+  .result-stats{grid-template-columns:repeat(3,1fr)}
+  .stat-num{font-size:1.3rem}
+  .exam-controls{flex-wrap:wrap}
+  .btn-nav,.btn-submit{flex:1;justify-content:center}
+  .q-text{font-size:1.05rem}
+  .opt-text{font-size:.95rem}
+}
+
+/* ─── Animated background orbs ─── */
+.orb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.12;pointer-events:none;z-index:0}
+.orb1{width:400px;height:400px;background:#1a4fa8;top:-100px;left:-100px;animation:float 12s ease-in-out infinite}
+.orb2{width:300px;height:300px;background:#c9a84c;bottom:-80px;right:-80px;animation:float 15s ease-in-out infinite reverse}
+.orb3{width:200px;height:200px;background:#10b981;top:40%;left:60%;animation:float 10s ease-in-out infinite 3s}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,30px)}}
+</style>
+</head>
+<body>
+
+<!-- Background orbs -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<!-- ══════════ LOGIN PAGE ══════════ -->
+<div id="page-login" class="page">
+  <div class="login-wrap">
+    <div class="login-header">
+      <div class="logo-ring">
+        <img src="https://i.ibb.co.com/Ld9YZFcZ/Logo-2.jpg" alt="Logo" onerror="this.style.display='none';document.getElementById('logo-ph').style.display='flex'">
+        <div id="logo-ph" class="logo-placeholder" style="display:none">AB</div>
+      </div>
+      <div class="login-title">Try Out Syari<br>Persiapan S1 LIPIA</div>
+      <div class="login-sub">SMASIT AL BINAA</div>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <label>Nama Santri</label>
+        <select id="inp-name">
+          <option value="">-- Pilih Nama --</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>NISN</label>
+        <input id="inp-nisn" type="text" placeholder="Masukkan NISN (angka)">
+        <div id="nisn-err" class="nisn-err">⚠ NISN harus berupa angka</div>
+      </div>
+      <div class="field">
+        <label>Kelas</label>
+        <select id="inp-class">
+          <option value="Kelas XI Takhasus">Kelas XI Takhasus</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Mata Pelajaran</label>
+        <select id="inp-subject">
+          <option value="Syari">Syari</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="startExam()">
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        Mulai Ujian
+      </button>
+      <button class="btn-ghost" onclick="showAdminLogin()">Panel Admin</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ EXAM PAGE ══════════ -->
+<div id="page-exam" class="page hidden">
+  <div class="exam-inner">
+
+    <!-- Header -->
+    <div class="exam-header card card-sm">
+      <div class="exam-user">
+        <strong id="ex-name"></strong> &nbsp;|&nbsp; <span id="ex-kelas"></span>
+      </div>
+      <div class="timer-box" id="timer-box">
+        <span class="timer-icon">⏱</span>
+        <span id="timer-txt">120:00</span>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-row" style="padding:0 2px">
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+      <span class="progress-text" id="prog-text">0/50 dijawab</span>
+    </div>
+
+    <!-- Nav panel -->
+    <div class="card nav-panel">
+      <div class="nav-label">Navigasi Soal</div>
+      <div class="nav-grid" id="nav-grid"></div>
+    </div>
+
+    <!-- Question -->
+    <div class="card q-card" id="q-card">
+      <div id="q-body"></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="exam-controls">
+      <button class="btn-nav" onclick="goPrev()">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
+        Sebelumnya
+      </button>
+      <button class="btn-submit hidden" id="btn-submit" onclick="submitExam()">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        Submit
+      </button>
+      <button class="btn-nav" onclick="goNext()">
+        Selanjutnya
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ RESULT PAGE ══════════ -->
+<div id="page-result" class="page hidden">
+  <div class="result-inner">
+    <div class="card score-hero">
+      <div class="score-ring">
+        <svg viewBox="0 0 120 120">
+          <circle class="bg" cx="60" cy="60" r="52"/>
+          <circle class="fg" id="score-arc" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7" stroke="#c9a84c"/>
+        </svg>
+        <div class="score-val" id="score-val">—</div>
+      </div>
+      <div style="font-size:1.3rem;font-weight:700;color:var(--white)">Hasil Ujian</div>
+      <div class="score-label" id="score-lbl"></div>
+    </div>
+
+    <div class="result-stats">
+      <div class="stat-box"><div class="stat-num green" id="r-correct">—</div><div class="stat-lbl">Benar</div></div>
+      <div class="stat-box"><div class="stat-num red" id="r-wrong">—</div><div class="stat-lbl">Salah</div></div>
+      <div class="stat-box"><div class="stat-num blue" id="r-total">50</div><div class="stat-lbl">Soal</div></div>
+    </div>
+
+    <div class="info-grid" id="r-info"></div>
+
+    <div class="analysis-title">Analisis per Soal</div>
+    <div class="analysis-list" id="r-analysis"></div>
+
+    <button class="btn-back" onclick="backHome()">Kembali ke Beranda</button>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN PAGE ══════════ -->
+<div id="page-admin" class="page hidden">
+  <div class="admin-inner">
+    <div class="admin-header">
+      <div class="admin-title">🛡 Panel Admin</div>
+      <button class="btn-nav" onclick="backHome()">Kembali</button>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-q" onclick="adminTab('q')">Preview Soal</button>
+      <button class="tab-btn" id="tab-r" onclick="adminTab('r')">Hasil Siswa</button>
+    </div>
+    <div id="admin-body"></div>
+  </div>
+</div>
+
+<!-- ══════════ MODALS ══════════ -->
+<div id="modal-admin" class="modal-bg hidden">
+  <div class="modal">
+    <div class="modal-title">Login Admin</div>
+    <div class="field"><label>Password</label><input id="admin-pw" type="password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')loginAdmin()"></div>
+    <div id="admin-err" class="modal-err">Password salah!</div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="hideModal('modal-admin')">Batal</button>
+      <button class="btn-confirm" onclick="loginAdmin()">Masuk</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-confirm" class="modal-bg hidden">
+  <div class="modal">
+    <div class="modal-title">Konfirmasi Submit</div>
+    <div class="modal-sub" id="confirm-msg"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="hideModal('modal-confirm')">Batal</button>
+      <button class="btn-confirm" onclick="doSubmit()">Ya, Kumpulkan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════ */
+const STUDENTS = ["AL ATALLAH DEDAISH JUNIOR","BISMA DZAKY WAHYU SATRIO","DAR ARKAN TAJUSA SULANJANA","FACHRIZAL ADITYA RIZQI RAMADHAN","FARRAND FADHILAH FAISOL","FATIH AFZALURAHMAN RAHTOMO","FAUZAAN ADITYA NUGRAHA","HAMMAD RIFAI","IQBAL ATHAR PATRIA LUKMAN","JIBRIL AESAR AULAYAIN","MAFIS MALIK","MUH REHAN FADILAH","MUHAMMAD ALIF ALFAZA","MUHAMMAD AMMAAR ZIYAAD","MUHAMMAD DIHYAH HARAHAP","MUHAMMAD FAJRIL FIRDAUS","MUHAMMAD GHAZZA AL GHIFFARI","MUHAMMAD HAFIZH NAWWAF","MUHAMMAD HAMZAH","MUHAMMAD IZZA IBRAHIM","MUHAMMAD KHALIF ABDUL AZIZ","MUHAMMAD SALMAN AL ASYAH","RAFIF AHNAF NASUTION","YAHYA EL YASIN","ZIYYAD ABBEY POHAN","ZUHDI FADHLURRAHMAN HAAJ"];
+
+const ADMIN_PASS = "TryOut1";
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzF7hnIe7_im_191NtMdAN3obFL3RNr_Oy3ui-FODRAzL1nHxdGJ9u1f1G9m6BNId9cNQ/exec";
+
+const QS = [
+  {q:"يُعدّ إجماع الصحابة رضي الله عنهم في العقيدة كإجماعهم أن الله في السماء مستوٍ على عرشه:",opts:["حجة يجب الأخذ بها","ليس حجة ولا يجوز الاحتجاج به","يخيَّر المسلم بالعمل به","لا يصح شيء مما سبق"],ans:0,topic:"عقيدة"},
+  {q:"مقتضى شهادة أن محمداً رسول الله ﷺ:",opts:["الاعتراف بأنه مرسل من عند الله","طاعته فيما أمر وتصديقه فيما أخبر واجتناب ما نهى عنه وزجر","الصلاة والسلام عليه","جميع ما سبق"],ans:3,topic:"عقيدة"},
+  {q:"من جعل بينه وبين الله وسائط يدعوهم ويسألهم الشفاعة ويتوكل عليهم فهذا يُعدّ:",opts:["معصية من المعاصي","ناقضاً من نواقض الإسلام","مخالفة لسنة النبي ﷺ","جائزاً"],ans:1,topic:"عقيدة"},
+  {q:"تُعتبر عبادة الصلاة وتلاوة القرآن من أنواع العبادة:",opts:["الفعلية","القلبية","القولية","جميع ما ذكر"],ans:2,topic:"عقيدة"},
+  {q:"المراد من الولاء والبراء في الإسلام:",opts:["تولي وحب المسلمين والموحدين والبراءة والبغض من الشرك والمشركين","لا إله إلا الله محمد رسول الله","إقامة الصلح بين المسلمين والبراءة من تفرقهم","جميع ما سبق"],ans:0,topic:"عقيدة"},
+  {q:"المراد بالتوحيد عند علماء السلف وعامة الخلف:",opts:["الإقرار بأن الله وحده هو الخالق للعالم","إفراد الله بالخلق والتدبير","إفراد الله تعالى بجميع أنواع العبادة","التوكل على الله"],ans:2,topic:"عقيدة"},
+  {q:"تعريف توحيد الأسماء والصفات:",opts:["إثبات ما أثبته الله لنفسه أو أثبته له رسوله من صفات الكمال من غير تحريف ولا تمثيل ولا تشبيه ولا تعطيل","إفراد الله تعالى بجميع أنواع العبادة","الإقرار بأن الله هو المدبر المحيي","إثبات الأسماء والصفات مطلقاً"],ans:0,topic:"عقيدة"},
+  {q:"الأسباب التي أدّت إلى ظهور البدع منها:",opts:["الجهل بأحكام الدين","التشبه بالكفار","اتباع الهوى","جميع ما ذكر"],ans:3,topic:"عقيدة"},
+  {q:"حكم الطواف بالقبور تقرباً إلى أصحابها:",opts:["كفر صراح","بدعة","محرّم","مكروه"],ans:0,topic:"عقيدة"},
+  {q:"طلب الغوث والمدد من الأموات يُعدّ:",opts:["بدعة بالاتفاق","محرّم بالاتفاق","جائز بالاتفاق","محرّم بالإجماع"],ans:1,topic:"عقيدة"},
+  {q:"أول هذه التفاسير تأليفاً وأهمها هو:",opts:["تفسير الرازي","تفسير الطبري","تفسير ابن كثير","لا شيء مما ذكر"],ans:1,topic:"علوم القرآن"},
+  {q:"أقوى أنواع التفسير هو:",opts:["التفسير الإشاري","التفسير بالرأي","التفسير بالمأثور","التفسير الموضوعي"],ans:2,topic:"علوم القرآن"},
+  {q:"أول هذه السور نزولاً هي:",opts:["سورة البقرة","سورة المائدة","سورة المدثر","لا شيء مما ذكر"],ans:3,topic:"علوم القرآن"},
+  {q:"أشهر المفسرين من الصحابة هو:",opts:["أبو ذر","خالد بن الوليد","عبد الله بن مسعود","لا شيء مما ذكر"],ans:3,topic:"علوم القرآن"},
+  {q:"أول ما جُمع القرآن كان في:",opts:["حياة النبي ﷺ","في خلافة أبي بكر","في خلافة عمر بن عبد العزيز","لا شيء مما ذكر"],ans:1,topic:"علوم القرآن"},
+  {q:"السنة في اللغة هي:",opts:["الطريقة والسيرة","العلم","الفهم","العلامة"],ans:0,topic:"علوم الحديث"},
+  {q:"شرح الإمام النووي في كتابه المنهاج:",opts:["صحيح البخاري","صحيح مسلم","سنن أبي داود","سنن ابن ماجه"],ans:1,topic:"علوم الحديث"},
+  {q:"أوسع شرح لصحيح البخاري:",opts:["المجتبى","المنهاج","فتح الباري","اللؤلؤ والمرجان"],ans:2,topic:"علوم الحديث"},
+  {q:'معنى الأعقاب في قوله ﷺ "ويل للأعقاب من النار":',opts:["مقدم القدم","مؤخرة القدم","وسط القدم","أعلى القدم"],ans:1,topic:"علوم الحديث"},
+  {q:"من السبعة الذين يظلهم الله في ظله يوم القيامة:",opts:["الإمام العادل","شاب نشأ في طاعة الله","المتحابان في الله","جميع ما سبق"],ans:3,topic:"علوم الحديث"},
+  {q:"أول غزوة غزاها رسول الله صلى الله عليه وسلم غزوة:",opts:["أحد","الخندق","بدر","الحديبية"],ans:2,topic:"السيرة النبوية"},
+  {q:"الخلفاء الراشدون هم:",opts:["أبو بكر وعمر","عثمان وطلحة","عثمان وعلي","مجموع أ، ج"],ans:3,topic:"السيرة النبوية"},
+  {q:"أصح كتاب في الحديث:",opts:["الموطأ","صحيح مسلم","صحيح البخاري","صحيح ابن حبان"],ans:2,topic:"علوم الحديث"},
+  {q:"ألف الإمام أحمد كتاباً في الحديث يعد من أهم كتب الحديث وهو:",opts:["الموطأ","الصحيح","السنن","المسند"],ans:3,topic:"علوم الحديث"},
+  {q:"يحتج بالحديث النبوي إذا كان:",opts:["حسناً","صحيحاً","منقطعاً","مجموع أ، ب"],ans:3,topic:"علوم الحديث"},
+  {q:"من كتب الفقه المعتمدة في المذهب الشافعي:",opts:["المدونة للإمام سحنون","الهداية للمرغناي","الروض المربع","منهاج الطالبين للنووي"],ans:3,topic:"فقه"},
+  {q:"إذا تغير الماء بشيء نجس لم تصح الطهارة به:",opts:["في مذهب الشافعية خلافاً للجمهور","في مذهب الجمهور خلافاً للشافعية","إجماعاً","لا شيء مما ذكر"],ans:2,topic:"فقه"},
+  {q:"من موجبات الغسل:",opts:["النوم الثقيل","من رأى أنه يجامع ولو لم يجد منياً","من جامع امرأته حتى خرج منه مني","لا شيء مما ذكر"],ans:2,topic:"فقه"},
+  {q:"من لم يجد الماء للطهارة أياماً كثيرة فحكمه أن:",opts:["يترك الصلاة حتى يجد الماء","يتيمم وصلاته صحيحة","يتيمم ويصلي لكنه يعيد ما صلى بالتيمم حين يجد الماء","لا شيء مما ذكر"],ans:1,topic:"فقه"},
+  {q:"من نام عن صلاة حتى خرج وقتها:",opts:["لم يصلها لأنه فات وقتها","يندب له أن يصليها عند قيامه من النوم","يجب عليه أن يصليها عند قيامه من نومه","لا شيء مما ذكر"],ans:2,topic:"فقه"},
+  {q:"من ترك ركعة من الصبح سهوًا حتى سلم فإن حكمه هو أن:",opts:["صلاته صحيحة ولا يلزمه عمل","صلاته باطلة ولا يمكنه إصلاحها","يأتي بركعة ويسجد للسهو","يكفيه أن يسجد سجدتين بعد السلام"],ans:2,topic:"فقه"},
+  {q:"نصاب الزكاة في الذهب هو:",opts:["دينارين من الذهب","85 غراماً","200 دينار ذهباً","لا شيء مما ذكر"],ans:1,topic:"فقه"},
+  {q:"من مفسدات الصوم:",opts:["قبلة الرجل امرأته","النوم الطويل","الأكل عمدًا","لا شيء مما ذكر"],ans:2,topic:"فقه"},
+  {q:"إذا حاضت المرأة في نهار رمضان فحكمها:",opts:["أن تواصل صومها","أن تفطر ولا قضاء عليها","أن تفطر وتقضي ما أفطرته من أيام بعد رمضان","لا شيء مما ذكر"],ans:2,topic:"فقه"},
+  {q:"يعتبر الحج فاسداً فساداً لا يجبر بدم إذا:",opts:["تطيب الحاج أثناء إحرامه","إذا لم يقف بعرفة","إذا عجز عن طواف الوداع بعد أن طاف طواف الإفاضة","لا شيء مما ذكر"],ans:1,topic:"فقه"},
+  {q:"أول كتاب ألف في أصول الفقه هو:",opts:["المستصفى","روضة الناظر","الرسالة","الورقات"],ans:2,topic:"أصول الفقه"},
+  {q:"من أهم الأحكام الوضعية:",opts:["الواجب","الشرط","الجائز","المندوب"],ans:1,topic:"أصول الفقه"},
+  {q:"أحوج الناس لمعرفة أصول الفقه هو:",opts:["المفتي","المحدث","النحوي","الطبيب"],ans:0,topic:"أصول الفقه"},
+  {q:"من أهم أبواب أصول الفقه:",opts:["العموم","الإجارة","الحدود","لا شيء مما ذكر"],ans:0,topic:"أصول الفقه"},
+  {q:"قاعدة: الضرر يزال — قاعدة من قواعد:",opts:["مصطلح الحديث","النحو","الفقه","لا شيء مما ذكر"],ans:2,topic:"أصول الفقه"},
+  {q:"علم يفهم به كتاب الله تعالى...، هو:",opts:["التفسير","الوحي","أسباب النزول","علوم القرآن"],ans:0,topic:"علوم القرآن"},
+  {q:"علم يعرف به كيفية النطق بالكلمات القرآنية، وطريق أدائها اتفاقاً أو اختلافاً، مع عزو كل وجه لناقله، هو:",opts:["الأحرف السبعة","المكي والمدني","علم التجويد","القراءات القرآنية"],ans:3,topic:"علوم القرآن"},
+  {q:"من ميزات السور المكية:",opts:["ذكر المنافقين، وبيان حالهم","قصر السور والآيات","تقرير الأحكام التشريعية للعبادات والمعاملات والحدود والفرائض","بيان حال اليهود، وإبطال عقائدهم"],ans:1,topic:"علوم القرآن"},
+  {q:"من أشهر الكتب في علوم القرآن:",opts:["الدر المصون في علوم الكتاب المكنون","الإتقان في علوم القرآن","زاد المسير في علم التفسير","فنون الأفنان في عيون علوم القرآن"],ans:1,topic:"علوم القرآن"},
+  {q:"من أنواع الوحي بالمعنى الشرعي:",opts:["ما كان مكالمة بين العبد وربه","ما يكون إلهاماً يقذفه الله في قلب نبيه","ما يكون بواسطة أمين الوحي جبريل","جميع ما ذكر"],ans:3,topic:"علوم القرآن"},
+  {q:"القواعد التي يتوصل بها إلى استنباط الأحكام الشرعية الفرعية عن أدلتها التفصيلية:",opts:["النظريات الفقهية","القواعد الأصولية","الأشباه والنظائر","الضابط الفقهي"],ans:1,topic:"أصول الفقه"},
+  {q:"القواعد الداخلة في أبواب فقهية كثيرة، مع عدم اختصاصها بباب فقهي معين:",opts:["القواعد الكلية الكبرى","القواعد الكلية الصغرى","النظريات الفقهية","الضابط الفقهي"],ans:0,topic:"أصول الفقه"},
+  {q:"من أهمية وفوائد دراسة القواعد الفقهية:",opts:["تساعد على إدراك مقاصد الشريعة","يسهل إدراك أحكام الفروع وحفظها","يفيد غير المتخصصين في علوم الشريعة","جميع ما ذكر"],ans:3,topic:"أصول الفقه"},
+  {q:"من أهم المؤلفات في القواعد الفقهية:",opts:["المستصفى من علم الأصول للغزالي","بدائع الصنائع في ترتيب الشرائع للكاساني","حاشية الدسوقي على الشرح الكبير","الأشباه والنظائر للسيوطي الشافعي"],ans:3,topic:"أصول الفقه"},
+  {q:"كتاب لسان العرب من كتب:",opts:["فقه اللغة","المعاجم اللغوية","قواعد العربية","البلاغة العربية ومراجعها"],ans:1,topic:"لغة عربية"}
+];
+
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
+let user = {}, cur = 0, answers = {}, shuffled = {}, timer = null, timeLeft = 7200;
+let results = JSON.parse(localStorage.getItem('cbt_results')||'[]');
+const LABELS = ['أ','ب','ج','د'];
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+(function init(){
+  const sel = document.getElementById('inp-name');
+  STUDENTS.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o);});
+  document.getElementById('inp-nisn').addEventListener('input',function(){
+    const e=document.getElementById('nisn-err');
+    e.style.display=this.value&&!/^\d*$/.test(this.value)?'block':'none';
+    this.value=this.value.replace(/\D/g,'');
+  });
+})();
+
+/* ═══════════════════════════════════════════════
+   PAGES
+═══════════════════════════════════════════════ */
+function show(id){
+  ['page-login','page-exam','page-result','page-admin'].forEach(p=>document.getElementById(p).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+
+function backHome(){clearInterval(timer);show('page-login');}
+
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+/* ═══════════════════════════════════════════════
+   START
+═══════════════════════════════════════════════ */
+function startExam(){
+  const name=document.getElementById('inp-name').value;
+  const nisn=document.getElementById('inp-nisn').value;
+  if(!name){toast('⚠ Pilih nama terlebih dahulu!');return;}
+  if(!nisn){toast('⚠ Masukkan NISN!');return;}
+
+  user={name,nisn,kelas:document.getElementById('inp-class').value,subject:document.getElementById('inp-subject').value};
+  answers={};cur=0;timeLeft=7200;
+
+  // Shuffle options
+  shuffled={};
+  QS.forEach((_,i)=>{
+    const idx=[0,1,2,3];
+    for(let j=3;j>0;j--){const k=Math.floor(Math.random()*(j+1));[idx[j],idx[k]]=[idx[k],idx[j]];}
+    shuffled[i]=idx;
+  });
+
+  document.getElementById('ex-name').textContent=name;
+  document.getElementById('ex-kelas').textContent=user.kelas+' | '+user.subject;
+  show('page-exam');
+  renderNav();renderQ();startTimer();
+}
+
+/* ═══════════════════════════════════════════════
+   TIMER
+═══════════════════════════════════════════════ */
+function startTimer(){
+  clearInterval(timer);
+  updateTimer();
+  timer=setInterval(()=>{
+    timeLeft--;
+    updateTimer();
+    if(timeLeft<=0){clearInterval(timer);toast('⏱ Waktu habis!');setTimeout(finishExam,1000);}
+  },1000);
+}
+function updateTimer(){
+  const m=String(Math.floor(timeLeft/60)).padStart(2,'0');
+  const s=String(timeLeft%60).padStart(2,'0');
+  document.getElementById('timer-txt').textContent=m+':'+s;
+  const box=document.getElementById('timer-box');
+  box.classList.toggle('warn',timeLeft<300);
+}
+
+/* ═══════════════════════════════════════════════
+   NAV & PROGRESS
+═══════════════════════════════════════════════ */
+function renderNav(){
+  const g=document.getElementById('nav-grid');g.innerHTML='';
+  QS.forEach((_,i)=>{
+    const b=document.createElement('button');
+    b.className='nav-btn'+(answers[i]!==undefined?' done':'')+(i===cur?' active':'');
+    b.textContent=i+1;
+    b.onclick=()=>{cur=i;renderQ();renderNav();};
+    g.appendChild(b);
+  });
+  // Progress
+  const done=Object.keys(answers).length;
+  document.getElementById('prog-fill').style.width=(done/QS.length*100)+'%';
+  document.getElementById('prog-text').textContent=done+'/'+QS.length+' dijawab';
+  // Submit button
+  document.getElementById('btn-submit').classList.toggle('hidden',done<QS.length);
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER QUESTION
+═══════════════════════════════════════════════ */
+function renderQ(){
+  const q=QS[cur];
+  const idxArr=shuffled[cur];
+  const card=document.getElementById('q-card');
+  card.classList.remove('fadeQ');void card.offsetWidth;card.classList.add('fadeQ');
+
+  let html=`<div class="q-meta">
+    <span class="q-num">سؤال ${cur+1} / ${QS.length}</span>
+    <span class="topic-badge">${q.topic}</span>
+  </div>
+  <div class="q-text">${q.q}</div>
+  <div class="options">`;
+
+  idxArr.forEach((origIdx,dispIdx)=>{
+    const sel=answers[cur]===origIdx;
+    html+=`<button onclick="pick(${origIdx})" class="opt-btn${sel?' selected':''}">
+      <span class="opt-label">${LABELS[dispIdx]}</span>
+      <span class="opt-text">${q.opts[origIdx]}</span>
+    </button>`;
+  });
+  html+='</div>';
+  document.getElementById('q-body').innerHTML=html;
+}
+
+function pick(origIdx){
+  answers[cur]=origIdx;
+  renderQ();renderNav();
+}
+
+function goPrev(){if(cur>0){cur--;renderQ();renderNav();}}
+function goNext(){if(cur<QS.length-1){cur++;renderQ();renderNav();}}
+
+/* ═══════════════════════════════════════════════
+   SUBMIT
+═══════════════════════════════════════════════ */
+function submitExam(){
+  const left=QS.filter((_,i)=>answers[i]===undefined).length;
+  if(left>0){toast('⚠ Masih ada '+left+' soal yang belum dijawab!');return;}
+  document.getElementById('confirm-msg').textContent='Yakin ingin mengumpulkan jawaban? Ujian akan berakhir.';
+  document.getElementById('modal-confirm').classList.remove('hidden');
+}
+function doSubmit(){hideModal('modal-confirm');finishExam();}
+
+function finishExam(){
+  clearInterval(timer);
+  let correct=0;
+  QS.forEach((q,i)=>{if(answers[i]===q.ans)correct++;});
+  const score=Math.round((correct/QS.length)*100);
+  const result={name:user.name,nisn:user.nisn,kelas:user.kelas,subject:user.subject,score,correct,total:QS.length,answers:{...answers},timestamp:new Date().toISOString()};
+  results.push(result);
+  localStorage.setItem('cbt_results',JSON.stringify(results));
+  sendSheets(result);
+  showResult(result);
+}
+
+function sendSheets(r){
+  const p=new URLSearchParams({nama:r.name,nisn:r.nisn,kelas:r.kelas,mapel:r.subject,nilai:r.score,benar:r.correct,total:r.total,waktu:r.timestamp});
+  fetch(SHEETS_URL+'?'+p,{method:'GET',mode:'no-cors'}).catch(()=>{});
+}
+
+/* ═══════════════════════════════════════════════
+   RESULT
+═══════════════════════════════════════════════ */
+function showResult(r){
+  show('page-result');
+  document.getElementById('score-val').textContent=r.score;
+  document.getElementById('r-correct').textContent=r.correct;
+  document.getElementById('r-wrong').textContent=r.total-r.correct;
+  document.getElementById('r-total').textContent=r.total;
+  document.getElementById('score-lbl').textContent=r.score>=70?'🎉 Alhamdulillah, lulus!':'📚 Tetap semangat belajar!';
+
+  // Animate ring
+  const circ=2*Math.PI*52;
+  const offset=circ-(circ*r.score/100);
+  const arc=document.getElementById('score-arc');
+  arc.style.stroke=r.score>=70?'#10b981':r.score>=50?'#f59e0b':'#ef4444';
+  setTimeout(()=>{arc.style.strokeDashoffset=offset;},100);
+
+  // Info
+  const info=[['Nama',r.name],['NISN',r.nisn],['Kelas',r.kelas],['Mata Pelajaran',r.subject]];
+  document.getElementById('r-info').innerHTML=info.map(([k,v])=>`<div class="info-item"><div class="info-key">${k}</div><div class="info-val">${v}</div></div>`).join('');
+
+  // Analysis
+  let html='';
+  QS.forEach((q,i)=>{
+    const ua=r.answers[i];
+    const ok=ua===q.ans;
+    html+=`<div class="ana-item ${ok?'ok':'err'}">
+      <div class="ana-row">
+        <span class="ana-icon">${ok?'✅':'❌'}</span>
+        <div style="flex:1">
+          <div class="ana-q">${i+1}. ${q.q.substring(0,70)}${q.q.length>70?'...':''}</div>
+          <div class="ana-ans ${ok?'ok':'err'}">
+            جوابك: ${ua!==undefined?q.opts[ua].substring(0,50):'لم يجب'}
+            ${!ok?` | الصواب: ${q.opts[q.ans].substring(0,50)}`:''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('r-analysis').innerHTML=html;
+}
+
+/* ═══════════════════════════════════════════════
+   ADMIN
+═══════════════════════════════════════════════ */
+function showAdminLogin(){
+  document.getElementById('admin-pw').value='';
+  document.getElementById('admin-err').style.display='none';
+  document.getElementById('modal-admin').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('admin-pw').focus(),100);
+}
+function loginAdmin(){
+  if(document.getElementById('admin-pw').value===ADMIN_PASS){
+    hideModal('modal-admin');show('page-admin');adminTab('q');
+  } else {
+    document.getElementById('admin-err').style.display='block';
+  }
+}
+function adminTab(tab){
+  document.getElementById('tab-q').classList.toggle('active',tab==='q');
+  document.getElementById('tab-r').classList.toggle('active',tab==='r');
+  const body=document.getElementById('admin-body');
+  if(tab==='q'){
+    body.innerHTML='<div style="display:flex;flex-direction:column;gap:8px;max-height:65vh;overflow-y:auto;padding-right:4px">'+
+      QS.map((q,i)=>`<div class="q-preview">
+        <div class="q-p-num">سؤال ${i+1} — ${q.topic}</div>
+        <div class="q-p-text">${q.q}</div>
+        <div class="q-p-opts">${q.opts.map((o,oi)=>`<div class="q-p-opt ${oi===q.ans?'correct':'wrong'}">${LABELS[oi]}. ${o} ${oi===q.ans?'✓':''}</div>`).join('')}</div>
+      </div>`).join('')+'</div>';
+  } else {
+    if(!results.length){body.innerHTML='<p style="color:var(--muted);text-align:center;padding:40px">Belum ada data hasil ujian.</p>';return;}
+    const avg=Math.round(results.reduce((a,r)=>a+r.score,0)/results.length);
+    body.innerHTML=`<div class="results-sum">
+      <div class="res-big">${avg}</div>
+      <div class="res-sub">Rata-rata nilai · ${results.length} peserta</div>
+    </div>`+
+    results.slice().sort((a,b)=>b.score-a.score).map(r=>`<div class="res-item">
+      <div><div class="res-name">${r.name}</div><div class="res-meta">${r.kelas} · ${r.subject} · ${new Date(r.timestamp).toLocaleDateString('id-ID')}</div></div>
+      <div class="res-score ${r.score>=70?'pass':'fail'}">${r.score}</div>
+    </div>`).join('');
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   MODALS
+═══════════════════════════════════════════════ */
+function hideModal(id){document.getElementById(id).classList.add('hidden');}
+</script>
+</body>
+</html>
