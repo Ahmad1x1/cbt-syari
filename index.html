@@ -145,6 +145,54 @@ body::after{
 }
 .field input::placeholder{color:var(--muted)}
 .nisn-err{color:#f87171;font-size:.72rem;margin-top:4px;display:none}
+/* Custom dropdown */
+.cs-wrap{position:relative}
+.cs-btn{
+  width:100%;padding:12px 14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:#fff;font-size:.9rem;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  cursor:pointer;outline:none;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  text-align:left;transition:border-color .2s,background .2s;
+}
+.cs-btn:focus,.cs-btn.open{border-color:var(--gold);background:rgba(255,255,255,.09)}
+.cs-btn svg{flex-shrink:0;opacity:.5;transition:transform .2s}
+.cs-btn.open svg{transform:rotate(180deg)}
+.cs-display{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cs-placeholder{color:rgba(255,255,255,.38)}
+.cs-panel{
+  position:absolute;top:calc(100% + 5px);left:0;right:0;
+  background:#0e1e38;border:1px solid var(--border2);
+  border-radius:var(--radius-sm);z-index:200;
+  box-shadow:0 12px 32px rgba(0,0,0,.5);
+  overflow:hidden;
+  animation:csDown .18s cubic-bezier(.22,1,.36,1);
+}
+@keyframes csDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.cs-search{
+  width:100%;padding:10px 14px;
+  background:rgba(255,255,255,.05);
+  border:none;border-bottom:1px solid var(--border);
+  color:#fff;font-size:.85rem;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  outline:none;
+}
+.cs-search::placeholder{color:rgba(255,255,255,.3)}
+.cs-list{max-height:210px;overflow-y:auto}
+.cs-opt{
+  padding:11px 14px;cursor:pointer;
+  color:#fff;font-size:.88rem;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  transition:background .12s;
+  border-left:2px solid transparent;
+}
+.cs-opt:hover{background:rgba(200,168,75,.1);border-left-color:var(--gold)}
+.cs-opt.sel{background:rgba(200,168,75,.12);color:var(--gold2);border-left-color:var(--gold)}
+.cs-empty{padding:12px 14px;color:rgba(255,255,255,.3);font-size:.82rem;text-align:center}
+
 
 .btn-start{
   width:100%;padding:14px;margin-top:6px;
@@ -720,7 +768,17 @@ body::after{
     </div>
     <div class="field">
       <label>Nama Santri</label>
-      <select id="inp-name"><option value="">-- Pilih Nama --</option></select>
+      <input type="hidden" id="inp-name">
+      <div class="cs-wrap" id="cs-wrap">
+        <button type="button" class="cs-btn" id="cs-btn" onclick="csToggle()">
+          <span class="cs-display cs-placeholder" id="cs-display">-- Pilih Nama --</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+        </button>
+        <div class="cs-panel hidden" id="cs-panel">
+          <input class="cs-search" type="text" placeholder="🔍 Cari nama santri..." oninput="csFilter(this.value)" autocomplete="off">
+          <div class="cs-list" id="cs-list"></div>
+        </div>
+      </div>
     </div>
     <div class="field">
       <label>NISN</label>
@@ -1032,11 +1090,69 @@ let results = JSON.parse(localStorage.getItem('cbt_results')||'[]');
 /* ══════════════════════════════════════════
    INIT
 ══════════════════════════════════════════ */
+// Custom select state
+let _csVal = '';
+
+function csToggle(){
+  const panel = document.getElementById('cs-panel');
+  const btn = document.getElementById('cs-btn');
+  const isOpen = !panel.classList.contains('hidden');
+  if(isOpen){ csClose(); }
+  else {
+    panel.classList.remove('hidden');
+    btn.classList.add('open');
+    document.querySelector('.cs-search').value='';
+    csFilter('');
+    document.querySelector('.cs-search').focus();
+  }
+}
+function csClose(){
+  document.getElementById('cs-panel').classList.add('hidden');
+  document.getElementById('cs-btn').classList.remove('open');
+}
+function csFilter(val){
+  const items = document.querySelectorAll('.cs-opt');
+  let visible=0;
+  items.forEach(item=>{
+    const show = item.textContent.toLowerCase().includes(val.toLowerCase());
+    item.style.display = show ? '' : 'none';
+    if(show) visible++;
+  });
+  let empty = document.getElementById('cs-empty');
+  if(!empty){
+    empty = document.createElement('div');
+    empty.id='cs-empty';empty.className='cs-empty';empty.textContent='Nama tidak ditemukan';
+    document.getElementById('cs-list').appendChild(empty);
+  }
+  empty.style.display = visible===0 ? '' : 'none';
+}
+function csSelect(name){
+  _csVal = name;
+  document.getElementById('inp-name').value = name;
+  const disp = document.getElementById('cs-display');
+  disp.textContent = name;
+  disp.classList.remove('cs-placeholder');
+  // Mark selected
+  document.querySelectorAll('.cs-opt').forEach(o=>{
+    o.classList.toggle('sel', o.dataset.val===name);
+  });
+  csClose();
+}
+// Close on outside click
+document.addEventListener('click', function(e){
+  const wrap = document.getElementById('cs-wrap');
+  if(wrap && !wrap.contains(e.target)) csClose();
+});
+
 (function init(){
-  const sel = document.getElementById('inp-name');
+  const list = document.getElementById('cs-list');
   STUDENTS.forEach(s=>{
-    const o=document.createElement('option');
-    o.value=s;o.textContent=s;sel.appendChild(o);
+    const d = document.createElement('div');
+    d.className='cs-opt';
+    d.textContent=s;
+    d.dataset.val=s;
+    d.onclick=()=>csSelect(s);
+    list.appendChild(d);
   });
   document.getElementById('inp-nisn').addEventListener('input',function(){
     document.getElementById('nisn-err').style.display=
