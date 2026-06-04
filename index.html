@@ -6,729 +6,227 @@
 <title>Try Out Syari — SMASIT AL BINAA</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════════════
-   TOKENS
-══════════════════════════════════════════ */
-:root {
-  --bg:        #080f1e;
-  --bg2:       #0c1628;
-  --bg3:       #111f38;
-  --bg4:       #16284a;
-  --gold:      #c8a84b;
-  --gold2:     #e8c96a;
-  --gold3:     #f5e3a8;
-  --border:    rgba(200,168,75,.14);
-  --border2:   rgba(200,168,75,.28);
-  --text:      rgba(255,255,255,.92);
-  --muted:     rgba(255,255,255,.48);
-  --muted2:    rgba(255,255,255,.28);
-  --green:     #10b981;
-  --green-bg:  rgba(16,185,129,.14);
-  --green-b:   rgba(16,185,129,.35);
-  --red:       #ef4444;
-  --red-bg:    rgba(239,68,68,.14);
-  --red-b:     rgba(239,68,68,.35);
-  --amber:     #f59e0b;
-  --amber-bg:  rgba(245,158,11,.14);
-  --amber-b:   rgba(245,158,11,.35);
-  --blue-bg:   rgba(59,130,246,.14);
-  --blue-b:    rgba(59,130,246,.35);
-  --blue-t:    #93c5fd;
-  --sidebar-w: 268px;
-  --radius:    14px;
-  --radius-sm: 9px;
+:root{
+  --bg:#080f1e;--bg2:#0c1628;--bg3:#111f38;--bg4:#16284a;
+  --gold:#c8a84b;--gold2:#e8c96a;--gold3:#f5e3a8;
+  --border:rgba(200,168,75,.14);--border2:rgba(200,168,75,.28);
+  --text:rgba(255,255,255,.92);--muted:rgba(255,255,255,.48);--muted2:rgba(255,255,255,.28);
+  --green:#10b981;--green-bg:rgba(16,185,129,.14);--green-b:rgba(16,185,129,.35);
+  --red:#ef4444;--red-bg:rgba(239,68,68,.14);--red-b:rgba(239,68,68,.35);
+  --amber:#f59e0b;--amber-bg:rgba(245,158,11,.14);--amber-b:rgba(245,158,11,.35);
+  --sidebar-w:268px;--radius:14px;--radius-sm:9px;
 }
-
-/* ══════════════════════════════════════════
-   RESET & BASE
-══════════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0}
 html{height:100%}
-body{
-  font-family:'Plus Jakarta Sans',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  overflow-x:hidden;
-}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 700px 500px at 0% 0%,rgba(30,65,120,.45) 0%,transparent 70%),
+  radial-gradient(ellipse 500px 400px at 100% 100%,rgba(200,168,75,.08) 0%,transparent 60%);}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
-
-/* Mesh background */
-body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(ellipse 700px 500px at 0% 0%, rgba(30,65,120,.45) 0%, transparent 70%),
-    radial-gradient(ellipse 500px 400px at 100% 100%, rgba(200,168,75,.08) 0%, transparent 60%);
-}
-
-/* ══════════════════════════════════════════
-   ARABIC
-══════════════════════════════════════════ */
-.ar{font-family:'Amiri',serif;direction:rtl;text-align:right}
-
-/* ══════════════════════════════════════════
-   UTILITY
-══════════════════════════════════════════ */
 .hidden{display:none!important}
 .page{position:relative;z-index:1}
+.glass{background:rgba(255,255,255,.04);backdrop-filter:blur(18px);border:1px solid var(--border);border-radius:var(--radius);}
 
-/* ══════════════════════════════════════════
-   GLASS
-══════════════════════════════════════════ */
-.glass{
-  background:rgba(255,255,255,.04);
-  backdrop-filter:blur(18px);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-}
-
-/* ══════════════════════════════════════════
-   LOGIN PAGE
-══════════════════════════════════════════ */
-#pg-login{
-  min-height:100vh;
-  display:flex;align-items:center;justify-content:center;
-  padding:24px;
-}
-.login-card{
-  width:100%;max-width:400px;
-  background:rgba(255,255,255,.045);
-  backdrop-filter:blur(24px);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:36px 32px;
-  animation:up .5s cubic-bezier(.22,1,.36,1);
-}
+/* LOGIN */
+#pg-login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+.login-card{width:100%;max-width:400px;background:rgba(255,255,255,.045);backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:20px;padding:36px 32px;animation:up .5s cubic-bezier(.22,1,.36,1);}
 @keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-
 .lc-head{text-align:center;margin-bottom:28px}
-.logo-wrap{
-  width:76px;height:76px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold),#a07930);
-  padding:3px;margin:0 auto 14px;
-}
+.logo-wrap{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#a07930);padding:3px;margin:0 auto 14px;}
 .logo-wrap img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
-.logo-fb{
-  width:100%;height:100%;border-radius:50%;
-  background:var(--bg3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;font-weight:700;color:var(--gold);
-}
+.logo-fb{width:100%;height:100%;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--gold);}
 .lc-title{font-size:1.1rem;font-weight:700;color:#fff;line-height:1.35}
 .lc-sub{font-size:.8rem;color:var(--gold2);font-weight:600;margin-top:5px}
-
 .field{margin-bottom:14px}
-.field label{
-  display:block;font-size:.72rem;font-weight:600;
-  color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;
-}
-.field select,.field input{
-  width:100%;padding:12px 14px;
-  background:rgba(255,255,255,.06);
-  border:1px solid var(--border);
-  border-radius:var(--radius-sm);
-  color:#fff;font-size:.9rem;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  outline:none;transition:border-color .2s,background .2s;
-  -webkit-text-fill-color:#fff;
-  color-scheme:dark;
-}
-.field select:focus,.field input:focus{
-  border-color:var(--gold);background:rgba(255,255,255,.09);
-}
-.field select option{
-  background:#0c1628 !important;
-  color:#fff !important;
-  -webkit-text-fill-color:#fff;
-}
-.field input::placeholder{color:var(--muted)}
+.field label{display:block;font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.field select,.field input[type=text]{width:100%;padding:12px 14px;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;font-size:.9rem;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .2s,background .2s;color-scheme:dark;-webkit-text-fill-color:#fff;}
+.field select:focus,.field input[type=text]:focus{border-color:var(--gold);background:rgba(255,255,255,.09);}
+.field select option{background:#0c1628;color:#fff;}
+.field input[type=text]::placeholder{color:var(--muted)}
 .nisn-err{color:#f87171;font-size:.72rem;margin-top:4px;display:none}
-/* Custom dropdown */
+
+/* CUSTOM DROPDOWN */
 .cs-wrap{position:relative}
-.cs-btn{
-  width:100%;padding:12px 14px;
-  background:rgba(255,255,255,.06);
-  border:1px solid var(--border);
-  border-radius:var(--radius-sm);
-  color:#fff;font-size:.9rem;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  cursor:pointer;outline:none;
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-  text-align:left;transition:border-color .2s,background .2s;
-}
+.cs-btn{width:100%;padding:12px 14px;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;font-size:.9rem;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;outline:none;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;transition:border-color .2s,background .2s;}
 .cs-btn:focus,.cs-btn.open{border-color:var(--gold);background:rgba(255,255,255,.09)}
 .cs-btn svg{flex-shrink:0;opacity:.5;transition:transform .2s}
 .cs-btn.open svg{transform:rotate(180deg)}
-.cs-display{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cs-placeholder{color:rgba(255,255,255,.38)}
-.cs-panel{
-  position:absolute;top:calc(100% + 5px);left:0;right:0;
-  background:#0e1e38;border:1px solid var(--border2);
-  border-radius:var(--radius-sm);z-index:200;
-  box-shadow:0 12px 32px rgba(0,0,0,.5);
-  overflow:hidden;
-  animation:csDown .18s cubic-bezier(.22,1,.36,1);
-}
-@keyframes csDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.cs-search{
-  width:100%;padding:10px 14px;
-  background:rgba(255,255,255,.05);
-  border:none;border-bottom:1px solid var(--border);
-  color:#fff;font-size:.85rem;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  outline:none;
-}
+.cs-disp{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#fff;}
+.cs-ph{color:rgba(255,255,255,.38)}
+.cs-panel{position:absolute;top:calc(100% + 5px);left:0;right:0;background:#0e1e38;border:1px solid var(--border2);border-radius:var(--radius-sm);z-index:200;box-shadow:0 12px 32px rgba(0,0,0,.5);overflow:hidden;animation:csd .18s cubic-bezier(.22,1,.36,1);}
+@keyframes csd{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.cs-search{width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:none;border-bottom:1px solid var(--border);color:#fff;font-size:.85rem;font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 .cs-search::placeholder{color:rgba(255,255,255,.3)}
 .cs-list{max-height:210px;overflow-y:auto}
-.cs-opt{
-  padding:11px 14px;cursor:pointer;
-  color:#fff;font-size:.88rem;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  transition:background .12s;
-  border-left:2px solid transparent;
-}
+.cs-opt{padding:11px 14px;cursor:pointer;color:#fff;font-size:.88rem;font-family:'Plus Jakarta Sans',sans-serif;transition:background .12s;border-left:2px solid transparent;}
 .cs-opt:hover{background:rgba(200,168,75,.1);border-left-color:var(--gold)}
 .cs-opt.sel{background:rgba(200,168,75,.12);color:var(--gold2);border-left-color:var(--gold)}
 .cs-empty{padding:12px 14px;color:rgba(255,255,255,.3);font-size:.82rem;text-align:center}
 
-
-.btn-start{
-  width:100%;padding:14px;margin-top:6px;
-  background:linear-gradient(135deg,var(--gold) 0%,#a87c28 100%);
-  border:none;border-radius:var(--radius-sm);
-  color:#0c1628;font-size:.95rem;font-weight:700;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  cursor:pointer;transition:all .2s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
+.btn-start{width:100%;padding:14px;margin-top:6px;background:linear-gradient(135deg,var(--gold) 0%,#a87c28 100%);border:none;border-radius:var(--radius-sm);color:#0c1628;font-size:.95rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
 .btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,168,75,.3)}
-.btn-start:active{transform:translateY(0)}
-.btn-link{
-  width:100%;padding:9px;background:none;border:none;
-  color:var(--muted);font-size:.78rem;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  cursor:pointer;margin-top:4px;transition:color .2s;
-}
-.btn-link:hover{color:var(--muted2) !important;color:rgba(255,255,255,.7)}
+.btn-link{width:100%;padding:9px;background:none;border:none;color:var(--muted);font-size:.78rem;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;margin-top:4px;transition:color .2s;}
+.btn-link:hover{color:rgba(255,255,255,.7)}
 
-/* ══════════════════════════════════════════
-   EXAM LAYOUT — SIDEBAR + MAIN
-══════════════════════════════════════════ */
+/* EXAM LAYOUT */
 #pg-exam{display:flex;min-height:100vh}
-
-/* ─── SIDEBAR ─── */
-.sidebar{
-  width:var(--sidebar-w);
-  min-width:var(--sidebar-w);
-  position:fixed;top:0;left:0;bottom:0;
-  background:var(--bg2);
-  border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
-  overflow:hidden;
-  z-index:50;
-  transition:transform .3s cubic-bezier(.22,1,.36,1);
-}
-
-/* Sidebar header */
-.sb-head{
-  padding:18px 16px 14px;
-  border-bottom:1px solid var(--border);
-  flex-shrink:0;
-}
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);position:fixed;top:0;left:0;bottom:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;z-index:50;transition:transform .3s cubic-bezier(.22,1,.36,1);}
+.sb-head{padding:18px 16px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
 .sb-logo{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.sb-logo-img{
-  width:32px;height:32px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold),#a07930);
-  padding:2px;flex-shrink:0;
-}
+.sb-logo-img{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#a07930);padding:2px;flex-shrink:0;}
 .sb-logo-img img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
-.sb-logo-fb{
-  width:100%;height:100%;border-radius:50%;background:var(--bg3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;color:var(--gold);
-}
+.sb-logo-fb{width:100%;height:100%;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--gold);}
 .sb-school{font-size:.7rem;font-weight:700;color:var(--gold2);line-height:1.3}
 .sb-school span{display:block;font-size:.62rem;color:var(--muted);font-weight:400}
-
-/* Timer */
-.sb-timer{
-  background:rgba(239,68,68,.1);
-  border:1px solid rgba(239,68,68,.25);
-  border-radius:var(--radius-sm);
-  padding:10px 14px;
-  display:flex;align-items:center;gap:10px;
-}
-.sb-timer.warn{
-  background:rgba(239,68,68,.18);
-  border-color:rgba(239,68,68,.5);
-  animation:pulse .9s infinite;
-}
+.sb-timer{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:var(--radius-sm);padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.sb-timer.warn{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.5);animation:pulse .9s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.72}}
-.timer-icon{font-size:18px}
-.timer-time{
-  font-size:1.45rem;font-weight:700;
-  font-variant-numeric:tabular-nums;
-  color:#fca5a5;letter-spacing:.04em;
-}
+.timer-time{font-size:1.45rem;font-weight:700;font-variant-numeric:tabular-nums;color:#fca5a5;letter-spacing:.04em;}
 .timer-lbl{font-size:.65rem;color:rgba(252,165,165,.6);font-weight:500}
-
-/* Sidebar user info */
-.sb-user{
-  padding:10px 16px;
-  border-bottom:1px solid var(--border);
-  flex-shrink:0;
-}
+.sb-user{padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
 .sb-uname{font-size:.82rem;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sb-umeta{font-size:.7rem;color:var(--muted);margin-top:2px}
-
-/* Progress */
-.sb-progress{
-  padding:10px 16px 8px;
-  border-bottom:1px solid var(--border);
-  flex-shrink:0;
-}
+.sb-progress{padding:10px 16px 8px;border-bottom:1px solid var(--border);flex-shrink:0;}
 .sb-prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
 .sb-prog-lbl{font-size:.68rem;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
 .sb-prog-val{font-size:.72rem;font-weight:700;color:var(--gold2)}
 .prog-bar{height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:4px;transition:width .5s ease}
 .sb-stats{display:flex;gap:8px;margin-top:8px}
-.sb-stat{
-  flex:1;text-align:center;padding:5px 4px;
-  background:rgba(255,255,255,.04);border-radius:6px;
-  border:1px solid var(--border);
-}
+.sb-stat{flex:1;text-align:center;padding:5px 4px;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid var(--border);}
 .sb-stat-n{font-size:.95rem;font-weight:700}
-.sb-stat-n.g{color:var(--green)}
-.sb-stat-n.r{color:var(--red)}
-.sb-stat-n.a{color:var(--amber)}
+.sb-stat-n.g{color:var(--green)}.sb-stat-n.r{color:var(--red)}.sb-stat-n.a{color:var(--amber)}
 .sb-stat-l{font-size:.58rem;color:var(--muted);margin-top:1px}
-
-/* Question grid */
 .sb-nav{flex:1;overflow-y:auto;padding:10px 14px}
-.sb-nav-title{
-  font-size:.65rem;font-weight:700;color:var(--muted);
-  text-transform:uppercase;letter-spacing:.07em;
-  margin-bottom:8px;
-}
-.qgrid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:5px;
-}
-.qn{
-  aspect-ratio:1;border-radius:7px;
-  border:1.5px solid rgba(239,68,68,.3);
-  background:rgba(239,68,68,.1);
-  color:rgba(252,165,165,.8);
-  font-size:.72rem;font-weight:700;
-  cursor:pointer;transition:all .15s;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  position:relative;
-}
+.sb-nav-title{font-size:.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;}
+.qgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+.qn{aspect-ratio:1;border-radius:7px;border:1.5px solid rgba(239,68,68,.3);background:rgba(239,68,68,.1);color:rgba(252,165,165,.8);font-size:.72rem;font-weight:700;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;position:relative;}
 .qn:hover{transform:scale(1.15);z-index:2}
-.qn.done{
-  background:var(--green-bg);
-  border-color:var(--green-b);
-  color:#6ee7b7;
-}
-.qn.flag{
-  background:var(--amber-bg);
-  border-color:var(--amber-b);
-  color:#fcd34d;
-}
-.qn.flag::after{
-  content:'★';position:absolute;top:-3px;right:-3px;
-  font-size:8px;color:var(--amber);
-}
-.qn.cur{
-  box-shadow:0 0 0 2px var(--gold);
-  border-color:var(--gold);
-}
-
-/* Legend */
-.sb-legend{
-  padding:10px 16px;
-  border-top:1px solid var(--border);
-  display:flex;flex-wrap:wrap;gap:8px;
-  flex-shrink:0;
-}
+.qn.done{background:var(--green-bg);border-color:var(--green-b);color:#6ee7b7;}
+.qn.flag{background:var(--amber-bg);border-color:var(--amber-b);color:#fcd34d;}
+.qn.flag::after{content:'*';position:absolute;top:-2px;right:1px;font-size:9px;color:var(--amber);}
+.qn.cur{box-shadow:0 0 0 2px var(--gold);border-color:var(--gold);}
+.sb-legend{padding:10px 16px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;flex-shrink:0;}
 .leg{display:flex;align-items:center;gap:5px;font-size:.65rem;color:var(--muted)}
 .leg-dot{width:8px;height:8px;border-radius:3px;flex-shrink:0}
-.leg-dot.g{background:var(--green)}
-.leg-dot.r{background:var(--red)}
-.leg-dot.a{background:var(--amber)}
-
-/* Mobile sidebar toggle */
-.sb-toggle{
-  display:none;position:fixed;
-  top:14px;left:14px;z-index:60;
-  width:40px;height:40px;border-radius:10px;
-  background:var(--bg3);border:1px solid var(--border);
-  cursor:pointer;align-items:center;justify-content:center;
-  flex-direction:column;gap:4px;
-}
-.sb-toggle span{
-  width:18px;height:2px;background:var(--text);
-  border-radius:2px;transition:all .25s;display:block;
-}
-.sb-overlay{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.6);backdrop-filter:blur(3px);
-  z-index:40;
-}
-
-/* ─── MAIN CONTENT ─── */
-.main{
-  margin-left:var(--sidebar-w);
-  flex:1;min-height:100vh;
-  display:flex;flex-direction:column;
-}
-
-/* Top bar */
-.topbar{
-  position:sticky;top:0;z-index:30;
-  background:rgba(8,15,30,.85);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  padding:12px 24px;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;
-  flex-shrink:0;
-}
+.leg-dot.g{background:var(--green)}.leg-dot.r{background:var(--red)}.leg-dot.a{background:var(--amber)}
+.sb-toggle{display:none;position:fixed;top:14px;left:14px;z-index:60;width:40px;height:40px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:4px;}
+.sb-toggle span{width:18px;height:2px;background:var(--text);border-radius:2px;transition:all .25s;display:block;}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:40;}
+.main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;display:flex;flex-direction:column;}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(8,15,30,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;}
 .tb-left{display:flex;align-items:center;gap:12px}
-.tb-qnum{
-  font-size:.78rem;font-weight:700;
-  color:var(--gold);text-transform:uppercase;letter-spacing:.08em;
-}
-.tb-topic{
-  font-size:.7rem;font-weight:600;padding:3px 10px;
-  border-radius:99px;
-}
+.tb-qnum{font-size:.78rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;}
+.tb-topic{font-size:.7rem;font-weight:600;padding:3px 10px;border-radius:99px;}
 .tb-right{display:flex;align-items:center;gap:8px}
-.btn-flag{
-  display:flex;align-items:center;gap:6px;
-  padding:6px 12px;border-radius:var(--radius-sm);
-  border:1px solid var(--border);background:rgba(255,255,255,.04);
-  color:var(--muted);font-size:.75rem;font-weight:600;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  cursor:pointer;transition:all .2s;
-}
+.btn-flag{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--muted);font-size:.75rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;}
 .btn-flag:hover{border-color:var(--amber-b);color:var(--amber)}
-.btn-flag.flagged{
-  background:var(--amber-bg);border-color:var(--amber-b);color:var(--amber);
-}
-.kb-hint{
-  font-size:.65rem;color:var(--muted2);
-  display:flex;align-items:center;gap:4px;
-}
-.kbd{
-  background:rgba(255,255,255,.07);border:1px solid var(--border);
-  border-radius:4px;padding:1px 5px;font-size:.62rem;
-  font-family:'Plus Jakarta Sans',sans-serif;color:var(--muted);
-}
-
-/* Question area */
-.q-area{
-  flex:1;padding:28px 28px 16px;
-  max-width:780px;width:100%;
-  margin:0 auto;
-  display:flex;flex-direction:column;
-}
-
-.q-card{
-  background:rgba(255,255,255,.04);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:28px 32px;
-  margin-bottom:18px;
-  animation:qin .25s ease;
-}
+.btn-flag.flagged{background:var(--amber-bg);border-color:var(--amber-b);color:var(--amber);}
+.kb-hint{font-size:.65rem;color:var(--muted2);display:flex;align-items:center;gap:4px;}
+.kbd{background:rgba(255,255,255,.07);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-size:.62rem;color:var(--muted);}
+.q-area{flex:1;padding:28px 28px 16px;max-width:780px;width:100%;margin:0 auto;display:flex;flex-direction:column;}
+.q-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;margin-bottom:18px;animation:qin .25s ease;}
 @keyframes qin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
-.q-text{
-  font-family:'Amiri',serif;
-  direction:rtl;text-align:right;
-  font-size:1.22rem;line-height:2.15;
-  color:#fff;
-}
-
-/* Options */
+.q-text{font-family:'Amiri',serif;direction:rtl;text-align:right;font-size:1.22rem;line-height:2.15;color:#fff;}
 .options{display:flex;flex-direction:column;gap:9px}
-.opt{
-  display:flex;align-items:center;gap:14px;
-  padding:14px 18px;
-  background:rgba(255,255,255,.04);
-  border:1.5px solid rgba(255,255,255,.09);
-  border-radius:12px;cursor:pointer;
-  transition:all .18s cubic-bezier(.22,1,.36,1);
-  text-align:right;
-}
-.opt:hover{
-  background:rgba(255,255,255,.08);
-  border-color:rgba(200,168,75,.3);
-  transform:translateX(4px);
-}
-.opt.sel{
-  background:rgba(16,185,129,.12);
-  border-color:rgba(16,185,129,.45);
-}
-.opt.sel .opt-lbl{
-  background:var(--green);border-color:var(--green);color:#fff;
-}
-.opt-lbl{
-  width:34px;height:34px;border-radius:9px;flex-shrink:0;
-  background:rgba(255,255,255,.07);
-  border:1.5px solid rgba(255,255,255,.14);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Amiri',serif;font-size:.95rem;font-weight:700;
-  color:var(--muted);transition:all .18s;
-}
-.opt-text{
-  font-family:'Amiri',serif;
-  direction:rtl;font-size:1.05rem;
-  line-height:1.85;flex:1;color:var(--text);
-}
-
-/* Bottom controls */
-.exam-foot{
-  padding:16px 28px 24px;
-  max-width:780px;width:100%;margin:0 auto;
-  display:flex;justify-content:space-between;align-items:center;
-  gap:12px;
-}
-.btn-nav2{
-  display:flex;align-items:center;gap:8px;
-  padding:12px 20px;
-  background:rgba(255,255,255,.05);
-  border:1px solid var(--border);
-  border-radius:var(--radius-sm);
-  color:var(--text);font-size:.88rem;font-weight:600;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  cursor:pointer;transition:all .18s;
-}
+.opt{display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.09);border-radius:12px;cursor:pointer;transition:all .18s cubic-bezier(.22,1,.36,1);text-align:right;}
+.opt:hover{background:rgba(255,255,255,.08);border-color:rgba(200,168,75,.3);transform:translateX(4px);}
+.opt.sel{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.45);}
+.opt.sel .opt-lbl{background:var(--green);border-color:var(--green);color:#fff;}
+.opt-lbl{width:34px;height:34px;border-radius:9px;flex-shrink:0;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-family:'Amiri',serif;font-size:.95rem;font-weight:700;color:var(--muted);transition:all .18s;}
+.opt-text{font-family:'Amiri',serif;direction:rtl;font-size:1.05rem;line-height:1.85;flex:1;color:var(--text);}
+.exam-foot{padding:16px 28px 24px;max-width:780px;width:100%;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.btn-nav2{display:flex;align-items:center;gap:8px;padding:12px 20px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:.88rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .18s;}
 .btn-nav2:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
-.btn-submit2{
-  display:flex;align-items:center;gap:8px;
-  padding:12px 28px;
-  background:linear-gradient(135deg,#059669,#10b981);
-  border:none;border-radius:var(--radius-sm);
-  color:#fff;font-size:.9rem;font-weight:700;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  cursor:pointer;transition:all .2s;
-  animation:glow 2s ease-in-out infinite;
-}
+.btn-submit2{display:flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,#059669,#10b981);border:none;border-radius:var(--radius-sm);color:#fff;font-size:.9rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;animation:glow 2s ease-in-out infinite;}
 @keyframes glow{0%,100%{box-shadow:0 0 0 rgba(16,185,129,0)}50%{box-shadow:0 0 18px rgba(16,185,129,.35)}}
 .btn-submit2:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(16,185,129,.35)}
 
-/* ══════════════════════════════════════════
-   RESULT PAGE
-══════════════════════════════════════════ */
-#pg-result{
-  min-height:100vh;padding:32px 24px;
-  display:flex;align-items:flex-start;justify-content:center;
-}
+/* RESULT */
+#pg-result{min-height:100vh;padding:32px 24px;display:flex;align-items:flex-start;justify-content:center;}
 .result-wrap{width:100%;max-width:680px;animation:up .4s ease}
-
-.score-card{
-  background:rgba(255,255,255,.04);
-  border:1px solid var(--border);
-  border-radius:20px;padding:32px 24px;
-  text-align:center;margin-bottom:20px;
-}
+.score-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:20px;padding:32px 24px;text-align:center;margin-bottom:20px;}
 .score-ring{width:130px;height:130px;margin:0 auto 16px;position:relative}
 .score-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .sr-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:9}
 .sr-fg{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)}
-.score-num{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:2.2rem;font-weight:800;color:#fff;
-}
+.score-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.2rem;font-weight:800;color:#fff;}
 .score-grade{font-size:1.4rem;font-weight:700;margin-bottom:4px}
 .score-msg{font-size:.85rem;color:var(--muted)}
-
 .res-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
-.rs-box{
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  border-radius:12px;padding:14px;text-align:center;
-}
+.rs-box{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;}
 .rs-n{font-size:1.8rem;font-weight:800}
-.rs-n.g{color:#34d399}
-.rs-n.r{color:#f87171}
-.rs-n.b{color:#60a5fa}
+.rs-n.g{color:#34d399}.rs-n.r{color:#f87171}.rs-n.b{color:#60a5fa}
 .rs-l{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
-
-/* Topic breakdown */
 .topic-section{margin-bottom:18px}
-.section-title{
-  font-size:.72rem;font-weight:700;color:var(--muted);
-  text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;
-}
+.section-title{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;}
 .topic-bars{display:flex;flex-direction:column;gap:8px}
 .tbar-row{display:flex;align-items:center;gap:10px}
 .tbar-name{font-size:.8rem;font-weight:600;min-width:120px;text-align:right;font-family:'Amiri',serif;direction:rtl}
 .tbar-track{flex:1;height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
 .tbar-fill{height:100%;border-radius:4px;transition:width 1s ease .3s}
 .tbar-val{font-size:.75rem;font-weight:700;min-width:36px;text-align:right}
-
-/* Info grid */
 .info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:18px}
-.ig-item{
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  border-radius:10px;padding:11px 14px;
-}
+.ig-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:11px 14px;}
 .ig-k{font-size:.67rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 .ig-v{font-size:.88rem;font-weight:600;margin-top:3px}
-
-/* Analysis */
 .ana-list{display:flex;flex-direction:column;gap:7px;max-height:360px;overflow-y:auto;padding-right:4px}
-.ana-item{
-  padding:12px 14px;border-radius:10px;border:1px solid;
-}
+.ana-item{padding:12px 14px;border-radius:10px;border:1px solid;}
 .ana-item.ok{background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.2)}
 .ana-item.bad{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.2)}
 .ana-row{display:flex;gap:10px;align-items:flex-start}
 .ana-ic{font-size:.95rem;flex-shrink:0;margin-top:3px}
-.ana-q{
-  font-family:'Amiri',serif;direction:rtl;text-align:right;
-  font-size:.92rem;line-height:1.75;
-}
-.ana-a{
-  font-family:'Amiri',serif;direction:rtl;text-align:right;
-  font-size:.75rem;margin-top:3px;
-}
-.ana-a.ok{color:#6ee7b7}
-.ana-a.bad{color:#f87171}
-
-.btn-back{
-  width:100%;padding:14px;margin-top:20px;
-  background:linear-gradient(135deg,#1d4ed8,#2563eb);
-  border:none;border-radius:var(--radius-sm);color:#fff;
-  font-size:.95rem;font-weight:700;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  cursor:pointer;transition:all .2s;
-}
+.ana-q{font-family:'Amiri',serif;direction:rtl;text-align:right;font-size:.92rem;line-height:1.75;}
+.ana-a{font-family:'Amiri',serif;direction:rtl;text-align:right;font-size:.75rem;margin-top:3px;}
+.ana-a.ok{color:#6ee7b7}.ana-a.bad{color:#f87171}
+.btn-back{width:100%;padding:14px;margin-top:20px;background:linear-gradient(135deg,#1d4ed8,#2563eb);border:none;border-radius:var(--radius-sm);color:#fff;font-size:.95rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;}
 .btn-back:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,99,235,.3)}
 
-/* ══════════════════════════════════════════
-   ADMIN PAGE
-══════════════════════════════════════════ */
-#pg-admin{
-  min-height:100vh;padding:28px 24px;
-}
+/* ADMIN */
+#pg-admin{min-height:100vh;padding:28px 24px;}
 .admin-wrap{max-width:900px;margin:0 auto;animation:up .4s ease}
 .admin-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .admin-title{font-size:1.25rem;font-weight:700;color:#fff}
 .tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
-.tab{
-  padding:9px 18px;border-radius:var(--radius-sm);
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.04);
-  color:var(--muted);font-size:.8rem;font-weight:600;
-  font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .18s;
-}
-.tab.act{
-  background:rgba(200,168,75,.12);
-  border-color:var(--border2);color:var(--gold2);
-}
-.q-prev{
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  border-radius:12px;padding:16px;margin-bottom:8px;
-}
+.tab{padding:9px 18px;border-radius:var(--radius-sm);border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--muted);font-size:.8rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .18s;}
+.tab.act{background:rgba(200,168,75,.12);border-color:var(--border2);color:var(--gold2);}
+.q-prev{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:8px;}
 .qp-num{font-size:.7rem;font-weight:700;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
-.qp-q{
-  font-family:'Amiri',serif;direction:rtl;text-align:right;
-  font-size:1rem;line-height:1.9;margin-bottom:10px;
-}
+.qp-q{font-family:'Amiri',serif;direction:rtl;text-align:right;font-size:1rem;line-height:1.9;margin-bottom:10px;}
 .qp-opts{display:flex;flex-direction:column;gap:4px}
-.qp-opt{
-  font-family:'Amiri',serif;direction:rtl;
-  font-size:.88rem;padding:5px 10px;border-radius:6px;
-}
-.qp-opt.c{background:rgba(16,185,129,.12);color:#6ee7b7}
-.qp-opt.w{color:var(--muted)}
-
-.res-avg{
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  border-radius:12px;padding:18px;margin-bottom:14px;
-  display:flex;align-items:center;gap:16px;
-}
+.qp-opt{font-family:'Amiri',serif;direction:rtl;font-size:.88rem;padding:5px 10px;border-radius:6px;}
+.qp-opt.c{background:rgba(16,185,129,.12);color:#6ee7b7}.qp-opt.w{color:var(--muted)}
+.res-avg{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px;display:flex;align-items:center;gap:16px;}
 .res-avg-n{font-size:2.8rem;font-weight:800;color:var(--gold2)}
-.res-avg-l{font-size:.8rem;color:var(--muted)}
-.res-avg-c{font-size:.75rem;color:var(--muted);margin-top:3px}
-.res-row{
-  display:flex;align-items:center;justify-content:space-between;
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  border-radius:10px;padding:12px 16px;margin-bottom:7px;
-}
-.rr-name{font-size:.88rem;font-weight:600}
-.rr-meta{font-size:.72rem;color:var(--muted);margin-top:2px}
-.rr-score{font-size:1.3rem;font-weight:800}
-.rr-score.p{color:#34d399}
-.rr-score.f{color:#f87171}
+.res-avg-l{font-size:.8rem;color:var(--muted)}.res-avg-c{font-size:.75rem;color:var(--muted);margin-top:3px}
+.res-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:7px;}
+.rr-name{font-size:.88rem;font-weight:600}.rr-meta{font-size:.72rem;color:var(--muted);margin-top:2px}
+.rr-score{font-size:1.3rem;font-weight:800}.rr-score.p{color:#34d399}.rr-score.f{color:#f87171}
 
-/* ══════════════════════════════════════════
-   MODALS
-══════════════════════════════════════════ */
-.modal-bg{
-  position:fixed;inset:0;z-index:100;
-  background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
-  display:flex;align-items:center;justify-content:center;padding:20px;
-}
-.modal{
-  background:var(--bg3);border:1px solid var(--border);
-  border-radius:18px;padding:28px;width:100%;max-width:380px;
-  animation:up .25s cubic-bezier(.22,1,.36,1);
-}
+/* MODALS */
+.modal-bg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal{background:var(--bg3);border:1px solid var(--border);border-radius:18px;padding:28px;width:100%;max-width:380px;animation:up .25s cubic-bezier(.22,1,.36,1);}
 .modal-title{font-size:1.05rem;font-weight:700;margin-bottom:8px}
 .modal-body{font-size:.88rem;color:var(--muted);margin-bottom:20px;line-height:1.65}
 .modal-acts{display:flex;gap:10px}
-.btn-can{
-  flex:1;padding:12px;background:rgba(255,255,255,.06);
-  border:1px solid var(--border);border-radius:var(--radius-sm);
-  color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;
-  cursor:pointer;transition:all .18s;font-size:.88rem;
-}
+.btn-can{flex:1;padding:12px;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .18s;font-size:.88rem;}
 .btn-can:hover{background:rgba(255,255,255,.1)}
-.btn-ok{
-  flex:1;padding:12px;background:linear-gradient(135deg,#059669,#10b981);
-  border:none;border-radius:var(--radius-sm);color:#fff;
-  font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;
-  cursor:pointer;transition:all .18s;font-size:.88rem;
-}
+.btn-ok{flex:1;padding:12px;background:linear-gradient(135deg,#059669,#10b981);border:none;border-radius:var(--radius-sm);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;cursor:pointer;transition:all .18s;font-size:.88rem;}
 .btn-ok:hover{transform:translateY(-1px)}
 .modal-err{color:#f87171;font-size:.78rem;margin-bottom:12px;display:none}
-
-/* Summary list in submit modal */
 .sum-chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
-.sum-chip{
-  padding:3px 9px;border-radius:6px;font-size:.75rem;font-weight:700;
-}
+.sum-chip{padding:3px 9px;border-radius:6px;font-size:.75rem;font-weight:700;}
 .sum-chip.un{background:var(--red-bg);color:#fca5a5;border:1px solid var(--red-b)}
 .sum-chip.fl{background:var(--amber-bg);color:#fcd34d;border:1px solid var(--amber-b)}
 .sum-section{font-size:.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
 
-/* ══════════════════════════════════════════
-   TOAST
-══════════════════════════════════════════ */
-.toast{
-  position:fixed;bottom:24px;left:50%;
-  transform:translateX(-50%) translateY(80px);
-  background:var(--bg4);border:1px solid var(--border);
-  border-radius:10px;padding:11px 22px;
-  color:#fff;font-size:.85rem;font-weight:500;
-  z-index:200;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
-  white-space:nowrap;pointer-events:none;
-}
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:11px 22px;color:#fff;font-size:.85rem;font-weight:500;z-index:200;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
-/* ══════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════ */
+/* RESPONSIVE */
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%)}
   .sidebar.open{transform:translateX(0)}
@@ -754,7 +252,6 @@ body::after{
 </head>
 <body>
 
-<!-- ════════════ LOGIN ════════════ -->
 <div id="pg-login" class="page">
   <div class="login-card">
     <div class="lc-head">
@@ -771,11 +268,12 @@ body::after{
       <input type="hidden" id="inp-name">
       <div class="cs-wrap" id="cs-wrap">
         <button type="button" class="cs-btn" id="cs-btn" onclick="csToggle()">
-          <span class="cs-display cs-placeholder" id="cs-display">-- Pilih Nama --</span>
+          <span class="cs-disp cs-ph" id="cs-disp">-- Pilih Nama --</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
         </button>
         <div class="cs-panel hidden" id="cs-panel">
-          <input class="cs-search" type="text" placeholder="🔍 Cari nama santri..." oninput="csFilter(this.value)" autocomplete="off">
+          <input class="cs-search" id="cs-search" type="text"
+            placeholder="Cari nama santri..." autocomplete="off">
           <div class="cs-list" id="cs-list"></div>
         </div>
       </div>
@@ -783,7 +281,7 @@ body::after{
     <div class="field">
       <label>NISN</label>
       <input id="inp-nisn" type="text" placeholder="Masukkan NISN (angka saja)">
-      <div id="nisn-err" class="nisn-err">⚠ NISN harus berupa angka</div>
+      <div id="nisn-err" class="nisn-err">Hanya angka</div>
     </div>
     <div class="field">
       <label>Kelas</label>
@@ -805,18 +303,10 @@ body::after{
   </div>
 </div>
 
-<!-- ════════════ EXAM ════════════ -->
 <div id="pg-exam" class="page hidden">
-
-  <!-- Mobile sidebar toggle -->
-  <button class="sb-toggle" id="sb-toggle" onclick="toggleSidebar()">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="sb-toggle" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
   <div class="sb-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
-
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
-
     <div class="sb-head">
       <div class="sb-logo">
         <div class="sb-logo-img">
@@ -833,12 +323,10 @@ body::after{
         </div>
       </div>
     </div>
-
     <div class="sb-user">
-      <div class="sb-uname" id="sb-uname">—</div>
-      <div class="sb-umeta" id="sb-umeta">—</div>
+      <div class="sb-uname" id="sb-uname">--</div>
+      <div class="sb-umeta" id="sb-umeta">--</div>
     </div>
-
     <div class="sb-progress">
       <div class="sb-prog-row">
         <span class="sb-prog-lbl">Progress</span>
@@ -846,37 +334,22 @@ body::after{
       </div>
       <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
       <div class="sb-stats">
-        <div class="sb-stat">
-          <div class="sb-stat-n g" id="st-done">0</div>
-          <div class="sb-stat-l">Dijawab</div>
-        </div>
-        <div class="sb-stat">
-          <div class="sb-stat-n r" id="st-left">50</div>
-          <div class="sb-stat-l">Belum</div>
-        </div>
-        <div class="sb-stat">
-          <div class="sb-stat-n a" id="st-flag">0</div>
-          <div class="sb-stat-l">Ditandai</div>
-        </div>
+        <div class="sb-stat"><div class="sb-stat-n g" id="st-done">0</div><div class="sb-stat-l">Dijawab</div></div>
+        <div class="sb-stat"><div class="sb-stat-n r" id="st-left">50</div><div class="sb-stat-l">Belum</div></div>
+        <div class="sb-stat"><div class="sb-stat-n a" id="st-flag">0</div><div class="sb-stat-l">Ditandai</div></div>
       </div>
     </div>
-
     <div class="sb-nav">
       <div class="sb-nav-title">Nomor Soal</div>
       <div class="qgrid" id="qgrid"></div>
     </div>
-
     <div class="sb-legend">
       <div class="leg"><div class="leg-dot g"></div>Dijawab</div>
       <div class="leg"><div class="leg-dot r"></div>Belum</div>
       <div class="leg"><div class="leg-dot a"></div>Ditandai</div>
     </div>
-
   </aside>
-
-  <!-- MAIN -->
   <div class="main">
-
     <div class="topbar">
       <div class="tb-left">
         <span class="tb-qnum" id="tb-qnum">Soal 1 / 50</span>
@@ -884,43 +357,31 @@ body::after{
       </div>
       <div class="tb-right">
         <button class="btn-flag" id="btn-flag" onclick="toggleFlag()">
-          <span id="flag-icon">☆</span>
-          <span id="flag-txt">Tandai</span>
+          <span id="flag-icon">☆</span><span id="flag-txt">Tandai</span>
         </button>
         <div class="kb-hint">
-          <span class="kbd">1-4</span> pilih &nbsp;
-          <span class="kbd">← →</span> navigasi &nbsp;
-          <span class="kbd">F</span> tandai
+          <span class="kbd">1-4</span>pilih&nbsp;<span class="kbd">←→</span>nav&nbsp;<span class="kbd">F</span>tandai
         </div>
       </div>
     </div>
-
     <div class="q-area">
-      <div class="q-card" id="q-card">
-        <div id="q-body"></div>
-      </div>
+      <div class="q-card" id="q-card"><div id="q-body"></div></div>
       <div class="options" id="options"></div>
     </div>
-
     <div class="exam-foot">
       <button class="btn-nav2" onclick="goPrev()">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
-        Sebelumnya
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>Sebelumnya
       </button>
       <button class="btn-submit2 hidden" id="btn-submit" onclick="askSubmit()">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-        Kumpulkan Jawaban
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Kumpulkan
       </button>
       <button class="btn-nav2" onclick="goNext()">
-        Selanjutnya
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        Selanjutnya<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
       </button>
     </div>
-
   </div>
 </div>
 
-<!-- ════════════ RESULT ════════════ -->
 <div id="pg-result" class="page hidden">
   <div class="result-wrap">
     <div class="score-card">
@@ -929,38 +390,32 @@ body::after{
           <circle class="sr-bg" cx="65" cy="65" r="56"/>
           <circle class="sr-fg" id="sr-arc" cx="65" cy="65" r="56" stroke-dasharray="351.9" stroke-dashoffset="351.9"/>
         </svg>
-        <div class="score-num" id="r-num">—</div>
+        <div class="score-num" id="r-num">--</div>
       </div>
       <div class="score-grade" id="r-grade"></div>
       <div class="score-msg" id="r-msg"></div>
     </div>
-
     <div class="res-stats">
-      <div class="rs-box"><div class="rs-n g" id="r-correct">—</div><div class="rs-l">Benar</div></div>
-      <div class="rs-box"><div class="rs-n r" id="r-wrong">—</div><div class="rs-l">Salah</div></div>
+      <div class="rs-box"><div class="rs-n g" id="r-correct">-</div><div class="rs-l">Benar</div></div>
+      <div class="rs-box"><div class="rs-n r" id="r-wrong">-</div><div class="rs-l">Salah</div></div>
       <div class="rs-box"><div class="rs-n b">50</div><div class="rs-l">Soal</div></div>
     </div>
-
     <div class="info-grid" id="r-info"></div>
-
     <div class="topic-section">
       <div class="section-title">Nilai per Topik</div>
       <div class="topic-bars" id="r-topics"></div>
     </div>
-
     <div class="section-title">Analisis Jawaban</div>
     <div class="ana-list" id="r-ana"></div>
-
     <button class="btn-back" onclick="backHome()">Kembali ke Beranda</button>
   </div>
 </div>
 
-<!-- ════════════ ADMIN ════════════ -->
 <div id="pg-admin" class="page hidden">
   <div class="admin-wrap">
     <div class="admin-hdr">
-      <div class="admin-title">🛡 Panel Admin</div>
-      <button class="btn-nav2" onclick="backHome()">← Kembali</button>
+      <div class="admin-title">Panel Admin</div>
+      <button class="btn-nav2" onclick="backHome()">Kembali</button>
     </div>
     <div class="tabs">
       <button class="tab act" id="tab-q" onclick="adminTab('q')">Preview Soal</button>
@@ -970,15 +425,12 @@ body::after{
   </div>
 </div>
 
-<!-- ════════════ MODALS ════════════ -->
-
-<!-- Admin login -->
 <div id="modal-admin" class="modal-bg hidden">
   <div class="modal">
-    <div class="modal-title">🔐 Login Admin</div>
+    <div class="modal-title">Login Admin</div>
     <div class="field">
       <label>Password</label>
-      <input id="admin-pw" type="password" placeholder="Masukkan password"
+      <input id="admin-pw" type="password" placeholder="Password"
         onkeydown="if(event.key==='Enter')doAdminLogin()">
     </div>
     <div class="modal-err" id="admin-err">Password salah!</div>
@@ -989,121 +441,116 @@ body::after{
   </div>
 </div>
 
-<!-- Submit summary -->
 <div id="modal-submit" class="modal-bg hidden">
   <div class="modal" style="max-width:440px">
-    <div class="modal-title">📋 Ringkasan Ujian</div>
+    <div class="modal-title">Ringkasan Ujian</div>
     <div id="submit-body" class="modal-body"></div>
     <div class="modal-acts">
       <button class="btn-can" onclick="hide('modal-submit')">Periksa Lagi</button>
-      <button class="btn-ok" id="btn-ok-submit" onclick="doFinish()">Kumpulkan</button>
+      <button class="btn-ok" onclick="doFinish()">Kumpulkan</button>
     </div>
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast" class="toast"></div>
 
 <script>
-/* ══════════════════════════════════════════
-   DATA
-══════════════════════════════════════════ */
-const STUDENTS = ["AL ATALLAH DEDAISH JUNIOR","BISMA DZAKY WAHYU SATRIO","DAR ARKAN TAJUSA SULANJANA","FACHRIZAL ADITYA RIZQI RAMADHAN","FARRAND FADHILAH FAISOL","FATIH AFZALURAHMAN RAHTOMO","FAUZAAN ADITYA NUGRAHA","HAMMAD RIFAI","IQBAL ATHAR PATRIA LUKMAN","JIBRIL AESAR AULAYAIN","MAFIS MALIK","MUH REHAN FADILAH","MUHAMMAD ALIF ALFAZA","MUHAMMAD AMMAAR ZIYAAD","MUHAMMAD DIHYAH HARAHAP","MUHAMMAD FAJRIL FIRDAUS","MUHAMMAD GHAZZA AL GHIFFARI","MUHAMMAD HAFIZH NAWWAF","MUHAMMAD HAMZAH","MUHAMMAD IZZA IBRAHIM","MUHAMMAD KHALIF ABDUL AZIZ","MUHAMMAD SALMAN AL ASYAH","RAFIF AHNAF NASUTION","YAHYA EL YASIN","ZIYYAD ABBEY POHAN","ZUHDI FADHLURRAHMAN HAAJ"];
-
-const ADMIN_PASS = "TryOut1";
-const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzF7hnIe7_im_191NtMdAN3obFL3RNr_Oy3ui-FODRAzL1nHxdGJ9u1f1G9m6BNId9cNQ/exec";
-
-const TOPIC_STYLE = {
-  'عقيدة':         {bg:'rgba(139,92,246,.14)',b:'rgba(139,92,246,.35)',t:'#c4b5fd',bar:'#8b5cf6'},
-  'فقه':           {bg:'rgba(16,185,129,.14)',b:'rgba(16,185,129,.35)',t:'#6ee7b7',bar:'#10b981'},
-  'علوم القرآن':   {bg:'rgba(59,130,246,.14)',b:'rgba(59,130,246,.35)',t:'#93c5fd',bar:'#3b82f6'},
-  'علوم الحديث':   {bg:'rgba(245,158,11,.14)',b:'rgba(245,158,11,.35)',t:'#fcd34d',bar:'#f59e0b'},
-  'أصول الفقه':    {bg:'rgba(249,115,22,.14)',b:'rgba(249,115,22,.35)',t:'#fdba74',bar:'#f97316'},
-  'السيرة النبوية':{bg:'rgba(34,197,94,.14)',b:'rgba(34,197,94,.35)',t:'#86efac',bar:'#22c55e'},
-  'لغة عربية':     {bg:'rgba(236,72,153,.14)',b:'rgba(236,72,153,.35)',t:'#f9a8d4',bar:'#ec4899'},
-};
-
-const QS = [
-  {q:"يُعدّ إجماع الصحابة رضي الله عنهم في العقيدة كإجماعهم أن الله في السماء مستوٍ على عرشه:",o:["حجة يجب الأخذ بها","ليس حجة ولا يجوز الاحتجاج به","يخيَّر المسلم بالعمل به","لا يصح شيء مما سبق"],a:0,t:"عقيدة"},
-  {q:"مقتضى شهادة أن محمداً رسول الله ﷺ:",o:["الاعتراف بأنه مرسل من عند الله","طاعته فيما أمر وتصديقه فيما أخبر واجتناب ما نهى عنه وزجر","الصلاة والسلام عليه","جميع ما سبق"],a:3,t:"عقيدة"},
-  {q:"من جعل بينه وبين الله وسائط يدعوهم ويسألهم الشفاعة ويتوكل عليهم فهذا يُعدّ:",o:["معصية من المعاصي","ناقضاً من نواقض الإسلام","مخالفة لسنة النبي ﷺ","جائزاً"],a:1,t:"عقيدة"},
-  {q:"تُعتبر عبادة الصلاة وتلاوة القرآن من أنواع العبادة:",o:["الفعلية","القلبية","القولية","جميع ما ذكر"],a:2,t:"عقيدة"},
-  {q:"المراد من الولاء والبراء في الإسلام:",o:["تولي وحب المسلمين والموحدين والبراءة والبغض من الشرك والمشركين","لا إله إلا الله محمد رسول الله","إقامة الصلح بين المسلمين والبراءة من تفرقهم","جميع ما سبق"],a:0,t:"عقيدة"},
-  {q:"المراد بالتوحيد عند علماء السلف وعامة الخلف:",o:["الإقرار بأن الله وحده هو الخالق للعالم","إفراد الله بالخلق والتدبير","إفراد الله تعالى بجميع أنواع العبادة","التوكل على الله"],a:2,t:"عقيدة"},
-  {q:"تعريف توحيد الأسماء والصفات:",o:["إثبات ما أثبته الله لنفسه أو أثبته له رسوله من صفات الكمال من غير تحريف ولا تمثيل ولا تشبيه ولا تعطيل","إفراد الله تعالى بجميع أنواع العبادة","الإقرار بأن الله هو المدبر المحيي","إثبات الأسماء والصفات مطلقاً"],a:0,t:"عقيدة"},
-  {q:"الأسباب التي أدّت إلى ظهور البدع منها:",o:["الجهل بأحكام الدين","التشبه بالكفار","اتباع الهوى","جميع ما ذكر"],a:3,t:"عقيدة"},
-  {q:"حكم الطواف بالقبور تقرباً إلى أصحابها:",o:["كفر صراح","بدعة","محرّم","مكروه"],a:0,t:"عقيدة"},
-  {q:"طلب الغوث والمدد من الأموات يُعدّ:",o:["بدعة بالاتفاق","محرّم بالاتفاق","جائز بالاتفاق","محرّم بالإجماع"],a:1,t:"عقيدة"},
-  {q:"أول هذه التفاسير تأليفاً وأهمها هو:",o:["تفسير الرازي","تفسير الطبري","تفسير ابن كثير","لا شيء مما ذكر"],a:1,t:"علوم القرآن"},
-  {q:"أقوى أنواع التفسير هو:",o:["التفسير الإشاري","التفسير بالرأي","التفسير بالمأثور","التفسير الموضوعي"],a:2,t:"علوم القرآن"},
-  {q:"أول هذه السور نزولاً هي:",o:["سورة البقرة","سورة المائدة","سورة المدثر","لا شيء مما ذكر"],a:3,t:"علوم القرآن"},
-  {q:"أشهر المفسرين من الصحابة هو:",o:["أبو ذر","خالد بن الوليد","عبد الله بن مسعود","لا شيء مما ذكر"],a:3,t:"علوم القرآن"},
-  {q:"أول ما جُمع القرآن كان في:",o:["حياة النبي ﷺ","في خلافة أبي بكر","في خلافة عمر بن عبد العزيز","لا شيء مما ذكر"],a:1,t:"علوم القرآن"},
-  {q:"السنة في اللغة هي:",o:["الطريقة والسيرة","العلم","الفهم","العلامة"],a:0,t:"علوم الحديث"},
-  {q:"شرح الإمام النووي في كتابه المنهاج:",o:["صحيح البخاري","صحيح مسلم","سنن أبي داود","سنن ابن ماجه"],a:1,t:"علوم الحديث"},
-  {q:"أوسع شرح لصحيح البخاري:",o:["المجتبى","المنهاج","فتح الباري","اللؤلؤ والمرجان"],a:2,t:"علوم الحديث"},
-  {q:'معنى الأعقاب في قوله ﷺ "ويل للأعقاب من النار":',o:["مقدم القدم","مؤخرة القدم","وسط القدم","أعلى القدم"],a:1,t:"علوم الحديث"},
-  {q:"من السبعة الذين يظلهم الله في ظله يوم القيامة:",o:["الإمام العادل","شاب نشأ في طاعة الله","المتحابان في الله","جميع ما سبق"],a:3,t:"علوم الحديث"},
-  {q:"أول غزوة غزاها رسول الله صلى الله عليه وسلم غزوة:",o:["أحد","الخندق","بدر","الحديبية"],a:2,t:"السيرة النبوية"},
-  {q:"الخلفاء الراشدون هم:",o:["أبو بكر وعمر","عثمان وطلحة","عثمان وعلي","مجموع أ، ج"],a:3,t:"السيرة النبوية"},
-  {q:"أصح كتاب في الحديث:",o:["الموطأ","صحيح مسلم","صحيح البخاري","صحيح ابن حبان"],a:2,t:"علوم الحديث"},
-  {q:"ألف الإمام أحمد كتاباً في الحديث يعد من أهم كتب الحديث وهو:",o:["الموطأ","الصحيح","السنن","المسند"],a:3,t:"علوم الحديث"},
-  {q:"يحتج بالحديث النبوي إذا كان:",o:["حسناً","صحيحاً","منقطعاً","مجموع أ، ب"],a:3,t:"علوم الحديث"},
-  {q:"من كتب الفقه المعتمدة في المذهب الشافعي:",o:["المدونة للإمام سحنون","الهداية للمرغناي","الروض المربع","منهاج الطالبين للنووي"],a:3,t:"فقه"},
-  {q:"إذا تغير الماء بشيء نجس لم تصح الطهارة به:",o:["في مذهب الشافعية خلافاً للجمهور","في مذهب الجمهور خلافاً للشافعية","إجماعاً","لا شيء مما ذكر"],a:2,t:"فقه"},
-  {q:"من موجبات الغسل:",o:["النوم الثقيل","من رأى أنه يجامع ولو لم يجد منياً","من جامع امرأته حتى خرج منه مني","لا شيء مما ذكر"],a:2,t:"فقه"},
-  {q:"من لم يجد الماء للطهارة أياماً كثيرة فحكمه أن:",o:["يترك الصلاة حتى يجد الماء","يتيمم وصلاته صحيحة","يتيمم ويصلي لكنه يعيد ما صلى بالتيمم حين يجد الماء","لا شيء مما ذكر"],a:1,t:"فقه"},
-  {q:"من نام عن صلاة حتى خرج وقتها:",o:["لم يصلها لأنه فات وقتها","يندب له أن يصليها عند قيامه من النوم","يجب عليه أن يصليها عند قيامه من نومه","لا شيء مما ذكر"],a:2,t:"فقه"},
-  {q:"من ترك ركعة من الصبح سهوًا حتى سلم فإن حكمه هو أن:",o:["صلاته صحيحة ولا يلزمه عمل","صلاته باطلة ولا يمكنه إصلاحها","يأتي بركعة ويسجد للسهو","يكفيه أن يسجد سجدتين بعد السلام"],a:2,t:"فقه"},
-  {q:"نصاب الزكاة في الذهب هو:",o:["دينارين من الذهب","85 غراماً","200 دينار ذهباً","لا شيء مما ذكر"],a:1,t:"فقه"},
-  {q:"من مفسدات الصوم:",o:["قبلة الرجل امرأته","النوم الطويل","الأكل عمدًا","لا شيء مما ذكر"],a:2,t:"فقه"},
-  {q:"إذا حاضت المرأة في نهار رمضان فحكمها:",o:["أن تواصل صومها","أن تفطر ولا قضاء عليها","أن تفطر وتقضي ما أفطرته من أيام بعد رمضان","لا شيء مما ذكر"],a:2,t:"فقه"},
-  {q:"يعتبر الحج فاسداً فساداً لا يجبر بدم إذا:",o:["تطيب الحاج أثناء إحرامه","إذا لم يقف بعرفة","إذا عجز عن طواف الوداع بعد أن طاف طواف الإفاضة","لا شيء مما ذكر"],a:1,t:"فقه"},
-  {q:"أول كتاب ألف في أصول الفقه هو:",o:["المستصفى","روضة الناظر","الرسالة","الورقات"],a:2,t:"أصول الفقه"},
-  {q:"من أهم الأحكام الوضعية:",o:["الواجب","الشرط","الجائز","المندوب"],a:1,t:"أصول الفقه"},
-  {q:"أحوج الناس لمعرفة أصول الفقه هو:",o:["المفتي","المحدث","النحوي","الطبيب"],a:0,t:"أصول الفقه"},
-  {q:"من أهم أبواب أصول الفقه:",o:["العموم","الإجارة","الحدود","لا شيء مما ذكر"],a:0,t:"أصول الفقه"},
-  {q:"قاعدة: الضرر يزال — قاعدة من قواعد:",o:["مصطلح الحديث","النحو","الفقه","لا شيء مما ذكر"],a:2,t:"أصول الفقه"},
-  {q:"علم يفهم به كتاب الله تعالى...، هو:",o:["التفسير","الوحي","أسباب النزول","علوم القرآن"],a:0,t:"علوم القرآن"},
-  {q:"علم يعرف به كيفية النطق بالكلمات القرآنية، وطريق أدائها اتفاقاً أو اختلافاً، مع عزو كل وجه لناقله، هو:",o:["الأحرف السبعة","المكي والمدني","علم التجويد","القراءات القرآنية"],a:3,t:"علوم القرآن"},
-  {q:"من ميزات السور المكية:",o:["ذكر المنافقين، وبيان حالهم","قصر السور والآيات","تقرير الأحكام التشريعية للعبادات والمعاملات والحدود والفرائض","بيان حال اليهود، وإبطال عقائدهم"],a:1,t:"علوم القرآن"},
-  {q:"من أشهر الكتب في علوم القرآن:",o:["الدر المصون في علوم الكتاب المكنون","الإتقان في علوم القرآن","زاد المسير في علم التفسير","فنون الأفنان في عيون علوم القرآن"],a:1,t:"علوم القرآن"},
-  {q:"من أنواع الوحي بالمعنى الشرعي:",o:["ما كان مكالمة بين العبد وربه","ما يكون إلهاماً يقذفه الله في قلب نبيه","ما يكون بواسطة أمين الوحي جبريل","جميع ما ذكر"],a:3,t:"علوم القرآن"},
-  {q:"القواعد التي يتوصل بها إلى استنباط الأحكام الشرعية الفرعية عن أدلتها التفصيلية:",o:["النظريات الفقهية","القواعد الأصولية","الأشباه والنظائر","الضابط الفقهي"],a:1,t:"أصول الفقه"},
-  {q:"القواعد الداخلة في أبواب فقهية كثيرة، مع عدم اختصاصها بباب فقهي معين:",o:["القواعد الكلية الكبرى","القواعد الكلية الصغرى","النظريات الفقهية","الضابط الفقهي"],a:0,t:"أصول الفقه"},
-  {q:"من أهمية وفوائد دراسة القواعد الفقهية:",o:["تساعد على إدراك مقاصد الشريعة","يسهل إدراك أحكام الفروع وحفظها","يفيد غير المتخصصين في علوم الشريعة","جميع ما ذكر"],a:3,t:"أصول الفقه"},
-  {q:"من أهم المؤلفات في القواعد الفقهية:",o:["المستصفى من علم الأصول للغزالي","بدائع الصنائع في ترتيب الشرائع للكاساني","حاشية الدسوقي على الشرح الكبير","الأشباه والنظائر للسيوطي الشافعي"],a:3,t:"أصول الفقه"},
-  {q:"كتاب لسان العرب من كتب:",o:["فقه اللغة","المعاجم اللغوية","قواعد العربية","البلاغة العربية ومراجعها"],a:1,t:"لغة عربية"}
+const STUDENTS=["AL ATALLAH DEDAISH JUNIOR","BISMA DZAKY WAHYU SATRIO","DAR ARKAN TAJUSA SULANJANA","FACHRIZAL ADITYA RIZQI RAMADHAN","FARRAND FADHILAH FAISOL","FATIH AFZALURAHMAN RAHTOMO","FAUZAAN ADITYA NUGRAHA","HAMMAD RIFAI","IQBAL ATHAR PATRIA LUKMAN","JIBRIL AESAR AULAYAIN","MAFIS MALIK","MUH REHAN FADILAH","MUHAMMAD ALIF ALFAZA","MUHAMMAD AMMAAR ZIYAAD","MUHAMMAD DIHYAH HARAHAP","MUHAMMAD FAJRIL FIRDAUS","MUHAMMAD GHAZZA AL GHIFFARI","MUHAMMAD HAFIZH NAWWAF","MUHAMMAD HAMZAH","MUHAMMAD IZZA IBRAHIM","MUHAMMAD KHALIF ABDUL AZIZ","MUHAMMAD SALMAN AL ASYAH","RAFIF AHNAF NASUTION","YAHYA EL YASIN","ZIYYAD ABBEY POHAN","ZUHDI FADHLURRAHMAN HAAJ"];
+const ADMIN_PASS="TryOut1";
+const SHEETS_URL="https://script.google.com/macros/s/AKfycbzF7hnIe7_im_191NtMdAN3obFL3RNr_Oy3ui-FODRAzL1nHxdGJ9u1f1G9m6BNId9cNQ/exec";
+const TCOL={"\u0639\u0642\u064a\u062f\u0629":{bg:"rgba(139,92,246,.14)",b:"rgba(139,92,246,.35)",t:"#c4b5fd",bar:"#8b5cf6"},"\u0641\u0642\u0647":{bg:"rgba(16,185,129,.14)",b:"rgba(16,185,129,.35)",t:"#6ee7b7",bar:"#10b981"},"\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646":{bg:"rgba(59,130,246,.14)",b:"rgba(59,130,246,.35)",t:"#93c5fd",bar:"#3b82f6"},"\u0639\u0644\u0648\u0645 \u0627\u0644\u062d\u062f\u064a\u062b":{bg:"rgba(245,158,11,.14)",b:"rgba(245,158,11,.35)",t:"#fcd34d",bar:"#f59e0b"},"\u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647":{bg:"rgba(249,115,22,.14)",b:"rgba(249,115,22,.35)",t:"#fdba74",bar:"#f97316"},"\u0627\u0644\u0633\u064a\u0631\u0629 \u0627\u0644\u0646\u0628\u0648\u064a\u0629":{bg:"rgba(34,197,94,.14)",b:"rgba(34,197,94,.35)",t:"#86efac",bar:"#22c55e"},"\u0644\u063a\u0629 \u0639\u0631\u0628\u064a\u0629":{bg:"rgba(236,72,153,.14)",b:"rgba(236,72,153,.35)",t:"#f9a8d4",bar:"#ec4899"}};
+const QS=[
+{q:"\u064a\u064f\u0639\u062f\u0651 \u0625\u062c\u0645\u0627\u0639 \u0627\u0644\u0635\u062d\u0627\u0628\u0629 \u0631\u0636\u064a \u0627\u0644\u0644\u0647 \u0639\u0646\u0647\u0645 \u0641\u064a \u0627\u0644\u0639\u0642\u064a\u062f\u0629 \u0643\u0625\u062c\u0645\u0627\u0639\u0647\u0645 \u0623\u0646 \u0627\u0644\u0644\u0647 \u0641\u064a \u0627\u0644\u0633\u0645\u0627\u0621 \u0645\u0633\u062a\u0648\u0650\u0646 \u0639\u0644\u0649 \u0639\u0631\u0634\u0647:",o:["\u062d\u062c\u0629 \u064a\u062c\u0628 \u0627\u0644\u0623\u062e\u0630 \u0628\u0647\u0627","\u0644\u064a\u0633 \u062d\u062c\u0629 \u0648\u0644\u0627 \u064a\u062c\u0648\u0632 \u0627\u0644\u0627\u062d\u062a\u062c\u0627\u062c \u0628\u0647","\u064a\u062e\u064a\u064e\u0651\u0631 \u0627\u0644\u0645\u0633\u0644\u0645 \u0628\u0627\u0644\u0639\u0645\u0644 \u0628\u0647","\u0644\u0627 \u064a\u0635\u062d \u0634\u064a\u0621 \u0645\u0645\u0627 \u0633\u0628\u0642"],a:0,t:"\u0639\u0642\u064a\u062f\u0629"},
+{q:"\u0645\u0642\u062a\u0636\u0649 \u0634\u0647\u0627\u062f\u0629 \u0623\u0646 \u0645\u062d\u0645\u062f\u0627\u064b \u0631\u0633\u0648\u0644 \u0627\u0644\u0644\u0647 \ufdfa:",o:["\u0627\u0644\u0627\u0639\u062a\u0631\u0627\u0641 \u0628\u0623\u0646\u0647 \u0645\u0631\u0633\u0644 \u0645\u0646 \u0639\u0646\u062f \u0627\u0644\u0644\u0647","\u0637\u0627\u0639\u062a\u0647 \u0641\u064a\u0645\u0627 \u0623\u0645\u0631 \u0648\u062a\u0635\u062f\u064a\u0642\u0647 \u0641\u064a\u0645\u0627 \u0623\u062e\u0628\u0631 \u0648\u0627\u062c\u062a\u0646\u0627\u0628 \u0645\u0627 \u0646\u0647\u0649 \u0639\u0646\u0647 \u0648\u0632\u062c\u0631","\u0627\u0644\u0635\u0644\u0627\u0629 \u0648\u0627\u0644\u0633\u0644\u0627\u0645 \u0639\u0644\u064a\u0647","\u062c\u0645\u064a\u0639 \u0645\u0627 \u0633\u0628\u0642"],a:3,t:"\u0639\u0642\u064a\u062f\u0629"},
+{q:"\u0645\u0646 \u062c\u0639\u0644 \u0628\u064a\u0646\u0647 \u0648\u0628\u064a\u0646 \u0627\u0644\u0644\u0647 \u0648\u0633\u0627\u0626\u0637 \u064a\u062f\u0639\u0648\u0647\u0645 \u0648\u064a\u0633\u0623\u0644\u0647\u0645 \u0627\u0644\u0634\u0641\u0627\u0639\u0629 \u0648\u064a\u062a\u0648\u0643\u0644 \u0639\u0644\u064a\u0647\u0645 \u0641\u0647\u0630\u0627 \u064a\u064f\u0639\u062f\u0651:",o:["\u0645\u0639\u0635\u064a\u0629 \u0645\u0646 \u0627\u0644\u0645\u0639\u0627\u0635\u064a","\u0646\u0627\u0642\u0636\u0627\u064b \u0645\u0646 \u0646\u0648\u0627\u0642\u0636 \u0627\u0644\u0625\u0633\u0644\u0627\u0645","\u0645\u062e\u0627\u0644\u0641\u0629 \u0644\u0633\u0646\u0629 \u0627\u0644\u0646\u0628\u064a \ufdfa","\u062c\u0627\u0626\u0632\u0627\u064b"],a:1,t:"\u0639\u0642\u064a\u062f\u0629"},
+{q:"\u062a\u064f\u0639\u062a\u0628\u0631 \u0639\u0628\u0627\u062f\u0629 \u0627\u0644\u0635\u0644\u0627\u0629 \u0648\u062a\u0644\u0627\u0648\u0629 \u0627\u0644\u0642\u0631\u0622\u0646 \u0645\u0646 \u0623\u0646\u0648\u0627\u0639 \u0627\u0644\u0639\u0628\u0627\u062f\u0629:",o:["\u0627\u0644\u0641\u0639\u0644\u064a\u0629","\u0627\u0644\u0642\u0644\u0628\u064a\u0629","\u0627\u0644\u0642\u0648\u0644\u064a\u0629","\u062c\u0645\u064a\u0639 \u0645\u0627 \u0630\u0643\u0631"],a:2,t:"\u0639\u0642\u064a\u062f\u0629"},
+{q:"\u0627\u0644\u0645\u0631\u0627\u062f \u0645\u0646 \u0627\u0644\u0648\u0644\u0627\u0621 \u0648\u0627\u0644\u0628\u0631\u0627\u0621 \u0641\u064a \u0627\u0644\u0625\u0633\u0644\u0627\u0645:",o:["\u062a\u0648\u0644\u064a \u0648\u062d\u0628 \u0627\u0644\u0645\u0633\u0644\u0645\u064a\u0646 \u0648\u0627\u0644\u0645\u0648\u062d\u062f\u064a\u0646 \u0648\u0627\u0644\u0628\u0631\u0627\u0621\u0629 \u0648\u0627\u0644\u0628\u063a\u0636 \u0645\u0646 \u0627\u0644\u0634\u0631\u0643 \u0648\u0627\u0644\u0645\u0634\u0631\u0643\u064a\u0646","\u0644\u0627 \u0625\u0644\u0647 \u0625\u0644\u0627 \u0627\u0644\u0644\u0647 \u0645\u062d\u0645\u062f \u0631\u0633\u0648\u0644 \u0627\u0644\u0644\u0647","\u0625\u0642\u0627\u0645\u0629 \u0627\u0644\u0635\u0644\u062d \u0628\u064a\u0646 \u0627\u0644\u0645\u0633\u0644\u0645\u064a\u0646 \u0648\u0627\u0644\u0628\u0631\u0627\u0621\u0629 \u0645\u0646 \u062a\u0641\u0631\u0642\u0647\u0645","\u062c\u0645\u064a\u0639 \u0645\u0627 \u0633\u0628\u0642"],a:0,t:"\u0639\u0642\u064a\u062f\u0629"},
+{q:"\u0627\u0644\u0645\u0631\u0627\u062f \u0628\u0627\u0644\u062a\u0648\u062d\u064a\u062f \u0639\u0646\u062f \u0639\u0644\u0645\u0627\u0621 \u0627\u0644\u0633\u0644\u0641 \u0648\u0639\u0627\u0645\u0629 \u0627\u0644\u062e\u0644\u0641:",o:["\u0627\u0644\u0625\u0642\u0631\u0627\u0631 \u0628\u0623\u0646 \u0627\u0644\u0644\u0647 \u0648\u062d\u062f\u0647 \u0647\u0648 \u0627\u0644\u062e\u0627\u0644\u0642 \u0644\u0644\u0639\u0627\u0644\u0645","\u0625\u0641\u0631\u0627\u062f \u0627\u0644\u0644\u0647 \u0628\u0627\u0644\u062e\u0644\u0642 \u0648\u0627\u0644\u062a\u062f\u0628\u064a\u0631","\u0625\u0641\u0631\u0627\u062f \u0627\u0644\u0644\u0647 \u062a\u0639\u0627\u0644\u0649 \u0628\u062c\u0645\u064a\u0639 \u0623\u0646\u0648\u0627\u0639 \u0627\u0644\u0639\u0628\u0627\u062f\u0629","\u0627\u0644\u062a\u0648\u0643\u0644 \u0639\u0644\u0649 \u0627\u0644\u0644\u0647"],a:2,t:"\u0639\u0642\u064a\u062f\u0629"},
+{q:"\u062a\u0639\u0631\u064a\u0641 \u062a\u0648\u062d\u064a\u062f \u0627\u0644\u0623\u0633\u0645\u0627\u0621 \u0648\u0627\u0644\u0635\u0641\u0627\u062a:",o:["\u0625\u062b\u0628\u0627\u062a \u0645\u0627 \u0623\u062b\u0628\u062a\u0647 \u0627\u0644\u0644\u0647 \u0644\u0646\u0641\u0633\u0647 \u0623\u0648 \u0623\u062b\u0628\u062a\u0647 \u0644\u0647 \u0631\u0633\u0648\u0644\u0647 \u0645\u0646 \u0635\u0641\u0627\u062a \u0627\u0644\u0643\u0645\u0627\u0644 \u0645\u0646 \u063a\u064a\u0631 \u062a\u062d\u0631\u064a\u0641 \u0648\u0644\u0627 \u062a\u0645\u062b\u064a\u0644 \u0648\u0644\u0627 \u062a\u0634\u0628\u064a\u0647 \u0648\u0644\u0627 \u062a\u0639\u0637\u064a\u0644","\u0625\u0641\u0631\u0627\u062f \u0627\u0644\u0644\u0647 \u062a\u0639\u0627\u0644\u0649 \u0628\u062c\u0645\u064a\u0639 \u0623\u0646\u0648\u0627\u0639 \u0627\u0644\u0639\u0628\u0627\u062f\u0629","\u0627\u0644\u0625\u0642\u0631\u0627\u0631 \u0628\u0623\u0646 \u0627\u0644\u0644\u0647 \u0647\u0648 \u0627\u0644\u0645\u062f\u0628\u0631 \u0627\u0644\u0645\u062d\u064a\u064a","\u0625\u062b\u0628\u0627\u062a \u0627\u0644\u0623\u0633\u0645\u0627\u0621 \u0648\u0627\u0644\u0635\u0641\u0627\u062a \u0645\u0637\u0644\u0642\u0627\u064b"],a:0,t:"\u0639\u0642\u064a\u062f\u0629"},
+{q:"\u0627\u0644\u0623\u0633\u0628\u0627\u0628 \u0627\u0644\u062a\u064a \u0623\u062f\u0651\u062a \u0625\u0644\u0649 \u0638\u0647\u0648\u0631 \u0627\u0644\u0628\u062f\u0639 \u0645\u0646\u0647\u0627:",o:["\u0627\u0644\u062c\u0647\u0644 \u0628\u0623\u062d\u0643\u0627\u0645 \u0627\u0644\u062f\u064a\u0646","\u0627\u0644\u062a\u0634\u0628\u0647 \u0628\u0627\u0644\u0643\u0641\u0627\u0631","\u0627\u062a\u0628\u0627\u0639 \u0627\u0644\u0647\u0648\u0649","\u062c\u0645\u064a\u0639 \u0645\u0627 \u0630\u0643\u0631"],a:3,t:"\u0639\u0642\u064a\u062f\u0629"},
+{q:"\u062d\u0643\u0645 \u0627\u0644\u0637\u0648\u0627\u0641 \u0628\u0627\u0644\u0642\u0628\u0648\u0631 \u062a\u0642\u0631\u0628\u0627\u064b \u0625\u0644\u0649 \u0623\u0635\u062d\u0627\u0628\u0647\u0627:",o:["\u0643\u0641\u0631 \u0635\u0631\u0627\u062d","\u0628\u062f\u0639\u0629","\u0645\u062d\u0631\u0651\u0645","\u0645\u0643\u0631\u0648\u0647"],a:0,t:"\u0639\u0642\u064a\u062f\u0629"},
+{q:"\u0637\u0644\u0628 \u0627\u0644\u063a\u0648\u062b \u0648\u0627\u0644\u0645\u062f\u062f \u0645\u0646 \u0627\u0644\u0623\u0645\u0648\u0627\u062a \u064a\u064f\u0639\u062f\u0651:",o:["\u0628\u062f\u0639\u0629 \u0628\u0627\u0644\u0627\u062a\u0641\u0627\u0642","\u0645\u062d\u0631\u0651\u0645 \u0628\u0627\u0644\u0627\u062a\u0641\u0627\u0642","\u062c\u0627\u0626\u0632 \u0628\u0627\u0644\u0627\u062a\u0641\u0627\u0642","\u0645\u062d\u0631\u0651\u0645 \u0628\u0627\u0644\u0625\u062c\u0645\u0627\u0639"],a:1,t:"\u0639\u0642\u064a\u062f\u0629"},
+{q:"\u0623\u0648\u0644 \u0647\u0630\u0647 \u0627\u0644\u062a\u0641\u0627\u0633\u064a\u0631 \u062a\u0623\u0644\u064a\u0641\u0627\u064b \u0648\u0623\u0647\u0645\u0647\u0627 \u0647\u0648:",o:["\u062a\u0641\u0633\u064a\u0631 \u0627\u0644\u0631\u0627\u0632\u064a","\u062a\u0641\u0633\u064a\u0631 \u0627\u0644\u0637\u0628\u0631\u064a","\u062a\u0641\u0633\u064a\u0631 \u0627\u0628\u0646 \u0643\u062b\u064a\u0631","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:1,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646"},
+{q:"\u0623\u0642\u0648\u0649 \u0623\u0646\u0648\u0627\u0639 \u0627\u0644\u062a\u0641\u0633\u064a\u0631 \u0647\u0648:",o:["\u0627\u0644\u062a\u0641\u0633\u064a\u0631 \u0627\u0644\u0625\u0634\u0627\u0631\u064a","\u0627\u0644\u062a\u0641\u0633\u064a\u0631 \u0628\u0627\u0644\u0631\u0623\u064a","\u0627\u0644\u062a\u0641\u0633\u064a\u0631 \u0628\u0627\u0644\u0645\u0623\u062b\u0648\u0631","\u0627\u0644\u062a\u0641\u0633\u064a\u0631 \u0627\u0644\u0645\u0648\u0636\u0648\u0639\u064a"],a:2,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646"},
+{q:"\u0623\u0648\u0644 \u0647\u0630\u0647 \u0627\u0644\u0633\u0648\u0631 \u0646\u0632\u0648\u0644\u0627\u064b \u0647\u064a:",o:["\u0633\u0648\u0631\u0629 \u0627\u0644\u0628\u0642\u0631\u0629","\u0633\u0648\u0631\u0629 \u0627\u0644\u0645\u0627\u0626\u062f\u0629","\u0633\u0648\u0631\u0629 \u0627\u0644\u0645\u062f\u062b\u0631","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:3,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646"},
+{q:"\u0623\u0634\u0647\u0631 \u0627\u0644\u0645\u0641\u0633\u0631\u064a\u0646 \u0645\u0646 \u0627\u0644\u0635\u062d\u0627\u0628\u0629 \u0647\u0648:",o:["\u0623\u0628\u0648 \u0630\u0631","\u062e\u0627\u0644\u062f \u0628\u0646 \u0627\u0644\u0648\u0644\u064a\u062f","\u0639\u0628\u062f \u0627\u0644\u0644\u0647 \u0628\u0646 \u0645\u0633\u0639\u0648\u062f","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:3,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646"},
+{q:"\u0623\u0648\u0644 \u0645\u0627 \u062c\u064f\u0645\u0639 \u0627\u0644\u0642\u0631\u0622\u0646 \u0643\u0627\u0646 \u0641\u064a:",o:["\u062d\u064a\u0627\u0629 \u0627\u0644\u0646\u0628\u064a \ufdfa","\u0641\u064a \u062e\u0644\u0627\u0641\u0629 \u0623\u0628\u064a \u0628\u0643\u0631","\u0641\u064a \u062e\u0644\u0627\u0641\u0629 \u0639\u0645\u0631 \u0628\u0646 \u0639\u0628\u062f \u0627\u0644\u0639\u0632\u064a\u0632","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:1,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646"},
+{q:"\u0627\u0644\u0633\u0646\u0629 \u0641\u064a \u0627\u0644\u0644\u063a\u0629 \u0647\u064a:",o:["\u0627\u0644\u0637\u0631\u064a\u0642\u0629 \u0648\u0627\u0644\u0633\u064a\u0631\u0629","\u0627\u0644\u0639\u0644\u0645","\u0627\u0644\u0641\u0647\u0645","\u0627\u0644\u0639\u0644\u0627\u0645\u0629"],a:0,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u062d\u062f\u064a\u062b"},
+{q:"\u0634\u0631\u062d \u0627\u0644\u0625\u0645\u0627\u0645 \u0627\u0644\u0646\u0648\u0648\u064a \u0641\u064a \u0643\u062a\u0627\u0628\u0647 \u0627\u0644\u0645\u0646\u0647\u0627\u062c:",o:["\u0635\u062d\u064a\u062d \u0627\u0644\u0628\u062e\u0627\u0631\u064a","\u0635\u062d\u064a\u062d \u0645\u0633\u0644\u0645","\u0633\u0646\u0646 \u0623\u0628\u064a \u062f\u0627\u0648\u062f","\u0633\u0646\u0646 \u0627\u0628\u0646 \u0645\u0627\u062c\u0647"],a:1,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u062d\u062f\u064a\u062b"},
+{q:"\u0623\u0648\u0633\u0639 \u0634\u0631\u062d \u0644\u0635\u062d\u064a\u062d \u0627\u0644\u0628\u062e\u0627\u0631\u064a:",o:["\u0627\u0644\u0645\u062c\u062a\u0628\u0649","\u0627\u0644\u0645\u0646\u0647\u0627\u062c","\u0641\u062a\u062d \u0627\u0644\u0628\u0627\u0631\u064a","\u0627\u0644\u0644\u0624\u0644\u0624 \u0648\u0627\u0644\u0645\u0631\u062c\u0627\u0646"],a:2,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u062d\u062f\u064a\u062b"},
+{q:"\u0645\u0639\u0646\u0649 \u0627\u0644\u0623\u0639\u0642\u0627\u0628 \u0641\u064a \u0642\u0648\u0644\u0647 \ufdfa \"\u0648\u064a\u0644 \u0644\u0644\u0623\u0639\u0642\u0627\u0628 \u0645\u0646 \u0627\u0644\u0646\u0627\u0631\":",o:["\u0645\u0642\u062f\u0645 \u0627\u0644\u0642\u062f\u0645","\u0645\u0624\u062e\u0631\u0629 \u0627\u0644\u0642\u062f\u0645","\u0648\u0633\u0637 \u0627\u0644\u0642\u062f\u0645","\u0623\u0639\u0644\u0649 \u0627\u0644\u0642\u062f\u0645"],a:1,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u062d\u062f\u064a\u062b"},
+{q:"\u0645\u0646 \u0627\u0644\u0633\u0628\u0639\u0629 \u0627\u0644\u0630\u064a\u0646 \u064a\u0638\u0644\u0647\u0645 \u0627\u0644\u0644\u0647 \u0641\u064a \u0638\u0644\u0647 \u064a\u0648\u0645 \u0627\u0644\u0642\u064a\u0627\u0645\u0629:",o:["\u0627\u0644\u0625\u0645\u0627\u0645 \u0627\u0644\u0639\u0627\u062f\u0644","\u0634\u0627\u0628 \u0646\u0634\u0623 \u0641\u064a \u0637\u0627\u0639\u0629 \u0627\u0644\u0644\u0647","\u0627\u0644\u0645\u062a\u062d\u0627\u0628\u0627\u0646 \u0641\u064a \u0627\u0644\u0644\u0647","\u062c\u0645\u064a\u0639 \u0645\u0627 \u0633\u0628\u0642"],a:3,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u062d\u062f\u064a\u062b"},
+{q:"\u0623\u0648\u0644 \u063a\u0632\u0648\u0629 \u063a\u0632\u0627\u0647\u0627 \u0631\u0633\u0648\u0644 \u0627\u0644\u0644\u0647 \u0635\u0644\u0649 \u0627\u0644\u0644\u0647 \u0639\u0644\u064a\u0647 \u0648\u0633\u0644\u0645 \u063a\u0632\u0648\u0629:",o:["\u0623\u062d\u062f","\u0627\u0644\u062e\u0646\u062f\u0642","\u0628\u062f\u0631","\u0627\u0644\u062d\u062f\u064a\u0628\u064a\u0629"],a:2,t:"\u0627\u0644\u0633\u064a\u0631\u0629 \u0627\u0644\u0646\u0628\u0648\u064a\u0629"},
+{q:"\u0627\u0644\u062e\u0644\u0641\u0627\u0621 \u0627\u0644\u0631\u0627\u0634\u062f\u0648\u0646 \u0647\u0645:",o:["\u0623\u0628\u0648 \u0628\u0643\u0631 \u0648\u0639\u0645\u0631","\u0639\u062b\u0645\u0627\u0646 \u0648\u0637\u0644\u062d\u0629","\u0639\u062b\u0645\u0627\u0646 \u0648\u0639\u0644\u064a","\u0645\u062c\u0645\u0648\u0639 \u0623\u060c \u062c"],a:3,t:"\u0627\u0644\u0633\u064a\u0631\u0629 \u0627\u0644\u0646\u0628\u0648\u064a\u0629"},
+{q:"\u0623\u0635\u062d \u0643\u062a\u0627\u0628 \u0641\u064a \u0627\u0644\u062d\u062f\u064a\u062b:",o:["\u0627\u0644\u0645\u0648\u0637\u0623","\u0635\u062d\u064a\u062d \u0645\u0633\u0644\u0645","\u0635\u062d\u064a\u062d \u0627\u0644\u0628\u062e\u0627\u0631\u064a","\u0635\u062d\u064a\u062d \u0627\u0628\u0646 \u062d\u0628\u0627\u0646"],a:2,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u062d\u062f\u064a\u062b"},
+{q:"\u0623\u0644\u0651\u0641 \u0627\u0644\u0625\u0645\u0627\u0645 \u0623\u062d\u0645\u062f \u0643\u062a\u0627\u0628\u0627\u064b \u0641\u064a \u0627\u0644\u062d\u062f\u064a\u062b \u064a\u0639\u062f \u0645\u0646 \u0623\u0647\u0645 \u0643\u062a\u0628 \u0627\u0644\u062d\u062f\u064a\u062b \u0648\u0647\u0648:",o:["\u0627\u0644\u0645\u0648\u0637\u0623","\u0627\u0644\u0635\u062d\u064a\u062d","\u0627\u0644\u0633\u0646\u0646","\u0627\u0644\u0645\u0633\u0646\u062f"],a:3,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u062d\u062f\u064a\u062b"},
+{q:"\u064a\u062d\u062a\u062c \u0628\u0627\u0644\u062d\u062f\u064a\u062b \u0627\u0644\u0646\u0628\u0648\u064a \u0625\u0630\u0627 \u0643\u0627\u0646:",o:["\u062d\u0633\u0646\u0627\u064b","\u0635\u062d\u064a\u062d\u0627\u064b","\u0645\u0646\u0642\u0637\u0639\u0627\u064b","\u0645\u062c\u0645\u0648\u0639 \u0623\u060c \u0628"],a:3,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u062d\u062f\u064a\u062b"},
+{q:"\u0645\u0646 \u0643\u062a\u0628 \u0627\u0644\u0641\u0642\u0647 \u0627\u0644\u0645\u0639\u062a\u0645\u062f\u0629 \u0641\u064a \u0627\u0644\u0645\u0630\u0647\u0628 \u0627\u0644\u0634\u0627\u0641\u0639\u064a:",o:["\u0627\u0644\u0645\u062f\u0648\u0646\u0629 \u0644\u0644\u0625\u0645\u0627\u0645 \u0633\u062d\u0646\u0648\u0646","\u0627\u0644\u0647\u062f\u0627\u064a\u0629 \u0644\u0644\u0645\u0631\u063a\u0646\u0627\u064a","\u0627\u0644\u0631\u0648\u0636 \u0627\u0644\u0645\u0631\u0628\u0639","\u0645\u0646\u0647\u0627\u062c \u0627\u0644\u0637\u0627\u0644\u0628\u064a\u0646 \u0644\u0644\u0646\u0648\u0648\u064a"],a:3,t:"\u0641\u0642\u0647"},
+{q:"\u0625\u0630\u0627 \u062a\u063a\u064a\u0651\u0631 \u0627\u0644\u0645\u0627\u0621 \u0628\u0634\u064a\u0621 \u0646\u062c\u0633 \u0644\u0645 \u062a\u0635\u062d \u0627\u0644\u0637\u0647\u0627\u0631\u0629 \u0628\u0647:",o:["\u0641\u064a \u0645\u0630\u0647\u0628 \u0627\u0644\u0634\u0627\u0641\u0639\u064a\u0629 \u062e\u0644\u0627\u0641\u0627\u064b \u0644\u0644\u062c\u0645\u0647\u0648\u0631","\u0641\u064a \u0645\u0630\u0647\u0628 \u0627\u0644\u062c\u0645\u0647\u0648\u0631 \u062e\u0644\u0627\u0641\u0627\u064b \u0644\u0644\u0634\u0627\u0641\u0639\u064a\u0629","\u0625\u062c\u0645\u0627\u0639\u0627\u064b","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:2,t:"\u0641\u0642\u0647"},
+{q:"\u0645\u0646 \u0645\u0648\u062c\u0628\u0627\u062a \u0627\u0644\u063a\u0633\u0644:",o:["\u0627\u0644\u0646\u0648\u0645 \u0627\u0644\u062b\u0642\u064a\u0644","\u0645\u0646 \u0631\u0623\u0649 \u0623\u0646\u0647 \u064a\u062c\u0627\u0645\u0639 \u0648\u0644\u0648 \u0644\u0645 \u064a\u062c\u062f \u0645\u0646\u064a\u0627\u064b","\u0645\u0646 \u062c\u0627\u0645\u0639 \u0627\u0645\u0631\u0623\u062a\u0647 \u062d\u062a\u0649 \u062e\u0631\u062c \u0645\u0646\u0647 \u0645\u0646\u064a","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:2,t:"\u0641\u0642\u0647"},
+{q:"\u0645\u0646 \u0644\u0645 \u064a\u062c\u062f \u0627\u0644\u0645\u0627\u0621 \u0644\u0644\u0637\u0647\u0627\u0631\u0629 \u0623\u064a\u0627\u0645\u0627\u064b \u0643\u062b\u064a\u0631\u0629 \u0641\u062d\u0643\u0645\u0647 \u0623\u0646:",o:["\u064a\u062a\u0631\u0643 \u0627\u0644\u0635\u0644\u0627\u0629 \u062d\u062a\u0649 \u064a\u062c\u062f \u0627\u0644\u0645\u0627\u0621","\u064a\u062a\u064a\u0645\u0645 \u0648\u0635\u0644\u0627\u062a\u0647 \u0635\u062d\u064a\u062d\u0629","\u064a\u062a\u064a\u0645\u0645 \u0648\u064a\u0635\u0644\u064a \u0644\u0643\u0646\u0647 \u064a\u0639\u064a\u062f \u0645\u0627 \u0635\u0644\u0649 \u0628\u0627\u0644\u062a\u064a\u0645\u0645 \u062d\u064a\u0646 \u064a\u062c\u062f \u0627\u0644\u0645\u0627\u0621","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:1,t:"\u0641\u0642\u0647"},
+{q:"\u0645\u0646 \u0646\u0627\u0645 \u0639\u0646 \u0635\u0644\u0627\u0629 \u062d\u062a\u0649 \u062e\u0631\u062c \u0648\u0642\u062a\u0647\u0627:",o:["\u0644\u0645 \u064a\u0635\u0644\u0647\u0627 \u0644\u0623\u0646\u0647 \u0641\u0627\u062a \u0648\u0642\u062a\u0647\u0627","\u064a\u0646\u062f\u0628 \u0644\u0647 \u0623\u0646 \u064a\u0635\u0644\u064a\u0647\u0627 \u0639\u0646\u062f \u0642\u064a\u0627\u0645\u0647 \u0645\u0646 \u0627\u0644\u0646\u0648\u0645","\u064a\u062c\u0628 \u0639\u0644\u064a\u0647 \u0623\u0646 \u064a\u0635\u0644\u064a\u0647\u0627 \u0639\u0646\u062f \u0642\u064a\u0627\u0645\u0647 \u0645\u0646 \u0646\u0648\u0645\u0647","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:2,t:"\u0641\u0642\u0647"},
+{q:"\u0645\u0646 \u062a\u0631\u0643 \u0631\u0643\u0639\u0629 \u0645\u0646 \u0627\u0644\u0635\u0628\u062d \u0633\u0647\u0648\u064b\u0627 \u062d\u062a\u0649 \u0633\u0644\u0645 \u0641\u0625\u0646 \u062d\u0643\u0645\u0647 \u0647\u0648 \u0623\u0646:",o:["\u0635\u0644\u0627\u062a\u0647 \u0635\u062d\u064a\u062d\u0629 \u0648\u0644\u0627 \u064a\u0644\u0632\u0645\u0647 \u0639\u0645\u0644","\u0635\u0644\u0627\u062a\u0647 \u0628\u0627\u0637\u0644\u0629 \u0648\u0644\u0627 \u064a\u0645\u0643\u0646\u0647 \u0625\u0635\u0644\u0627\u062d\u0647\u0627","\u064a\u0623\u062a\u064a \u0628\u0631\u0643\u0639\u0629 \u0648\u064a\u0633\u062c\u062f \u0644\u0644\u0633\u0647\u0648","\u064a\u0643\u0641\u064a\u0647 \u0623\u0646 \u064a\u0633\u062c\u062f \u0633\u062c\u062f\u062a\u064a\u0646 \u0628\u0639\u062f \u0627\u0644\u0633\u0644\u0627\u0645"],a:2,t:"\u0641\u0642\u0647"},
+{q:"\u0646\u0635\u0627\u0628 \u0627\u0644\u0632\u0643\u0627\u0629 \u0641\u064a \u0627\u0644\u0630\u0647\u0628 \u0647\u0648:",o:["\u062f\u064a\u0646\u0627\u0631\u064a\u0646 \u0645\u0646 \u0627\u0644\u0630\u0647\u0628","85 \u063a\u0631\u0627\u0645\u0627\u064b","200 \u062f\u064a\u0646\u0627\u0631 \u0630\u0647\u0628\u0627\u064b","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:1,t:"\u0641\u0642\u0647"},
+{q:"\u0645\u0646 \u0645\u0641\u0633\u062f\u0627\u062a \u0627\u0644\u0635\u0648\u0645:",o:["\u0642\u0628\u0644\u0629 \u0627\u0644\u0631\u062c\u0644 \u0627\u0645\u0631\u0623\u062a\u0647","\u0627\u0644\u0646\u0648\u0645 \u0627\u0644\u0637\u0648\u064a\u0644","\u0627\u0644\u0623\u0643\u0644 \u0639\u0645\u062f\u064b\u0627","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:2,t:"\u0641\u0642\u0647"},
+{q:"\u0625\u0630\u0627 \u062d\u0627\u0636\u062a \u0627\u0644\u0645\u0631\u0623\u0629 \u0641\u064a \u0646\u0647\u0627\u0631 \u0631\u0645\u0636\u0627\u0646 \u0641\u062d\u0643\u0645\u0647\u0627:",o:["\u0623\u0646 \u062a\u0648\u0627\u0635\u0644 \u0635\u0648\u0645\u0647\u0627","\u0623\u0646 \u062a\u0641\u0637\u0631 \u0648\u0644\u0627 \u0642\u0636\u0627\u0621 \u0639\u0644\u064a\u0647\u0627","\u0623\u0646 \u062a\u0641\u0637\u0631 \u0648\u062a\u0642\u0636\u064a \u0645\u0627 \u0623\u0641\u0637\u0631\u062a\u0647 \u0645\u0646 \u0623\u064a\u0627\u0645 \u0628\u0639\u062f \u0631\u0645\u0636\u0627\u0646","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:2,t:"\u0641\u0642\u0647"},
+{q:"\u064a\u0639\u062a\u0628\u0631 \u0627\u0644\u062d\u062c \u0641\u0627\u0633\u062f\u0627\u064b \u0641\u0633\u0627\u062f\u0627\u064b \u0644\u0627 \u064a\u062c\u0628\u0631 \u0628\u062f\u0645 \u0625\u0630\u0627:",o:["\u062a\u0637\u064a\u0651\u0628 \u0627\u0644\u062d\u0627\u062c \u0623\u062b\u0646\u0627\u0621 \u0625\u062d\u0631\u0627\u0645\u0647","\u0625\u0630\u0627 \u0644\u0645 \u064a\u0642\u0641 \u0628\u0639\u0631\u0641\u0629","\u0625\u0630\u0627 \u0639\u062c\u0632 \u0639\u0646 \u0637\u0648\u0627\u0641 \u0627\u0644\u0648\u062f\u0627\u0639 \u0628\u0639\u062f \u0623\u0646 \u0637\u0627\u0641 \u0637\u0648\u0627\u0641 \u0627\u0644\u0625\u0641\u0627\u0636\u0629","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:1,t:"\u0641\u0642\u0647"},
+{q:"\u0623\u0648\u0644 \u0643\u062a\u0627\u0628 \u0623\u064f\u0644\u0651\u0641 \u0641\u064a \u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647 \u0647\u0648:",o:["\u0627\u0644\u0645\u0633\u062a\u0635\u0641\u0649","\u0631\u0648\u0636\u0629 \u0627\u0644\u0646\u0627\u0638\u0631","\u0627\u0644\u0631\u0633\u0627\u0644\u0629","\u0627\u0644\u0648\u0631\u0642\u0627\u062a"],a:2,t:"\u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647"},
+{q:"\u0645\u0646 \u0623\u0647\u0645 \u0627\u0644\u0623\u062d\u0643\u0627\u0645 \u0627\u0644\u0648\u0636\u0639\u064a\u0629:",o:["\u0627\u0644\u0648\u0627\u062c\u0628","\u0627\u0644\u0634\u0631\u0637","\u0627\u0644\u062c\u0627\u0626\u0632","\u0627\u0644\u0645\u0646\u062f\u0648\u0628"],a:1,t:"\u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647"},
+{q:"\u0623\u062d\u0648\u062c \u0627\u0644\u0646\u0627\u0633 \u0644\u0645\u0639\u0631\u0641\u0629 \u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647 \u0647\u0648:",o:["\u0627\u0644\u0645\u0641\u062a\u064a","\u0627\u0644\u0645\u062d\u062f\u062b","\u0627\u0644\u0646\u062d\u0648\u064a","\u0627\u0644\u0637\u0628\u064a\u0628"],a:0,t:"\u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647"},
+{q:"\u0645\u0646 \u0623\u0647\u0645 \u0623\u0628\u0648\u0627\u0628 \u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647:",o:["\u0627\u0644\u0639\u0645\u0648\u0645","\u0627\u0644\u0625\u062c\u0627\u0631\u0629","\u0627\u0644\u062d\u062f\u0648\u062f","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:0,t:"\u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647"},
+{q:"\u0642\u0627\u0639\u062f\u0629: \u0627\u0644\u0636\u0631\u0631 \u064a\u0632\u0627\u0644 \u2014 \u0642\u0627\u0639\u062f\u0629 \u0645\u0646 \u0642\u0648\u0627\u0639\u062f:",o:["\u0645\u0635\u0637\u0644\u062d \u0627\u0644\u062d\u062f\u064a\u062b","\u0627\u0644\u0646\u062d\u0648","\u0627\u0644\u0641\u0642\u0647","\u0644\u0627 \u0634\u064a\u0621 \u0645\u0645\u0627 \u0630\u0643\u0631"],a:2,t:"\u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647"},
+{q:"\u0639\u0644\u0645 \u064a\u0641\u0647\u0645 \u0628\u0647 \u0643\u062a\u0627\u0628 \u0627\u0644\u0644\u0647 \u062a\u0639\u0627\u0644\u0649...، \u0647\u0648:",o:["\u0627\u0644\u062a\u0641\u0633\u064a\u0631","\u0627\u0644\u0648\u062d\u064a","\u0623\u0633\u0628\u0627\u0628 \u0627\u0644\u0646\u0632\u0648\u0644","\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646"],a:0,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646"},
+{q:"\u0639\u0644\u0645 \u064a\u0639\u0631\u0641 \u0628\u0647 \u0643\u064a\u0641\u064a\u0629 \u0627\u0644\u0646\u0637\u0642 \u0628\u0627\u0644\u0643\u0644\u0645\u0627\u062a \u0627\u0644\u0642\u0631\u0622\u0646\u064a\u0629\u060c \u0648\u0637\u0631\u064a\u0642 \u0623\u062f\u0627\u0626\u0647\u0627 \u0627\u062a\u0641\u0627\u0642\u0627\u064b \u0623\u0648 \u0627\u062e\u062a\u0644\u0627\u0641\u0627\u064b\u060c \u0645\u0639 \u0639\u0632\u0648 \u0643\u0644 \u0648\u062c\u0647 \u0644\u0646\u0627\u0642\u0644\u0647\u060c \u0647\u0648:",o:["\u0627\u0644\u0623\u062d\u0631\u0641 \u0627\u0644\u0633\u0628\u0639\u0629","\u0627\u0644\u0645\u0643\u064a \u0648\u0627\u0644\u0645\u062f\u0646\u064a","\u0639\u0644\u0645 \u0627\u0644\u062a\u062c\u0648\u064a\u062f","\u0627\u0644\u0642\u0631\u0627\u0621\u0627\u062a \u0627\u0644\u0642\u0631\u0622\u0646\u064a\u0629"],a:3,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646"},
+{q:"\u0645\u0646 \u0645\u064a\u0632\u0627\u062a \u0627\u0644\u0633\u0648\u0631 \u0627\u0644\u0645\u0643\u064a\u0629:",o:["\u0630\u0643\u0631 \u0627\u0644\u0645\u0646\u0627\u0641\u0642\u064a\u0646\u060c \u0648\u0628\u064a\u0627\u0646 \u062d\u0627\u0644\u0647\u0645","\u0642\u0635\u0631 \u0627\u0644\u0633\u0648\u0631 \u0648\u0627\u0644\u0622\u064a\u0627\u062a","\u062a\u0642\u0631\u064a\u0631 \u0627\u0644\u0623\u062d\u0643\u0627\u0645 \u0627\u0644\u062a\u0634\u0631\u064a\u0639\u064a\u0629 \u0644\u0644\u0639\u0628\u0627\u062f\u0627\u062a \u0648\u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062a \u0648\u0627\u0644\u062d\u062f\u0648\u062f \u0648\u0627\u0644\u0641\u0631\u0627\u0626\u0636","\u0628\u064a\u0627\u0646 \u062d\u0627\u0644 \u0627\u0644\u064a\u0647\u0648\u062f\u060c \u0648\u0625\u0628\u0637\u0627\u0644 \u0639\u0642\u0627\u0626\u062f\u0647\u0645"],a:1,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646"},
+{q:"\u0645\u0646 \u0623\u0634\u0647\u0631 \u0627\u0644\u0643\u062a\u0628 \u0641\u064a \u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646:",o:["\u0627\u0644\u062f\u0631 \u0627\u0644\u0645\u0635\u0648\u0646 \u0641\u064a \u0639\u0644\u0648\u0645 \u0627\u0644\u0643\u062a\u0627\u0628 \u0627\u0644\u0645\u0643\u0646\u0648\u0646","\u0627\u0644\u0625\u062a\u0642\u0627\u0646 \u0641\u064a \u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646","\u0632\u0627\u062f \u0627\u0644\u0645\u0633\u064a\u0631 \u0641\u064a \u0639\u0644\u0645 \u0627\u0644\u062a\u0641\u0633\u064a\u0631","\u0641\u0646\u0648\u0646 \u0627\u0644\u0623\u0641\u0646\u0627\u0646 \u0641\u064a \u0639\u064a\u0648\u0646 \u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646"],a:1,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646"},
+{q:"\u0645\u0646 \u0623\u0646\u0648\u0627\u0639 \u0627\u0644\u0648\u062d\u064a \u0628\u0627\u0644\u0645\u0639\u0646\u0649 \u0627\u0644\u0634\u0631\u0639\u064a:",o:["\u0645\u0627 \u0643\u0627\u0646 \u0645\u0643\u0627\u0644\u0645\u0629 \u0628\u064a\u0646 \u0627\u0644\u0639\u0628\u062f \u0648\u0631\u0628\u0647","\u0645\u0627 \u064a\u0643\u0648\u0646 \u0625\u0644\u0647\u0627\u0645\u0627\u064b \u064a\u0642\u0630\u0641\u0647 \u0627\u0644\u0644\u0647 \u0641\u064a \u0642\u0644\u0628 \u0646\u0628\u064a\u0647","\u0645\u0627 \u064a\u0643\u0648\u0646 \u0628\u0648\u0627\u0633\u0637\u0629 \u0623\u0645\u064a\u0646 \u0627\u0644\u0648\u062d\u064a \u062c\u0628\u0631\u064a\u0644","\u062c\u0645\u064a\u0639 \u0645\u0627 \u0630\u0643\u0631"],a:3,t:"\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646"},
+{q:"\u0627\u0644\u0642\u0648\u0627\u0639\u062f \u0627\u0644\u062a\u064a \u064a\u062a\u0648\u0635\u0644 \u0628\u0647\u0627 \u0625\u0644\u0649 \u0627\u0633\u062a\u0646\u0628\u0627\u0637 \u0627\u0644\u0623\u062d\u0643\u0627\u0645 \u0627\u0644\u0634\u0631\u0639\u064a\u0629 \u0627\u0644\u0641\u0631\u0639\u064a\u0629 \u0639\u0646 \u0623\u062f\u0644\u062a\u0647\u0627 \u0627\u0644\u062a\u0641\u0635\u064a\u0644\u064a\u0629:",o:["\u0627\u0644\u0646\u0638\u0631\u064a\u0627\u062a \u0627\u0644\u0641\u0642\u0647\u064a\u0629","\u0627\u0644\u0642\u0648\u0627\u0639\u062f \u0627\u0644\u0623\u0635\u0648\u0644\u064a\u0629","\u0627\u0644\u0623\u0634\u0628\u0627\u0647 \u0648\u0627\u0644\u0646\u0638\u0627\u0626\u0631","\u0627\u0644\u0636\u0627\u0628\u0637 \u0627\u0644\u0641\u0642\u0647\u064a"],a:1,t:"\u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647"},
+{q:"\u0627\u0644\u0642\u0648\u0627\u0639\u062f \u0627\u0644\u062f\u0627\u062e\u0644\u0629 \u0641\u064a \u0623\u0628\u0648\u0627\u0628 \u0641\u0642\u0647\u064a\u0629 \u0643\u062b\u064a\u0631\u0629\u060c \u0645\u0639 \u0639\u062f\u0645 \u0627\u062e\u062a\u0635\u0627\u0635\u0647\u0627 \u0628\u0628\u0627\u0628 \u0641\u0642\u0647\u064a \u0645\u0639\u064a\u0646:",o:["\u0627\u0644\u0642\u0648\u0627\u0639\u062f \u0627\u0644\u0643\u0644\u064a\u0629 \u0627\u0644\u0643\u0628\u0631\u0649","\u0627\u0644\u0642\u0648\u0627\u0639\u062f \u0627\u0644\u0643\u0644\u064a\u0629 \u0627\u0644\u0635\u063a\u0631\u0649","\u0627\u0644\u0646\u0638\u0631\u064a\u0627\u062a \u0627\u0644\u0641\u0642\u0647\u064a\u0629","\u0627\u0644\u0636\u0627\u0628\u0637 \u0627\u0644\u0641\u0642\u0647\u064a"],a:0,t:"\u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647"},
+{q:"\u0645\u0646 \u0623\u0647\u0645\u064a\u0629 \u0648\u0641\u0648\u0627\u0626\u062f \u062f\u0631\u0627\u0633\u0629 \u0627\u0644\u0642\u0648\u0627\u0639\u062f \u0627\u0644\u0641\u0642\u0647\u064a\u0629:",o:["\u062a\u0633\u0627\u0639\u062f \u0639\u0644\u0649 \u0625\u062f\u0631\u0627\u0643 \u0645\u0642\u0627\u0635\u062f \u0627\u0644\u0634\u0631\u064a\u0639\u0629","\u064a\u0633\u0647\u0644 \u0625\u062f\u0631\u0627\u0643 \u0623\u062d\u0643\u0627\u0645 \u0627\u0644\u0641\u0631\u0648\u0639 \u0648\u062d\u0641\u0638\u0647\u0627","\u064a\u0641\u064a\u062f \u063a\u064a\u0631 \u0627\u0644\u0645\u062a\u062e\u0635\u0635\u064a\u0646 \u0641\u064a \u0639\u0644\u0648\u0645 \u0627\u0644\u0634\u0631\u064a\u0639\u0629","\u062c\u0645\u064a\u0639 \u0645\u0627 \u0630\u0643\u0631"],a:3,t:"\u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647"},
+{q:"\u0645\u0646 \u0623\u0647\u0645 \u0627\u0644\u0645\u0624\u0644\u0641\u0627\u062a \u0641\u064a \u0627\u0644\u0642\u0648\u0627\u0639\u062f \u0627\u0644\u0641\u0642\u0647\u064a\u0629:",o:["\u0627\u0644\u0645\u0633\u062a\u0635\u0641\u0649 \u0645\u0646 \u0639\u0644\u0645 \u0627\u0644\u0623\u0635\u0648\u0644 \u0644\u0644\u063a\u0632\u0627\u0644\u064a","\u0628\u062f\u0627\u0626\u0639 \u0627\u0644\u0635\u0646\u0627\u0626\u0639 \u0641\u064a \u062a\u0631\u062a\u064a\u0628 \u0627\u0644\u0634\u0631\u0627\u0626\u0639 \u0644\u0644\u0643\u0627\u0633\u0627\u0646\u064a","\u062d\u0627\u0634\u064a\u0629 \u0627\u0644\u062f\u0633\u0648\u0642\u064a \u0639\u0644\u0649 \u0627\u0644\u0634\u0631\u062d \u0627\u0644\u0643\u0628\u064a\u0631","\u0627\u0644\u0623\u0634\u0628\u0627\u0647 \u0648\u0627\u0644\u0646\u0638\u0627\u0626\u0631 \u0644\u0644\u0633\u064a\u0648\u0637\u064a \u0627\u0644\u0634\u0627\u0641\u0639\u064a"],a:3,t:"\u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647"},
+{q:"\u0643\u062a\u0627\u0628 \u0644\u0633\u0627\u0646 \u0627\u0644\u0639\u0631\u0628 \u0645\u0646 \u0643\u062a\u0628:",o:["\u0641\u0642\u0647 \u0627\u0644\u0644\u063a\u0629","\u0627\u0644\u0645\u0639\u0627\u062c\u0645 \u0627\u0644\u0644\u063a\u0648\u064a\u0629","\u0642\u0648\u0627\u0639\u062f \u0627\u0644\u0639\u0631\u0628\u064a\u0629","\u0627\u0644\u0628\u0644\u0627\u063a\u0629 \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0648\u0645\u0631\u0627\u062c\u0639\u0647\u0627"],a:1,t:"\u0644\u063a\u0629 \u0639\u0631\u0628\u064a\u0629"}
 ];
+const ARL=['\u0623','\u0628','\u062c','\u062f'];
 
-const ARL = ['أ','ب','ج','د'];
+let S={user:{},cur:0,answers:{},flags:{},shuffled:{},timer:null,timeLeft:7200};
+let results=JSON.parse(localStorage.getItem('cbt_results')||'[]');
 
-/* ══════════════════════════════════════════
-   STATE
-══════════════════════════════════════════ */
-let S = {
-  user:{}, cur:0, answers:{}, flags:{},
-  shuffled:{}, timer:null, timeLeft:7200,
-};
-let results = JSON.parse(localStorage.getItem('cbt_results')||'[]');
-
-/* ══════════════════════════════════════════
-   INIT
-══════════════════════════════════════════ */
-// Custom select state
-let _csVal = '';
+/* CUSTOM SELECT */
+document.addEventListener('DOMContentLoaded',function(){
+  var list=document.getElementById('cs-list');
+  STUDENTS.forEach(function(s){
+    var d=document.createElement('div');
+    d.className='cs-opt';
+    d.textContent=s;
+    d.setAttribute('data-val',s);
+    d.onclick=function(){csSelect(s);};
+    list.appendChild(d);
+  });
+  var search=document.getElementById('cs-search');
+  if(search){
+    search.addEventListener('input',function(){csFilter(this.value);});
+  }
+  document.getElementById('inp-nisn').addEventListener('input',function(){
+    document.getElementById('nisn-err').style.display=
+      this.value&&!/^\d*$/.test(this.value)?'block':'none';
+    this.value=this.value.replace(/\D/g,'');
+  });
+  document.addEventListener('click',function(e){
+    var w=document.getElementById('cs-wrap');
+    if(w&&!w.contains(e.target))csClose();
+  });
+});
 
 function csToggle(){
-  const panel = document.getElementById('cs-panel');
-  const btn = document.getElementById('cs-btn');
-  const isOpen = !panel.classList.contains('hidden');
-  if(isOpen){ csClose(); }
-  else {
+  var panel=document.getElementById('cs-panel');
+  var isOpen=!panel.classList.contains('hidden');
+  if(isOpen){csClose();}
+  else{
     panel.classList.remove('hidden');
-    btn.classList.add('open');
-    document.querySelector('.cs-search').value='';
-    csFilter('');
-    document.querySelector('.cs-search').focus();
+    document.getElementById('cs-btn').classList.add('open');
+    var s=document.getElementById('cs-search');
+    s.value='';csFilter('');s.focus();
   }
 }
 function csClose(){
@@ -1111,71 +558,45 @@ function csClose(){
   document.getElementById('cs-btn').classList.remove('open');
 }
 function csFilter(val){
-  const items = document.querySelectorAll('.cs-opt');
-  let visible=0;
-  items.forEach(item=>{
-    const show = item.textContent.toLowerCase().includes(val.toLowerCase());
-    item.style.display = show ? '' : 'none';
-    if(show) visible++;
+  var items=document.querySelectorAll('.cs-opt');
+  var n=0;
+  items.forEach(function(item){
+    var show=item.textContent.toLowerCase().indexOf(val.toLowerCase())>=0;
+    item.style.display=show?'':'none';
+    if(show)n++;
   });
-  let empty = document.getElementById('cs-empty');
+  var empty=document.getElementById('cs-empty');
   if(!empty){
-    empty = document.createElement('div');
-    empty.id='cs-empty';empty.className='cs-empty';empty.textContent='Nama tidak ditemukan';
+    empty=document.createElement('div');
+    empty.id='cs-empty';empty.className='cs-empty';
+    empty.textContent='Nama tidak ditemukan';
     document.getElementById('cs-list').appendChild(empty);
   }
-  empty.style.display = visible===0 ? '' : 'none';
+  empty.style.display=n===0?'':'none';
 }
 function csSelect(name){
-  _csVal = name;
-  document.getElementById('inp-name').value = name;
-  const disp = document.getElementById('cs-display');
-  disp.textContent = name;
-  disp.classList.remove('cs-placeholder');
-  // Mark selected
-  document.querySelectorAll('.cs-opt').forEach(o=>{
-    o.classList.toggle('sel', o.dataset.val===name);
+  document.getElementById('inp-name').value=name;
+  var disp=document.getElementById('cs-disp');
+  disp.textContent=name;
+  disp.classList.remove('cs-ph');
+  document.querySelectorAll('.cs-opt').forEach(function(o){
+    o.classList.toggle('sel',o.getAttribute('data-val')===name);
   });
   csClose();
 }
-// Close on outside click
-document.addEventListener('click', function(e){
-  const wrap = document.getElementById('cs-wrap');
-  if(wrap && !wrap.contains(e.target)) csClose();
-});
 
-(function init(){
-  const list = document.getElementById('cs-list');
-  STUDENTS.forEach(s=>{
-    const d = document.createElement('div');
-    d.className='cs-opt';
-    d.textContent=s;
-    d.dataset.val=s;
-    d.onclick=()=>csSelect(s);
-    list.appendChild(d);
-  });
-  document.getElementById('inp-nisn').addEventListener('input',function(){
-    document.getElementById('nisn-err').style.display=
-      this.value&&!/^\d*$/.test(this.value)?'block':'none';
-    this.value=this.value.replace(/\D/g,'');
-  });
-})();
-
-/* ══════════════════════════════════════════
-   PAGE NAVIGATION
-══════════════════════════════════════════ */
+/* PAGES */
 function showPage(id){
-  ['pg-login','pg-exam','pg-result','pg-admin'].forEach(p=>
-    document.getElementById(p).classList.add('hidden'));
+  ['pg-login','pg-exam','pg-result','pg-admin'].forEach(function(p){
+    document.getElementById(p).classList.add('hidden');
+  });
   document.getElementById(id).classList.remove('hidden');
   window.scrollTo(0,0);
 }
 function backHome(){clearInterval(S.timer);showPage('pg-login');}
 function hide(id){document.getElementById(id).classList.add('hidden');}
 
-/* ══════════════════════════════════════════
-   SIDEBAR
-══════════════════════════════════════════ */
+/* SIDEBAR */
 function toggleSidebar(){
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('sb-overlay').classList.toggle('show');
@@ -1185,354 +606,220 @@ function closeSidebar(){
   document.getElementById('sb-overlay').classList.remove('show');
 }
 
-/* ══════════════════════════════════════════
-   TOAST
-══════════════════════════════════════════ */
-let toastTimer;
+/* TOAST */
+var toastT;
 function toast(msg){
-  const t=document.getElementById('toast');
+  var t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+  clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3000);
 }
 
-/* ══════════════════════════════════════════
-   START EXAM
-══════════════════════════════════════════ */
+/* START */
 function startExam(){
-  const name=document.getElementById('inp-name').value;
-  const nisn=document.getElementById('inp-nisn').value;
-  if(!name){toast('⚠ Pilih nama terlebih dahulu');return;}
-  if(!nisn){toast('⚠ Masukkan NISN');return;}
-
-  S.user={name,nisn,kelas:document.getElementById('inp-class').value,subject:document.getElementById('inp-subject').value};
+  var name=document.getElementById('inp-name').value;
+  var nisn=document.getElementById('inp-nisn').value;
+  if(!name){toast('Pilih nama terlebih dahulu');return;}
+  if(!nisn){toast('Masukkan NISN');return;}
+  S.user={name:name,nisn:nisn,kelas:document.getElementById('inp-class').value,subject:document.getElementById('inp-subject').value};
   S.answers={};S.flags={};S.cur=0;S.timeLeft=7200;
-
-  // Shuffle options per question
   S.shuffled={};
-  QS.forEach((_,i)=>{
-    const idx=[0,1,2,3];
-    for(let j=3;j>0;j--){const k=Math.floor(Math.random()*(j+1));[idx[j],idx[k]]=[idx[k],idx[j]];}
+  QS.forEach(function(_,i){
+    var idx=[0,1,2,3];
+    for(var j=3;j>0;j--){var k=Math.floor(Math.random()*(j+1));var tmp=idx[j];idx[j]=idx[k];idx[k]=tmp;}
     S.shuffled[i]=idx;
   });
-
-  // Update sidebar
   document.getElementById('sb-uname').textContent=name;
   document.getElementById('sb-umeta').textContent=S.user.kelas+' · '+S.user.subject;
-
   showPage('pg-exam');
-  renderGrid();
-  renderQuestion();
-  startTimer();
-  bindKeys();
+  renderGrid();renderQ();startTimer();bindKeys();
 }
 
-/* ══════════════════════════════════════════
-   TIMER
-══════════════════════════════════════════ */
+/* TIMER */
 function startTimer(){
-  clearInterval(S.timer);
-  updateTimer();
-  S.timer=setInterval(()=>{
-    S.timeLeft--;
-    updateTimer();
-    if(S.timeLeft<=0){clearInterval(S.timer);toast('⏱ Waktu habis!');setTimeout(doFinish,1200);}
+  clearInterval(S.timer);updateTimer();
+  S.timer=setInterval(function(){
+    S.timeLeft--;updateTimer();
+    if(S.timeLeft<=0){clearInterval(S.timer);toast('Waktu habis!');setTimeout(doFinish,1200);}
   },1000);
 }
 function updateTimer(){
-  const m=String(Math.floor(S.timeLeft/60)).padStart(2,'0');
-  const s=String(S.timeLeft%60).padStart(2,'0');
+  var m=String(Math.floor(S.timeLeft/60)).padStart(2,'0');
+  var s=String(S.timeLeft%60).padStart(2,'0');
   document.getElementById('timer-txt').textContent=m+':'+s;
   document.getElementById('sb-timer').classList.toggle('warn',S.timeLeft<300);
 }
 
-/* ══════════════════════════════════════════
-   QUESTION GRID
-══════════════════════════════════════════ */
+/* GRID */
 function renderGrid(){
-  const g=document.getElementById('qgrid');
-  g.innerHTML='';
-  QS.forEach((_,i)=>{
-    const b=document.createElement('button');
-    const cls=['qn'];
-    if(S.answers[i]!==undefined) cls.push('done');
-    if(S.flags[i]) cls.push('flag');
-    if(i===S.cur) cls.push('cur');
+  var g=document.getElementById('qgrid');g.innerHTML='';
+  QS.forEach(function(_,i){
+    var b=document.createElement('button');
+    var cls=['qn'];
+    if(S.answers[i]!==undefined)cls.push('done');
+    if(S.flags[i])cls.push('flag');
+    if(i===S.cur)cls.push('cur');
     b.className=cls.join(' ');
     b.textContent=i+1;
-    b.onclick=()=>{S.cur=i;renderQuestion();renderGrid();closeSidebar();};
+    b.onclick=(function(idx){return function(){S.cur=idx;renderQ();renderGrid();closeSidebar();};})(i);
     g.appendChild(b);
   });
-
-  // Update counters
-  const done=Object.keys(S.answers).length;
-  const flagged=Object.keys(S.flags).filter(k=>S.flags[k]).length;
+  var done=Object.keys(S.answers).length;
+  var flagged=Object.keys(S.flags).filter(function(k){return S.flags[k];}).length;
   document.getElementById('prog-val').textContent=done+'/50';
   document.getElementById('prog-fill').style.width=(done/50*100)+'%';
   document.getElementById('st-done').textContent=done;
   document.getElementById('st-left').textContent=50-done;
   document.getElementById('st-flag').textContent=flagged;
-
-  // Submit button
   document.getElementById('btn-submit').classList.toggle('hidden',done<50);
 }
 
-/* ══════════════════════════════════════════
-   RENDER QUESTION
-══════════════════════════════════════════ */
-function renderQuestion(){
-  const q=QS[S.cur];
-  const ts=TOPIC_STYLE[q.t]||{bg:'rgba(200,168,75,.12)',b:'rgba(200,168,75,.3)',t:'#e8c96a'};
-  const idxArr=S.shuffled[S.cur];
-
-  // Topbar
-  document.getElementById('tb-qnum').textContent=`Soal ${S.cur+1} / ${QS.length}`;
-  const tb=document.getElementById('tb-topic');
-  tb.textContent=q.t;
-  tb.style.cssText=`background:${ts.bg};border:1px solid ${ts.b};color:${ts.t}`;
-
-  // Flag button
-  const fl=S.flags[S.cur];
+/* QUESTION */
+function renderQ(){
+  var q=QS[S.cur];
+  var ts=TCOL[q.t]||{bg:'rgba(200,168,75,.12)',b:'rgba(200,168,75,.3)',t:'#e8c96a'};
+  var idxArr=S.shuffled[S.cur];
+  document.getElementById('tb-qnum').textContent='Soal '+(S.cur+1)+' / '+QS.length;
+  var tb=document.getElementById('tb-topic');
+  tb.textContent=q.t;tb.style.cssText='background:'+ts.bg+';border:1px solid '+ts.b+';color:'+ts.t;
+  var fl=S.flags[S.cur];
   document.getElementById('btn-flag').className='btn-flag'+(fl?' flagged':'');
   document.getElementById('flag-icon').textContent=fl?'★':'☆';
   document.getElementById('flag-txt').textContent=fl?'Ditandai':'Tandai';
-
-  // Question card animate
-  const card=document.getElementById('q-card');
-  card.style.animation='none';
-  void card.offsetWidth;
-  card.style.animation='qin .25s ease';
-
-  document.getElementById('q-body').innerHTML=
-    `<div class="q-text">${q.q}</div>`;
-
-  // Options
-  const optEl=document.getElementById('options');
-  optEl.innerHTML='';
-  idxArr.forEach((origIdx,dispIdx)=>{
-    const sel=S.answers[S.cur]===origIdx;
-    const b=document.createElement('button');
+  var card=document.getElementById('q-card');
+  card.style.animation='none';void card.offsetWidth;card.style.animation='qin .25s ease';
+  document.getElementById('q-body').innerHTML='<div class="q-text">'+q.q+'</div>';
+  var optEl=document.getElementById('options');optEl.innerHTML='';
+  idxArr.forEach(function(origIdx,dispIdx){
+    var sel=S.answers[S.cur]===origIdx;
+    var b=document.createElement('button');
     b.className='opt'+(sel?' sel':'');
-    b.innerHTML=`<span class="opt-lbl">${ARL[dispIdx]}</span>
-      <span class="opt-text">${q.o[origIdx]}</span>`;
-    b.onclick=()=>pick(origIdx);
+    b.innerHTML='<span class="opt-lbl">'+ARL[dispIdx]+'</span><span class="opt-text">'+q.o[origIdx]+'</span>';
+    b.onclick=(function(oi){return function(){pick(oi);};})(origIdx);
     optEl.appendChild(b);
   });
 }
 
-/* ══════════════════════════════════════════
-   INTERACTION
-══════════════════════════════════════════ */
-function pick(origIdx){
-  S.answers[S.cur]=origIdx;
-  renderQuestion();
-  renderGrid();
-}
-
+function pick(origIdx){S.answers[S.cur]=origIdx;renderQ();renderGrid();}
 function toggleFlag(){
   S.flags[S.cur]=!S.flags[S.cur];
-  if(!S.flags[S.cur]) delete S.flags[S.cur];
-  renderQuestion();
-  renderGrid();
+  if(!S.flags[S.cur])delete S.flags[S.cur];
+  renderQ();renderGrid();
   toast(S.flags[S.cur]?'★ Soal ditandai':'☆ Tanda dihapus');
 }
+function goPrev(){if(S.cur>0){S.cur--;renderQ();renderGrid();}}
+function goNext(){if(S.cur<QS.length-1){S.cur++;renderQ();renderGrid();}}
 
-function goPrev(){if(S.cur>0){S.cur--;renderQuestion();renderGrid();}}
-function goNext(){if(S.cur<QS.length-1){S.cur++;renderQuestion();renderGrid();}}
-
-/* ══════════════════════════════════════════
-   KEYBOARD SHORTCUTS
-══════════════════════════════════════════ */
+/* KEYBOARD */
 function bindKeys(){
-  document.onkeydown=null;
-  document.addEventListener('keydown',function handler(e){
-    if(!document.getElementById('pg-exam').classList.contains('hidden')) return;
-    // Actually let's check we ARE on exam page
-  });
   document.onkeydown=function(e){
-    if(document.getElementById('pg-exam').classList.contains('hidden')) return;
-    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+    if(document.getElementById('pg-exam').classList.contains('hidden'))return;
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
     if(e.key==='1'||e.key==='2'||e.key==='3'||e.key==='4'){
-      const n=parseInt(e.key)-1;
-      const idxArr=S.shuffled[S.cur];
-      if(idxArr&&idxArr[n]!==undefined) pick(idxArr[n]);
+      var n=parseInt(e.key)-1;var ia=S.shuffled[S.cur];
+      if(ia&&ia[n]!==undefined)pick(ia[n]);
     }
-    if(e.key==='ArrowRight'||e.key==='PageDown') goNext();
-    if(e.key==='ArrowLeft'||e.key==='PageUp') goPrev();
-    if(e.key.toLowerCase()==='f') toggleFlag();
+    if(e.key==='ArrowRight'||e.key==='PageDown')goNext();
+    if(e.key==='ArrowLeft'||e.key==='PageUp')goPrev();
+    if(e.key.toLowerCase()==='f')toggleFlag();
   };
 }
 
-/* ══════════════════════════════════════════
-   SUBMIT
-══════════════════════════════════════════ */
+/* SUBMIT */
 function askSubmit(){
-  const unanswered=QS.map((_,i)=>i).filter(i=>S.answers[i]===undefined);
-  const flagged=QS.map((_,i)=>i).filter(i=>S.flags[i]);
-  const done=50-unanswered.length;
-
-  let html=`<div style="margin-bottom:12px">
-    <b style="color:#fff">Total dijawab: ${done}/50</b>
-  </div>`;
-
-  if(unanswered.length){
-    html+=`<div class="sum-section" style="margin-bottom:6px">⚠ Belum dijawab (${unanswered.length} soal)</div>
-    <div class="sum-chips">${unanswered.map(i=>`<span class="sum-chip un">${i+1}</span>`).join('')}</div>`;
+  var un=QS.map(function(_,i){return i;}).filter(function(i){return S.answers[i]===undefined;});
+  var fl=QS.map(function(_,i){return i;}).filter(function(i){return S.flags[i];});
+  var done=50-un.length;
+  var html='<div style="margin-bottom:12px"><b style="color:#fff">Dijawab: '+done+'/50</b></div>';
+  if(un.length){
+    html+='<div class="sum-section">Belum dijawab ('+un.length+')</div><div class="sum-chips">'+
+      un.map(function(i){return '<span class="sum-chip un">'+(i+1)+'</span>';}).join('')+'</div>';
   }
-  if(flagged.length){
-    html+=`<div class="sum-section" style="margin-top:10px;margin-bottom:6px">★ Ditandai untuk ditinjau (${flagged.length} soal)</div>
-    <div class="sum-chips">${flagged.map(i=>`<span class="sum-chip fl">${i+1}</span>`).join('')}</div>`;
+  if(fl.length){
+    html+='<div class="sum-section" style="margin-top:10px">Ditandai ('+fl.length+')</div><div class="sum-chips">'+
+      fl.map(function(i){return '<span class="sum-chip fl">'+(i+1)+'</span>';}).join('')+'</div>';
   }
-  if(!unanswered.length&&!flagged.length){
-    html+='<div style="color:#6ee7b7">✅ Semua soal sudah dijawab. Siap dikumpulkan!</div>';
-  }
-
+  if(!un.length&&!fl.length)html+='<div style="color:#6ee7b7">Semua soal sudah dijawab!</div>';
   document.getElementById('submit-body').innerHTML=html;
-
-  // Disable confirm button if there are unanswered — NO, let them submit anyway
   document.getElementById('modal-submit').classList.remove('hidden');
 }
 
 function doFinish(){
-  hide('modal-submit');
-  clearInterval(S.timer);
-
-  let correct=0;
-  QS.forEach((q,i)=>{if(S.answers[i]===q.a)correct++;});
-  const score=Math.round((correct/QS.length)*100);
-
-  const result={
-    name:S.user.name,nisn:S.user.nisn,kelas:S.user.kelas,subject:S.user.subject,
-    score,correct,total:QS.length,
-    answers:{...S.answers},flags:{...S.flags},
-    timestamp:new Date().toISOString()
-  };
+  hide('modal-submit');clearInterval(S.timer);
+  var correct=0;
+  QS.forEach(function(q,i){if(S.answers[i]===q.a)correct++;});
+  var score=Math.round((correct/QS.length)*100);
+  var result={name:S.user.name,nisn:S.user.nisn,kelas:S.user.kelas,subject:S.user.subject,score:score,correct:correct,total:QS.length,answers:Object.assign({},S.answers),timestamp:new Date().toISOString()};
   results.push(result);
   localStorage.setItem('cbt_results',JSON.stringify(results));
-  sendSheets(result);
-  showResult(result);
+  sendSheets(result);showResult(result);
 }
 
 function sendSheets(r){
-  const p=new URLSearchParams({nama:r.name,nisn:r.nisn,kelas:r.kelas,mapel:r.subject,nilai:r.score,benar:r.correct,total:r.total,waktu:r.timestamp});
-  fetch(SHEETS_URL+'?'+p,{method:'GET',mode:'no-cors'}).catch(()=>{});
+  var p=new URLSearchParams({nama:r.name,nisn:r.nisn,kelas:r.kelas,mapel:r.subject,nilai:r.score,benar:r.correct,total:r.total,waktu:r.timestamp});
+  fetch('https://script.google.com/macros/s/AKfycbzF7hnIe7_im_191NtMdAN3obFL3RNr_Oy3ui-FODRAzL1nHxdGJ9u1f1G9m6BNId9cNQ/exec?'+p,{method:'GET',mode:'no-cors'}).catch(function(){});
 }
 
-/* ══════════════════════════════════════════
-   RESULT
-══════════════════════════════════════════ */
+/* RESULT */
 function showResult(r){
   showPage('pg-result');
-
-  // Score ring
-  const circ=2*Math.PI*56;
-  const offset=circ-(circ*r.score/100);
-  const arc=document.getElementById('sr-arc');
-  const color=r.score>=70?'#10b981':r.score>=50?'#f59e0b':'#ef4444';
+  var circ=2*Math.PI*56;var offset=circ-(circ*r.score/100);
+  var arc=document.getElementById('sr-arc');
+  var color=r.score>=70?'#10b981':r.score>=50?'#f59e0b':'#ef4444';
   arc.style.stroke=color;
-  setTimeout(()=>{arc.style.strokeDashoffset=offset;},100);
-
+  setTimeout(function(){arc.style.strokeDashoffset=offset;},100);
   document.getElementById('r-num').textContent=r.score;
-
-  // Grade
-  const grades=[
-    [90,'A','Mumtaz — Luar Biasa! 🌟'],
-    [80,'B+','Jayyid Jiddan — Sangat Baik 🎉'],
-    [70,'B','Jayyid — Baik, Lulus ✅'],
-    [60,'C','Maqbul — Cukup 📚'],
-    [0,'D','Rasib — Perlu Belajar Lebih Keras 💪']
-  ];
-  const [,g,msg]=grades.find(([min])=>r.score>=min);
-  document.getElementById('r-grade').innerHTML=`<span style="color:${color}">${g}</span>`;
-  document.getElementById('r-msg').textContent=msg;
-
+  var grades=[[90,'A','Mumtaz — Luar Biasa!'],[80,'B+','Jayyid Jiddan — Sangat Baik'],[70,'B','Jayyid — Baik, Lulus'],[60,'C','Maqbul — Cukup'],[0,'D','Rasib — Perlu Belajar Lebih Keras']];
+  var gdata=grades.find(function(g){return r.score>=g[0];});
+  document.getElementById('r-grade').innerHTML='<span style="color:'+color+'">'+gdata[1]+'</span>';
+  document.getElementById('r-msg').textContent=gdata[2];
   document.getElementById('r-correct').textContent=r.correct;
   document.getElementById('r-wrong').textContent=r.total-r.correct;
-
-  // Info
-  document.getElementById('r-info').innerHTML=
-    [['Nama',r.name],['NISN',r.nisn],['Kelas',r.kelas],['Mata Pelajaran',r.subject]]
-    .map(([k,v])=>`<div class="ig-item"><div class="ig-k">${k}</div><div class="ig-v">${v}</div></div>`)
-    .join('');
-
-  // Topic breakdown
-  const topicMap={};
-  QS.forEach((q,i)=>{
-    if(!topicMap[q.t]) topicMap[q.t]={total:0,correct:0};
+  document.getElementById('r-info').innerHTML=[['Nama',r.name],['NISN',r.nisn],['Kelas',r.kelas],['Mata Pelajaran',r.subject]].map(function(x){return '<div class="ig-item"><div class="ig-k">'+x[0]+'</div><div class="ig-v">'+x[1]+'</div></div>';}).join('');
+  var topicMap={};
+  QS.forEach(function(q,i){
+    if(!topicMap[q.t])topicMap[q.t]={total:0,correct:0};
     topicMap[q.t].total++;
-    if(r.answers[i]===q.a) topicMap[q.t].correct++;
+    if(r.answers[i]===q.a)topicMap[q.t].correct++;
   });
-  document.getElementById('r-topics').innerHTML=
-    Object.entries(topicMap).map(([topic,{total,correct}])=>{
-      const pct=Math.round((correct/total)*100);
-      const ts=TOPIC_STYLE[topic]||{bar:'#c8a84b',t:'#e8c96a'};
-      return `<div class="tbar-row">
-        <div class="tbar-name">${topic}</div>
-        <div class="tbar-track"><div class="tbar-fill" style="width:${pct}%;background:${ts.bar}"></div></div>
-        <div class="tbar-val" style="color:${ts.t}">${correct}/${total}</div>
-      </div>`;
-    }).join('');
-
-  // Analysis
-  document.getElementById('r-ana').innerHTML=
-    QS.map((q,i)=>{
-      const ua=r.answers[i];
-      const ok=ua===q.a;
-      return `<div class="ana-item ${ok?'ok':'bad'}">
-        <div class="ana-row">
-          <span class="ana-ic">${ok?'✅':'❌'}</span>
-          <div style="flex:1">
-            <div class="ana-q">${i+1}. ${q.q.substring(0,75)}${q.q.length>75?'…':''}</div>
-            <div class="ana-a ${ok?'ok':'bad'}">
-              جوابك: ${ua!==undefined?q.o[ua].substring(0,48):'—'}
-              ${!ok?` | الصواب: ${q.o[q.a].substring(0,48)}`:''}
-            </div>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
+  document.getElementById('r-topics').innerHTML=Object.keys(topicMap).map(function(topic){
+    var d=topicMap[topic];var pct=Math.round((d.correct/d.total)*100);
+    var ts=TCOL[topic]||{bar:'#c8a84b',t:'#e8c96a'};
+    return '<div class="tbar-row"><div class="tbar-name">'+topic+'</div><div class="tbar-track"><div class="tbar-fill" style="width:'+pct+'%;background:'+ts.bar+'"></div></div><div class="tbar-val" style="color:'+ts.t+'">'+d.correct+'/'+d.total+'</div></div>';
+  }).join('');
+  document.getElementById('r-ana').innerHTML=QS.map(function(q,i){
+    var ua=r.answers[i];var ok=ua===q.a;
+    return '<div class="ana-item '+(ok?'ok':'bad')+'"><div class="ana-row"><span class="ana-ic">'+(ok?'✅':'❌')+'</span><div style="flex:1"><div class="ana-q">'+(i+1)+'. '+q.q.substring(0,75)+(q.q.length>75?'…':'')+'</div><div class="ana-a '+(ok?'ok':'bad')+'">جوابك: '+(ua!==undefined?q.o[ua].substring(0,48):'—')+((!ok&&ua!==undefined)?' | الصواب: '+q.o[q.a].substring(0,48):'')+'</div></div></div></div>';
+  }).join('');
 }
 
-/* ══════════════════════════════════════════
-   ADMIN
-══════════════════════════════════════════ */
+/* ADMIN */
 function showAdminLogin(){
   document.getElementById('admin-pw').value='';
   document.getElementById('admin-err').style.display='none';
   document.getElementById('modal-admin').classList.remove('hidden');
-  setTimeout(()=>document.getElementById('admin-pw').focus(),80);
+  setTimeout(function(){document.getElementById('admin-pw').focus();},80);
 }
 function doAdminLogin(){
   if(document.getElementById('admin-pw').value===ADMIN_PASS){
     hide('modal-admin');showPage('pg-admin');adminTab('q');
-  } else {
-    document.getElementById('admin-err').style.display='block';
-  }
+  }else{document.getElementById('admin-err').style.display='block';}
 }
 function adminTab(tab){
   document.getElementById('tab-q').className='tab'+(tab==='q'?' act':'');
   document.getElementById('tab-r').className='tab'+(tab==='r'?' act':'');
-  const body=document.getElementById('admin-body');
-
+  var body=document.getElementById('admin-body');
   if(tab==='q'){
     body.innerHTML='<div style="max-height:70vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-right:4px">'+
-      QS.map((q,i)=>`<div class="q-prev">
-        <div class="qp-num">Soal ${i+1} — ${q.t}</div>
-        <div class="qp-q">${q.q}</div>
-        <div class="qp-opts">${q.o.map((o,oi)=>`<div class="qp-opt ${oi===q.a?'c':'w'}">${ARL[oi]}. ${o}${oi===q.a?' ✓':''}</div>`).join('')}</div>
-      </div>`).join('')+'</div>';
-  } else {
-    if(!results.length){
-      body.innerHTML='<p style="color:var(--muted);text-align:center;padding:40px">Belum ada data hasil ujian.</p>';
-      return;
-    }
-    const avg=Math.round(results.reduce((a,r)=>a+r.score,0)/results.length);
-    const sorted=[...results].sort((a,b)=>b.score-a.score);
-    body.innerHTML=`<div class="res-avg">
-      <div class="res-avg-n">${avg}</div>
-      <div><div class="res-avg-l">Rata-rata Nilai</div><div class="res-avg-c">${results.length} peserta ujian</div></div>
-    </div>
-    <div style="max-height:60vh;overflow-y:auto;padding-right:4px">`+
-    sorted.map(r=>`<div class="res-row">
-      <div><div class="rr-name">${r.name}</div><div class="rr-meta">${r.kelas} · ${r.subject} · ${new Date(r.timestamp).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}</div></div>
-      <div class="rr-score ${
+      QS.map(function(q,i){return '<div class="q-prev"><div class="qp-num">Soal '+(i+1)+' \u2014 '+q.t+'</div><div class="qp-q">'+q.q+'</div><div class="qp-opts">'+q.o.map(function(o,oi){return '<div class="qp-opt '+(oi===q.a?'c':'w')+'">'+ARL[oi]+'. '+o+(oi===q.a?' \u2713':'')+'</div>';}).join('')+'</div></div>';}).join('')+'</div>';
+  }else{
+    if(!results.length){body.innerHTML='<p style="color:var(--muted);text-align:center;padding:40px">Belum ada data.</p>';return;}
+    var avg=Math.round(results.reduce(function(a,r){return a+r.score;},0)/results.length);
+    var sorted=results.slice().sort(function(a,b){return b.score-a.score;});
+    body.innerHTML='<div class="res-avg"><div class="res-avg-n">'+avg+'</div><div><div class="res-avg-l">Rata-rata</div><div class="res-avg-c">'+results.length+' peserta</div></div></div>'+
+      '<div style="max-height:60vh;overflow-y:auto;padding-right:4px">'+
+      sorted.map(function(r){return '<div class="res-row"><div><div class="rr-name">'+r.name+'</div><div class="rr-meta">'+r.kelas+' \u00b7 '+r.subject+'</div></div><div class="rr-score '+(r.score>=70?'p':'f')+'">'+r.score+'</div></div>';}).join('')+'</div>';
+  }
+}
+</script>
+</body>
+</html>
