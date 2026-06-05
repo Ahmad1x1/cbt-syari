@@ -225,6 +225,47 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:11px 22px;color:#fff;font-size:.85rem;font-weight:500;z-index:200;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0)}
+/* Blur konten saat keluar fullscreen */
+.exam-blurred .main{filter:blur(8px);pointer-events:none;transition:filter .3s ease;}
+.main{transition:filter .3s ease;}
+
+/* Tombol fullscreen di topbar */
+.btn-fs-topbar{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 11px;border-radius:var(--radius-sm);
+  border:1px solid rgba(16,185,129,.35);
+  background:rgba(16,185,129,.1);
+  color:#6ee7b7;font-size:.72rem;font-weight:600;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.btn-fs-topbar:hover{background:rgba(16,185,129,.2);border-color:rgba(16,185,129,.55)}
+.btn-fs-topbar.not-fs{
+  border-color:rgba(239,68,68,.45);
+  background:rgba(239,68,68,.12);
+  color:#fca5a5;
+  animation:pulse .9s infinite;
+}
+
+/* Tombol fullscreen di sidebar */
+.sb-fs{padding:8px 14px;border-top:1px solid var(--border);flex-shrink:0;}
+.btn-sb-fs{
+  width:100%;padding:9px 14px;
+  background:rgba(16,185,129,.1);
+  border:1px solid rgba(16,185,129,.3);
+  border-radius:var(--radius-sm);
+  color:#6ee7b7;font-size:.76rem;font-weight:600;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  cursor:pointer;display:flex;align-items:center;
+  justify-content:center;gap:7px;transition:all .2s;
+}
+.btn-sb-fs:hover{background:rgba(16,185,129,.2)}
+.btn-sb-fs.not-fs{
+  background:rgba(239,68,68,.12);
+  border-color:rgba(239,68,68,.4);
+  color:#fca5a5;animation:pulse .9s infinite;
+}
+
 /* Violation badge di result */
 .vio-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:12px 16px;margin-bottom:18px;}
 .vio-title{font-size:.7rem;font-weight:700;color:rgba(239,68,68,.8);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;}
@@ -398,6 +439,12 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
         <span class="btn-sb-submit-count" id="sb-submit-count">(0/50)</span>
       </button>
     </div>
+    <div class="sb-fs">
+      <button class="btn-sb-fs" id="btn-sb-fs" onclick="reenterFullscreen()">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+        <span id="sb-fs-txt">Layar Penuh Aktif</span>
+      </button>
+    </div>
     <div class="sb-legend">
       <div class="leg"><div class="leg-dot g"></div>Dijawab</div>
       <div class="leg"><div class="leg-dot r"></div>Belum</div>
@@ -411,6 +458,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
         <span class="tb-topic" id="tb-topic"></span>
       </div>
       <div class="tb-right">
+        <button class="btn-fs-topbar" id="btn-fs-topbar" onclick="reenterFullscreen()" title="Kembali ke Layar Penuh">
+          <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+          <span id="fs-topbar-txt">Layar Penuh</span>
+        </button>
         <div class="kb-hint">
           <span class="kbd">1-4</span>pilih&nbsp;<span class="kbd">←→</span>nav&nbsp;<span class="kbd">F</span>tandai
         </div>
@@ -763,24 +814,32 @@ function startExam(){
       var inExam=!document.getElementById('pg-exam').classList.contains('hidden');
       if(inExam&&!S.submitted&&!document.fullscreenElement&&!document.webkitFullscreenElement){
         S.fsVio=(S.fsVio||0)+1;
-        sendViolationLog('fullscreen'); /* Kirim log ke Google Sheets */
+        sendViolationLog('fullscreen');
+        /* Blur konten + update tombol status */
+        document.getElementById('pg-exam').classList.add('exam-blurred');
+        updateFsButtons(false);
         var ov=document.getElementById('fs-overlay');
         var vc=document.getElementById('fs-vio-count');
         if(vc)vc.textContent='Pelanggaran ke-'+S.fsVio;
         if(ov)ov.classList.remove('hidden');
-        /* Coba masuk fullscreen SEGERA (tanpa delay) */
+        /* Coba masuk fullscreen SEGERA */
         var el2=document.documentElement;
         if(el2.requestFullscreen){
           el2.requestFullscreen().then(function(){
-            /* Berhasil masuk fullscreen lagi — sembunyikan overlay */
             if(ov)ov.classList.add('hidden');
-          }).catch(function(){
-            /* Gagal — overlay tetap tampil, paksa user klik tombol */
-          });
+            document.getElementById('pg-exam').classList.remove('exam-blurred');
+            updateFsButtons(true);
+          }).catch(function(){});
         } else if(el2.webkitRequestFullscreen){
           el2.webkitRequestFullscreen();
           if(ov)ov.classList.add('hidden');
+          document.getElementById('pg-exam').classList.remove('exam-blurred');
+          updateFsButtons(true);
         }
+      } else if(!inExam||document.fullscreenElement||document.webkitFullscreenElement){
+        /* Fullscreen aktif kembali */
+        document.getElementById('pg-exam').classList.remove('exam-blurred');
+        updateFsButtons(true);
       }
     };
     document.addEventListener('fullscreenchange',onFsChange);
@@ -921,10 +980,28 @@ function reenterFullscreen(){
   var p=null;
   if(el.requestFullscreen){p=el.requestFullscreen();}
   else if(el.webkitRequestFullscreen){el.webkitRequestFullscreen();}
-  if(p){p.then(function(){
+  var onSuccess=function(){
     document.getElementById('fs-overlay').classList.add('hidden');
-  }).catch(function(){});}
-  else{document.getElementById('fs-overlay').classList.add('hidden');}
+    document.getElementById('pg-exam').classList.remove('exam-blurred');
+    updateFsButtons(true);
+  };
+  if(p){p.then(onSuccess).catch(function(){});}
+  else{onSuccess();}
+}
+
+/* Update status tombol fullscreen di topbar & sidebar */
+function updateFsButtons(isFs){
+  var topBtn=document.getElementById('btn-fs-topbar');
+  var topTxt=document.getElementById('fs-topbar-txt');
+  var sbBtn=document.getElementById('btn-sb-fs');
+  var sbTxt=document.getElementById('sb-fs-txt');
+  if(isFs){
+    if(topBtn){topBtn.className='btn-fs-topbar';if(topTxt)topTxt.textContent='Layar Penuh';}
+    if(sbBtn){sbBtn.className='btn-sb-fs';if(sbTxt)sbTxt.textContent='Layar Penuh Aktif';}
+  } else {
+    if(topBtn){topBtn.className='btn-fs-topbar not-fs';if(topTxt)topTxt.textContent='Kembali Layar Penuh!';}
+    if(sbBtn){sbBtn.className='btn-sb-fs not-fs';if(sbTxt)sbTxt.textContent='Klik: Kembali Layar Penuh!';}
+  }
 }
 
 function doFinish(){
