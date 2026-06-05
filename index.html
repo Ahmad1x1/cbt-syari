@@ -225,6 +225,22 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:11px 22px;color:#fff;font-size:.85rem;font-weight:500;z-index:200;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0)}
+/* Sidebar submit button */
+.sb-submit{padding:10px 14px;border-top:1px solid var(--border);flex-shrink:0;}
+.btn-sb-submit{width:100%;padding:11px 14px;background:linear-gradient(135deg,#059669,#10b981);border:none;border-radius:var(--radius-sm);color:#fff;font-size:.82rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;}
+.btn-sb-submit:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(16,185,129,.4)}
+.btn-sb-submit-count{font-size:.7rem;opacity:.8;font-weight:400}
+
+/* Fullscreen warning overlay */
+.fs-overlay{position:fixed;inset:0;z-index:9999;background:rgba(8,15,30,.96);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:24px;}
+.fs-modal{background:#111f38;border:1px solid rgba(239,68,68,.4);border-radius:20px;padding:36px 32px;max-width:380px;width:100%;text-align:center;}
+.fs-modal-icon{font-size:3rem;margin-bottom:16px}
+.fs-modal-title{font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:10px}
+.fs-modal-msg{font-size:.88rem;color:rgba(255,255,255,.55);margin-bottom:24px;line-height:1.6}
+.btn-fs-return{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),#a87c28);border:none;border-radius:var(--radius-sm);color:#0c1628;font-size:.95rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;}
+.btn-fs-return:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,168,75,.35)}
+.fs-vio-count{font-size:.72rem;color:rgba(239,68,68,.7);margin-top:12px}
+
 
 /* RESPONSIVE */
 @media(max-width:768px){
@@ -343,6 +359,13 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
       <div class="sb-nav-title">Nomor Soal</div>
       <div class="qgrid" id="qgrid"></div>
     </div>
+    <div class="sb-submit">
+      <button class="btn-sb-submit" onclick="askSubmit()">
+        <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        Submit Ujian
+        <span class="btn-sb-submit-count" id="sb-submit-count">(0/50)</span>
+      </button>
+    </div>
     <div class="sb-legend">
       <div class="leg"><div class="leg-dot g"></div>Dijawab</div>
       <div class="leg"><div class="leg-dot r"></div>Belum</div>
@@ -356,9 +379,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
         <span class="tb-topic" id="tb-topic"></span>
       </div>
       <div class="tb-right">
-        <button class="btn-flag" id="btn-flag" onclick="toggleFlag()">
-          <span id="flag-icon">☆</span><span id="flag-txt">Tandai</span>
-        </button>
         <div class="kb-hint">
           <span class="kbd">1-4</span>pilih&nbsp;<span class="kbd">←→</span>nav&nbsp;<span class="kbd">F</span>tandai
         </div>
@@ -372,8 +392,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
       <button class="btn-nav2" onclick="goPrev()">
         <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>Sebelumnya
       </button>
-      <button class="btn-submit2 hidden" id="btn-submit" onclick="askSubmit()">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Kumpulkan
+      <button class="btn-flag" id="btn-flag" onclick="toggleFlag()" style="padding:12px 18px;">
+        <span id="flag-icon">☆</span><span id="flag-txt">Tandai</span>
       </button>
       <button class="btn-nav2" onclick="goNext()">
         Selanjutnya<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
@@ -453,6 +473,19 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 </div>
 
 <div id="toast" class="toast"></div>
+<!-- FULLSCREEN WARNING OVERLAY -->
+<div id="fs-overlay" class="fs-overlay hidden">
+  <div class="fs-modal">
+    <div class="fs-modal-icon">⛔</div>
+    <div class="fs-modal-title">Mode Layar Penuh Dibutuhkan</div>
+    <div class="fs-modal-msg">Ujian harus dilakukan dalam mode layar penuh. Klik tombol di bawah untuk melanjutkan ujian.</div>
+    <button class="btn-fs-return" onclick="reenterFullscreen()">
+      ⛶ Kembali ke Layar Penuh
+    </button>
+    <div class="fs-vio-count" id="fs-vio-count"></div>
+  </div>
+</div>
+
 
 <script>
 const STUDENTS=["AL ATALLAH DEDAISH JUNIOR","BISMA DZAKY WAHYU SATRIO","DAR ARKAN TAJUSA SULANJANA","FACHRIZAL ADITYA RIZQI RAMADHAN","FARRAND FADHILAH FAISOL","FATIH AFZALURAHMAN RAHTOMO","FAUZAAN ADITYA NUGRAHA","HAMMAD RIFAI","IQBAL ATHAR PATRIA LUKMAN","JIBRIL AESAR AULAYAIN","MAFIS MALIK","MUH REHAN FADILAH","MUHAMMAD ALIF ALFAZA","MUHAMMAD AMMAAR ZIYAAD","MUHAMMAD DIHYAH HARAHAP","MUHAMMAD FAJRIL FIRDAUS","MUHAMMAD GHAZZA AL GHIFFARI","MUHAMMAD HAFIZH NAWWAF","MUHAMMAD HAMZAH","MUHAMMAD IZZA IBRAHIM","MUHAMMAD KHALIF ABDUL AZIZ","MUHAMMAD SALMAN AL ASYAH","RAFIF AHNAF NASUTION","YAHYA EL YASIN","ZIYYAD ABBEY POHAN","ZUHDI FADHLURRAHMAN HAAJ"];
@@ -663,19 +696,15 @@ function startExam(){
         toast('⚠ Peringatan '+S.tabVio+': Jangan berpindah tab saat ujian!');
       }
     });
-    /* Fullscreen keluar — peringati & paksa masuk lagi */
+    /* Fullscreen keluar: tampilkan overlay pemblokir */
     var onFsChange=function(){
       var inExam=!document.getElementById('pg-exam').classList.contains('hidden');
-      if(inExam&&!document.fullscreenElement&&!document.webkitFullscreenElement){
+      if(inExam&&!S.submitted&&!document.fullscreenElement&&!document.webkitFullscreenElement){
         S.fsVio=(S.fsVio||0)+1;
-        toast('⚠ Peringatan '+S.fsVio+': Jangan keluar dari layar penuh!');
-        setTimeout(function(){
-          if(!document.getElementById('pg-exam').classList.contains('hidden')){
-            var e2=document.documentElement;
-            if(e2.requestFullscreen){e2.requestFullscreen().catch(function(){});}
-            else if(e2.webkitRequestFullscreen){e2.webkitRequestFullscreen();}
-          }
-        },1500);
+        var ov=document.getElementById('fs-overlay');
+        var vc=document.getElementById('fs-vio-count');
+        if(vc&&S.fsVio>1)vc.textContent='Pelanggaran ke-'+S.fsVio;
+        if(ov)ov.classList.remove('hidden');
       }
     };
     document.addEventListener('fullscreenchange',onFsChange);
@@ -719,7 +748,9 @@ function renderGrid(){
   document.getElementById('st-done').textContent=done;
   document.getElementById('st-left').textContent=50-done;
   document.getElementById('st-flag').textContent=flagged;
-  document.getElementById('btn-submit').classList.toggle('hidden',done<50);
+  /* Update sidebar submit count */
+  var sc=document.getElementById('sb-submit-count');
+  if(sc)sc.textContent='('+done+'/50)';
 }
 
 /* QUESTION */
@@ -792,8 +823,22 @@ function askSubmit(){
   document.getElementById('modal-submit').classList.remove('hidden');
 }
 
+function reenterFullscreen(){
+  var el=document.documentElement;
+  var p=null;
+  if(el.requestFullscreen){p=el.requestFullscreen();}
+  else if(el.webkitRequestFullscreen){el.webkitRequestFullscreen();}
+  if(p){p.then(function(){
+    document.getElementById('fs-overlay').classList.add('hidden');
+  }).catch(function(){});}
+  else{document.getElementById('fs-overlay').classList.add('hidden');}
+}
+
 function doFinish(){
   hide('modal-submit');clearInterval(S.timer);
+  S.submitted=true;
+  /* Exit fullscreen overlay if open */
+  document.getElementById('fs-overlay').classList.add('hidden');
   var correct=0;
   QS.forEach(function(q,i){if(S.answers[i]===q.a)correct++;});
   var score=Math.round((correct/QS.length)*100);
