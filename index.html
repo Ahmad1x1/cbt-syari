@@ -225,6 +225,31 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:11px 22px;color:#fff;font-size:.85rem;font-weight:500;z-index:200;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0)}
+/* Violation badge di result */
+.vio-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:12px 16px;margin-bottom:18px;}
+.vio-title{font-size:.7rem;font-weight:700;color:rgba(239,68,68,.8);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;}
+.vio-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.vio-row:last-child{border-bottom:none;padding-bottom:0}
+.vio-lbl{font-size:.82rem;color:var(--muted)}
+.vio-val{font-size:.9rem;font-weight:700}
+.vio-val.clean{color:#34d399}.vio-val.warn{color:#fcd34d}.vio-val.danger{color:#f87171}
+.vio-note{font-size:.7rem;color:var(--muted);margin-top:8px;font-style:italic}
+
+/* Browser warning */
+.browser-warn{
+  display:none;
+  background:rgba(245,158,11,.12);
+  border:1px solid rgba(245,158,11,.35);
+  border-radius:var(--radius-sm);
+  padding:10px 14px;
+  margin-bottom:16px;
+  font-size:.78rem;
+  color:#fcd34d;
+  line-height:1.5;
+  text-align:center;
+}
+.browser-warn strong{display:block;margin-bottom:3px;font-size:.82rem;}
+
 /* Sidebar submit button */
 .sb-submit{padding:10px 14px;border-top:1px solid var(--border);flex-shrink:0;}
 .btn-sb-submit{width:100%;padding:11px 14px;background:linear-gradient(135deg,#059669,#10b981);border:none;border-radius:var(--radius-sm);color:#fff;font-size:.82rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;}
@@ -278,6 +303,13 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
       </div>
       <div class="lc-title">Try Out Syari<br>Persiapan S1 LIPIA</div>
       <div class="lc-sub">SMASIT AL BINAA</div>
+    </div>
+    <div class="browser-warn" id="browser-warn">
+      <strong>⚠ Gunakan Google Chrome</strong>
+      Browser Anda bukan Chrome. Untuk keamanan ujian,<br>
+      harap buka halaman ini menggunakan <strong>Google Chrome</strong><br>
+      atau jalankan file <strong>buka-ujian.bat</strong> (Windows) /<br>
+      <strong>buka-ujian.command</strong> (Mac) yang diberikan pengawas.
     </div>
     <div class="field">
       <label>Nama Santri</label>
@@ -421,6 +453,22 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
       <div class="rs-box"><div class="rs-n b">50</div><div class="rs-l">Soal</div></div>
     </div>
     <div class="info-grid" id="r-info"></div>
+    <div class="vio-box" id="r-vio" style="display:none">
+      <div class="vio-title">⚠ Catatan Integritas Ujian</div>
+      <div class="vio-row">
+        <span class="vio-lbl">Pindah tab / minimize</span>
+        <span class="vio-val" id="rv-tab">0x</span>
+      </div>
+      <div class="vio-row">
+        <span class="vio-lbl">Keluar layar penuh</span>
+        <span class="vio-val" id="rv-fs">0x</span>
+      </div>
+      <div class="vio-row" style="border-top:1px solid rgba(255,255,255,.08);margin-top:5px;padding-top:8px">
+        <span class="vio-lbl"><strong>Total pelanggaran</strong></span>
+        <span class="vio-val" id="rv-total">0x</span>
+      </div>
+      <div class="vio-note" id="rv-note"></div>
+    </div>
     <div class="topic-section">
       <div class="section-title">Nilai per Topik</div>
       <div class="topic-bars" id="r-topics"></div>
@@ -551,6 +599,19 @@ let results=JSON.parse(localStorage.getItem('cbt_results')||'[]');
 
 /* CUSTOM SELECT */
 document.addEventListener('DOMContentLoaded',function(){
+  /* Deteksi Chrome / Chromium */
+  var ua=navigator.userAgent;
+  var isChromium=ua.indexOf('Chrome')>-1||ua.indexOf('Chromium')>-1;
+  var isEdge=ua.indexOf('Edg/')>-1;
+  var isBrave=ua.indexOf('Brave')>-1;
+  var isSafari=ua.indexOf('Safari')>-1&&!isChromium;
+  var isFirefox=ua.indexOf('Firefox')>-1;
+  /* Tampilkan peringatan jika bukan Chrome/Chromium/Edge */
+  if(isSafari||isFirefox||(!isChromium&&!isEdge)){
+    var w=document.getElementById('browser-warn');
+    if(w)w.style.display='block';
+  }
+
   var list=document.getElementById('cs-list');
   STUDENTS.forEach(function(s){
     var d=document.createElement('div');
@@ -691,9 +752,10 @@ function startExam(){
     });
     /* Deteksi pindah tab */
     document.addEventListener('visibilitychange',function(){
-      if(document.hidden&&!document.getElementById('pg-exam').classList.contains('hidden')){
+      if(document.hidden&&!document.getElementById('pg-exam').classList.contains('hidden')&&!S.submitted){
         S.tabVio=(S.tabVio||0)+1;
         toast('⚠ Peringatan '+S.tabVio+': Jangan berpindah tab saat ujian!');
+        sendViolationLog('tab'); /* Kirim log ke Google Sheets */
       }
     });
     /* Fullscreen keluar: langsung re-enter + tampilkan overlay */
@@ -701,9 +763,10 @@ function startExam(){
       var inExam=!document.getElementById('pg-exam').classList.contains('hidden');
       if(inExam&&!S.submitted&&!document.fullscreenElement&&!document.webkitFullscreenElement){
         S.fsVio=(S.fsVio||0)+1;
+        sendViolationLog('fullscreen'); /* Kirim log ke Google Sheets */
         var ov=document.getElementById('fs-overlay');
         var vc=document.getElementById('fs-vio-count');
-        if(vc&&S.fsVio>1)vc.textContent='Pelanggaran ke-'+S.fsVio;
+        if(vc)vc.textContent='Pelanggaran ke-'+S.fsVio;
         if(ov)ov.classList.remove('hidden');
         /* Coba masuk fullscreen SEGERA (tanpa delay) */
         var el2=document.documentElement;
@@ -872,15 +935,41 @@ function doFinish(){
   var correct=0;
   QS.forEach(function(q,i){if(S.answers[i]===q.a)correct++;});
   var score=Math.round((correct/QS.length)*100);
-  var result={name:S.user.name,nisn:S.user.nisn,kelas:S.user.kelas,subject:S.user.subject,score:score,correct:correct,total:QS.length,answers:Object.assign({},S.answers),timestamp:new Date().toISOString()};
+  var result={name:S.user.name,nisn:S.user.nisn,kelas:S.user.kelas,subject:S.user.subject,score:score,correct:correct,total:QS.length,answers:Object.assign({},S.answers),timestamp:new Date().toISOString(),tabVio:S.tabVio||0,fsVio:S.fsVio||0};
   results.push(result);
   localStorage.setItem('cbt_results',JSON.stringify(results));
   sendSheets(result);showResult(result);
 }
 
+var GS_URL='https://script.google.com/macros/s/AKfycbwjrIKbdIlmWlV1_iY5j4QRdJv562oC87rAwf2RbCcz_1UjO7DXFY49ja1y4wssyeFaWA/exec';
+
+/* Kirim log pelanggaran real-time ke Google Sheets */
+function sendViolationLog(jenis){
+  if(!S.user||!S.user.name)return;
+  var ke=jenis==='tab'?(S.tabVio||0):(S.fsVio||0);
+  var p=new URLSearchParams({
+    tipe:'pelanggaran',
+    nama:S.user.name,
+    nisn:S.user.nisn,
+    kelas:S.user.kelas,
+    jenis:jenis==='tab'?'Pindah Tab / Minimize':'Keluar Layar Penuh',
+    ke:ke,
+    waktu:new Date().toISOString()
+  });
+  fetch(GS_URL+'?'+p,{method:'GET',mode:'no-cors'}).catch(function(){});
+}
+
+/* Kirim hasil ujian + total pelanggaran */
 function sendSheets(r){
-  var p=new URLSearchParams({nama:r.name,nisn:r.nisn,kelas:r.kelas,mapel:r.subject,nilai:r.score,benar:r.correct,total:r.total,waktu:r.timestamp});
-  fetch('https://script.google.com/macros/s/AKfycbwjrIKbdIlmWlV1_iY5j4QRdJv562oC87rAwf2RbCcz_1UjO7DXFY49ja1y4wssyeFaWA/exec?'+p,{method:'GET',mode:'no-cors'}).catch(function(){});
+  var p=new URLSearchParams({
+    tipe:'hasil',
+    nama:r.name,nisn:r.nisn,kelas:r.kelas,mapel:r.subject,
+    nilai:r.score,benar:r.correct,total:r.total,waktu:r.timestamp,
+    tab_vio:r.tabVio||0,
+    fs_vio:r.fsVio||0,
+    total_vio:(r.tabVio||0)+(r.fsVio||0)
+  });
+  fetch(GS_URL+'?'+p,{method:'GET',mode:'no-cors'}).catch(function(){});
 }
 
 /* RESULT */
@@ -899,6 +988,21 @@ function showResult(r){
   document.getElementById('r-correct').textContent=r.correct;
   document.getElementById('r-wrong').textContent=r.total-r.correct;
   document.getElementById('r-info').innerHTML=[['Nama',r.name],['NISN',r.nisn],['Kelas',r.kelas],['Mata Pelajaran',r.subject]].map(function(x){return '<div class="ig-item"><div class="ig-k">'+x[0]+'</div><div class="ig-v">'+x[1]+'</div></div>';}).join('');
+  /* Tampilkan data pelanggaran */
+  var tabV=r.tabVio||0, fsV=r.fsVio||0, totV=tabV+fsV;
+  var vioBox=document.getElementById('r-vio');
+  if(vioBox&&totV>0){
+    vioBox.style.display='block';
+    var cls=totV===0?'clean':totV<=3?'warn':'danger';
+    document.getElementById('rv-tab').textContent=tabV+'x';
+    document.getElementById('rv-tab').className='vio-val '+(tabV===0?'clean':tabV<=2?'warn':'danger');
+    document.getElementById('rv-fs').textContent=fsV+'x';
+    document.getElementById('rv-fs').className='vio-val '+(fsV===0?'clean':fsV<=2?'warn':'danger');
+    document.getElementById('rv-total').textContent=totV+'x';
+    document.getElementById('rv-total').className='vio-val '+cls;
+    var note=totV===0?'':totV<=3?'Terdapat beberapa pelanggaran. Harap diperhatikan.':'Pelanggaran cukup banyak. Hasil ujian perlu dievaluasi lebih lanjut.';
+    document.getElementById('rv-note').textContent=note;
+  }
   var topicMap={};
   QS.forEach(function(q,i){
     if(!topicMap[q.t])topicMap[q.t]={total:0,correct:0};
