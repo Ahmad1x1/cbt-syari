@@ -490,7 +490,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 <script>
 const STUDENTS=["AL ATALLAH DEDAISH JUNIOR","BISMA DZAKY WAHYU SATRIO","DAR ARKAN TAJUSA SULANJANA","FACHRIZAL ADITYA RIZQI RAMADHAN","FARRAND FADHILAH FAISOL","FATIH AFZALURAHMAN RAHTOMO","FAUZAAN ADITYA NUGRAHA","HAMMAD RIFAI","IQBAL ATHAR PATRIA LUKMAN","JIBRIL AESAR AULAYAIN","MAFIS MALIK","MUH REHAN FADILAH","MUHAMMAD ALIF ALFAZA","MUHAMMAD AMMAAR ZIYAAD","MUHAMMAD DIHYAH HARAHAP","MUHAMMAD FAJRIL FIRDAUS","MUHAMMAD GHAZZA AL GHIFFARI","MUHAMMAD HAFIZH NAWWAF","MUHAMMAD HAMZAH","MUHAMMAD IZZA IBRAHIM","MUHAMMAD KHALIF ABDUL AZIZ","MUHAMMAD SALMAN AL ASYAH","RAFIF AHNAF NASUTION","YAHYA EL YASIN","ZIYYAD ABBEY POHAN","ZUHDI FADHLURRAHMAN HAAJ"];
 const ADMIN_PASS="TryOut1";
-const SHEETS_URL="https://script.google.com/macros/s/AKfycbzF7hnIe7_im_191NtMdAN3obFL3RNr_Oy3ui-FODRAzL1nHxdGJ9u1f1G9m6BNId9cNQ/exec";
+const SHEETS_URL="https://script.google.com/macros/s/AKfycbwjrIKbdIlmWlV1_iY5j4QRdJv562oC87rAwf2RbCcz_1UjO7DXFY49ja1y4wssyeFaWA/exec";
 const TCOL={"\u0639\u0642\u064a\u062f\u0629":{bg:"rgba(139,92,246,.14)",b:"rgba(139,92,246,.35)",t:"#c4b5fd",bar:"#8b5cf6"},"\u0641\u0642\u0647":{bg:"rgba(16,185,129,.14)",b:"rgba(16,185,129,.35)",t:"#6ee7b7",bar:"#10b981"},"\u0639\u0644\u0648\u0645 \u0627\u0644\u0642\u0631\u0622\u0646":{bg:"rgba(59,130,246,.14)",b:"rgba(59,130,246,.35)",t:"#93c5fd",bar:"#3b82f6"},"\u0639\u0644\u0648\u0645 \u0627\u0644\u062d\u062f\u064a\u062b":{bg:"rgba(245,158,11,.14)",b:"rgba(245,158,11,.35)",t:"#fcd34d",bar:"#f59e0b"},"\u0623\u0635\u0648\u0644 \u0627\u0644\u0641\u0642\u0647":{bg:"rgba(249,115,22,.14)",b:"rgba(249,115,22,.35)",t:"#fdba74",bar:"#f97316"},"\u0627\u0644\u0633\u064a\u0631\u0629 \u0627\u0644\u0646\u0628\u0648\u064a\u0629":{bg:"rgba(34,197,94,.14)",b:"rgba(34,197,94,.35)",t:"#86efac",bar:"#22c55e"},"\u0644\u063a\u0629 \u0639\u0631\u0628\u064a\u0629":{bg:"rgba(236,72,153,.14)",b:"rgba(236,72,153,.35)",t:"#f9a8d4",bar:"#ec4899"}};
 const QS=[
 {q:"\u064a\u064f\u0639\u062f\u0651 \u0625\u062c\u0645\u0627\u0639 \u0627\u0644\u0635\u062d\u0627\u0628\u0629 \u0631\u0636\u064a \u0627\u0644\u0644\u0647 \u0639\u0646\u0647\u0645 \u0641\u064a \u0627\u0644\u0639\u0642\u064a\u062f\u0629 \u0643\u0625\u062c\u0645\u0627\u0639\u0647\u0645 \u0623\u0646 \u0627\u0644\u0644\u0647 \u0641\u064a \u0627\u0644\u0633\u0645\u0627\u0621 \u0645\u0633\u062a\u0648\u0650\u0646 \u0639\u0644\u0649 \u0639\u0631\u0634\u0647:",o:["\u062d\u062c\u0629 \u064a\u062c\u0628 \u0627\u0644\u0623\u062e\u0630 \u0628\u0647\u0627","\u0644\u064a\u0633 \u062d\u062c\u0629 \u0648\u0644\u0627 \u064a\u062c\u0648\u0632 \u0627\u0644\u0627\u062d\u062a\u062c\u0627\u062c \u0628\u0647","\u064a\u062e\u064a\u064e\u0651\u0631 \u0627\u0644\u0645\u0633\u0644\u0645 \u0628\u0627\u0644\u0639\u0645\u0644 \u0628\u0647","\u0644\u0627 \u064a\u0635\u062d \u0634\u064a\u0621 \u0645\u0645\u0627 \u0633\u0628\u0642"],a:0,t:"\u0639\u0642\u064a\u062f\u0629"},
@@ -880,7 +880,7 @@ function doFinish(){
 
 function sendSheets(r){
   var p=new URLSearchParams({nama:r.name,nisn:r.nisn,kelas:r.kelas,mapel:r.subject,nilai:r.score,benar:r.correct,total:r.total,waktu:r.timestamp});
-  fetch('https://script.google.com/macros/s/AKfycbzF7hnIe7_im_191NtMdAN3obFL3RNr_Oy3ui-FODRAzL1nHxdGJ9u1f1G9m6BNId9cNQ/exec?'+p,{method:'GET',mode:'no-cors'}).catch(function(){});
+  fetch('https://script.google.com/macros/s/AKfycbwjrIKbdIlmWlV1_iY5j4QRdJv562oC87rAwf2RbCcz_1UjO7DXFY49ja1y4wssyeFaWA/exec?'+p,{method:'GET',mode:'no-cors'}).catch(function(){});
 }
 
 /* RESULT */
