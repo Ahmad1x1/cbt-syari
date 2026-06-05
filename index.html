@@ -696,7 +696,7 @@ function startExam(){
         toast('⚠ Peringatan '+S.tabVio+': Jangan berpindah tab saat ujian!');
       }
     });
-    /* Fullscreen keluar: tampilkan overlay pemblokir */
+    /* Fullscreen keluar: langsung re-enter + tampilkan overlay */
     var onFsChange=function(){
       var inExam=!document.getElementById('pg-exam').classList.contains('hidden');
       if(inExam&&!S.submitted&&!document.fullscreenElement&&!document.webkitFullscreenElement){
@@ -705,6 +705,19 @@ function startExam(){
         var vc=document.getElementById('fs-vio-count');
         if(vc&&S.fsVio>1)vc.textContent='Pelanggaran ke-'+S.fsVio;
         if(ov)ov.classList.remove('hidden');
+        /* Coba masuk fullscreen SEGERA (tanpa delay) */
+        var el2=document.documentElement;
+        if(el2.requestFullscreen){
+          el2.requestFullscreen().then(function(){
+            /* Berhasil masuk fullscreen lagi — sembunyikan overlay */
+            if(ov)ov.classList.add('hidden');
+          }).catch(function(){
+            /* Gagal — overlay tetap tampil, paksa user klik tombol */
+          });
+        } else if(el2.webkitRequestFullscreen){
+          el2.webkitRequestFullscreen();
+          if(ov)ov.classList.add('hidden');
+        }
       }
     };
     document.addEventListener('fullscreenchange',onFsChange);
@@ -802,6 +815,23 @@ function bindKeys(){
     if(e.key==='ArrowLeft'||e.key==='PageUp')goPrev();
     if(e.key.toLowerCase()==='f')toggleFlag();
   };
+  /* ── Intercept ESC: cegah keluar fullscreen ── */
+  document.addEventListener('keydown', function(e){
+    var inExam=!document.getElementById('pg-exam').classList.contains('hidden');
+    if(!inExam||S.submitted)return;
+    if(e.key==='Escape'||e.key==='F11'||e.keyCode===27||e.keyCode===122){
+      e.preventDefault();  /* dicoba, tapi browser mungkin abaikan untuk ESC */
+      e.stopPropagation();
+      /* Langsung minta fullscreen kembali tanpa delay */
+      setTimeout(function(){
+        if(!document.fullscreenElement&&!document.webkitFullscreenElement){
+          var el=document.documentElement;
+          if(el.requestFullscreen){el.requestFullscreen().catch(function(){});}
+          else if(el.webkitRequestFullscreen){el.webkitRequestFullscreen();}
+        }
+      },0);
+    }
+  }, true); /* capture=true agar kita tangani sebelum browser */
 }
 
 /* SUBMIT */
