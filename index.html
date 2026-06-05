@@ -129,14 +129,14 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .q-area{flex:1;padding:28px 28px 16px;max-width:780px;width:100%;margin:0 auto;display:flex;flex-direction:column;}
 .q-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;margin-bottom:18px;animation:qin .25s ease;}
 @keyframes qin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.q-text{font-family:'Amiri',serif;direction:rtl;text-align:right;font-size:1.22rem;line-height:2.15;color:#fff;}
+.q-text{font-family:'Amiri',serif;direction:rtl;text-align:right;font-size:1.22rem;line-height:2.15;color:#fff;user-select:none;-webkit-user-select:none;-moz-user-select:none;}
 .options{display:flex;flex-direction:column;gap:9px}
 .opt{display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.09);border-radius:12px;cursor:pointer;transition:all .18s cubic-bezier(.22,1,.36,1);text-align:right;}
 .opt:hover{background:rgba(255,255,255,.08);border-color:rgba(200,168,75,.3);transform:translateX(4px);}
 .opt.sel{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.45);}
 .opt.sel .opt-lbl{background:var(--green);border-color:var(--green);color:#fff;}
-.opt-lbl{width:34px;height:34px;border-radius:9px;flex-shrink:0;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-family:'Amiri',serif;font-size:.95rem;font-weight:700;color:var(--muted);transition:all .18s;}
-.opt-text{font-family:'Amiri',serif;direction:rtl;font-size:1.05rem;line-height:1.85;flex:1;color:var(--text);}
+.opt-lbl{width:34px;height:34px;border-radius:9px;flex-shrink:0;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-family:'Amiri',serif;font-size:.95rem;font-weight:700;color:var(--muted);transition:all .18s;user-select:none;-webkit-user-select:none;}
+.opt-text{font-family:'Amiri',serif;direction:rtl;font-size:1.05rem;line-height:1.85;flex:1;color:var(--text);user-select:none;-webkit-user-select:none;-moz-user-select:none;}
 .exam-foot{padding:16px 28px 24px;max-width:780px;width:100%;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px;}
 .btn-nav2{display:flex;align-items:center;gap:8px;padding:12px 20px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:.88rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .18s;}
 .btn-nav2:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
@@ -256,7 +256,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   <div class="login-card">
     <div class="lc-head">
       <div class="logo-wrap">
-        <img src="https://i.ibb.co.com/Ld9YZFcZ/Logo-2.jpg" alt="Logo"
+        <img src="./logo.jpg" alt="Logo SMASIT AL BINAA"
           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="logo-fb" style="display:none">AB</div>
       </div>
@@ -310,7 +310,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <div class="sb-head">
       <div class="sb-logo">
         <div class="sb-logo-img">
-          <img src="https://i.ibb.co.com/Ld9YZFcZ/Logo-2.jpg" alt="Logo"
+          <img src="./logo.jpg" alt="Logo SMASIT AL BINAA"
             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="sb-logo-fb" style="display:none">AB</div>
         </div>
@@ -593,7 +593,13 @@ function showPage(id){
   document.getElementById(id).classList.remove('hidden');
   window.scrollTo(0,0);
 }
-function backHome(){clearInterval(S.timer);showPage('pg-login');}
+function backHome(){
+  clearInterval(S.timer);
+  showPage('pg-login');
+  /* Exit fullscreen when returning home */
+  if(document.exitFullscreen&&document.fullscreenElement){document.exitFullscreen();}
+  else if(document.webkitExitFullscreen&&document.webkitFullscreenElement){document.webkitExitFullscreen();}
+}
 function hide(id){document.getElementById(id).classList.add('hidden');}
 
 /* SIDEBAR */
@@ -632,6 +638,49 @@ function startExam(){
   document.getElementById('sb-umeta').textContent=S.user.kelas+' · '+S.user.subject;
   showPage('pg-exam');
   renderGrid();renderQ();startTimer();bindKeys();
+  /* FULLSCREEN */
+  var el=document.documentElement;
+  if(el.requestFullscreen){el.requestFullscreen().catch(function(){});}
+  else if(el.webkitRequestFullscreen){el.webkitRequestFullscreen();}
+  else if(el.mozRequestFullScreen){el.mozRequestFullScreen();}
+  /* ANTI-CHEAT: daftarkan sekali saja */
+  if(!S.antiCheatReady){
+    S.antiCheatReady=true;
+    /* Blokir copy teks */
+    document.addEventListener('copy',function(e){
+      if(!document.getElementById('pg-exam').classList.contains('hidden')){
+        e.preventDefault();toast('⚠ Menyalin teks tidak diizinkan!');
+      }
+    });
+    /* Blokir klik kanan */
+    document.addEventListener('contextmenu',function(e){
+      if(!document.getElementById('pg-exam').classList.contains('hidden'))e.preventDefault();
+    });
+    /* Deteksi pindah tab */
+    document.addEventListener('visibilitychange',function(){
+      if(document.hidden&&!document.getElementById('pg-exam').classList.contains('hidden')){
+        S.tabVio=(S.tabVio||0)+1;
+        toast('⚠ Peringatan '+S.tabVio+': Jangan berpindah tab saat ujian!');
+      }
+    });
+    /* Fullscreen keluar — peringati & paksa masuk lagi */
+    var onFsChange=function(){
+      var inExam=!document.getElementById('pg-exam').classList.contains('hidden');
+      if(inExam&&!document.fullscreenElement&&!document.webkitFullscreenElement){
+        S.fsVio=(S.fsVio||0)+1;
+        toast('⚠ Peringatan '+S.fsVio+': Jangan keluar dari layar penuh!');
+        setTimeout(function(){
+          if(!document.getElementById('pg-exam').classList.contains('hidden')){
+            var e2=document.documentElement;
+            if(e2.requestFullscreen){e2.requestFullscreen().catch(function(){});}
+            else if(e2.webkitRequestFullscreen){e2.webkitRequestFullscreen();}
+          }
+        },1500);
+      }
+    };
+    document.addEventListener('fullscreenchange',onFsChange);
+    document.addEventListener('webkitfullscreenchange',onFsChange);
+  }
 }
 
 /* TIMER */
